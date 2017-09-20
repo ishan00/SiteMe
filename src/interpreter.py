@@ -17,6 +17,33 @@ def lexString(s):
 		return []
 
 # This function doesn't have much use. There should be a generic make_dict which does (a:b , ) -> {a:b , }
+def makeNavbar(dict,filename):
+	keystr="#####"
+	valuestr="$$$$$"
+	file=open(filename)
+	line=file.readline().strip();
+	navbar=line[:]
+	line=file.readline().strip();
+	while(line):
+		if(line.find(keystr)):
+			line=line.replace(keystr,dict[0][0])
+			line=line.replace(valuestr,dict[0][1])
+			navbar=navbar+""""\n"""+line
+			line=file.readline().strip()
+			break
+		else:
+			navbar=navbar+"\n"+line
+			line=file.readline().strip()
+	for (key,value) in dict[1:]:
+		cline=line[:]
+		cline=cline.replace(keystr,key)
+		cline=cline.replace(valuestr,value)
+		navbar=navbar+"\n"+cline
+	line=file.readline().strip()
+	while(line):
+		navbar=navbar+"\n"+line
+		line=file.readline().strip()
+		return navbar
 
 def make_tuples(s):
 	'''
