@@ -5,9 +5,9 @@ import lexer
 tokens=lexer.tokens
 
 def styleConv(s):
-    stype=s.split('{')[0]
-    scontent=s.split('{')[1].split('}')[0]
-    sstyle=s.split('{')[1].split('}')[1].strip('()')
+    stype=s.split('(')[0]
+    sstyle=s.split('(')[1].split(')')[0]
+    scontent=s.split('(')[1].split(')')[1].strip('{}')
     sstyle=sstyle.split(',')
     sstyle=';'.join(sstyle)
     if(stype=="image"):
@@ -79,7 +79,7 @@ parser=yacc.yacc()
 script,file=argv
 a=open(file)
 b=a.read()
-while(re.search(r'(image|link)?\{[^\(\)\{\}]*?\}\([^\(\)\{\}]*?\)',b)):
+while(re.search(r'(image|link|list)?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}',b)):
     b=parser.parse(b.strip())
 b=b.split("<br>")
 b="<br>\n".join(b)

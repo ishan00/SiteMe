@@ -2,10 +2,10 @@ title:CS 251 Course Homepage
 font-size:14pt
 background-color:yellow
 
-image{background.gif}(height:300px , width: 800px)
+image(height:300px , width: 800px){background.gif}
 
-{Informal Course Overview}(h1)
-This {course}(bold) is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to script, build a web page, document your work (both theory and your code), and bulk up on your programming expertise coming from CS101 and CS152 (with their associated labs). Geeks are welcome. 
+(h1){Informal Course Overview}
+This (bold){course} is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to script, build a web page, document your work (both theory and your code), and bulk up on your programming expertise coming from CS101 and CS152 (with their associated labs). Geeks are welcome. 
 
 In this course we will cover some of
 HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot
@@ -13,12 +13,12 @@ Reading and Writing Code, Profiling, Debugging, Editors, IDE, Makefiles, Compila
 Basic Linux Utilities
 Glimpse of web applications: Django
 
-{Texts}(bold): Note the description in the text section.
-{Course Prerequisites}(bold): There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.
+(bold){Texts}: Note the description in the text section.
+(bold){Course Prerequisites}: There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.
 
 
-{Lab Contents}(bold)
-list{
+(bold){Lab Contents}
+list(u){
 * Lab 1 : HTML, CSS
 * Lab 2 : Bash Scripting
 * Lab 3 : Sed, Awk
@@ -27,4 +27,4 @@ list{
 * Lab 6 : LaTeX, Gnuplot
 * Lab 7 : Makefiles, Doxygen
 * Lab 8 : Python
-}(u)
+}
