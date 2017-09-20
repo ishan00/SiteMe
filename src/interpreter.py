@@ -65,25 +65,25 @@ def makeCSS(filename):
 def make_tuples(s):
 	'''
 	Input - Output
-	link{abcd.com}(Home),link{facebook.com}(About) - [ ("Home","abcd.com") , ("About","facebook.com") ]
+	Home:a.com,About:facebook.com - [ ("Home","abcd.com") , ("About","facebook.com") ]
 	'''
 	s_list = s.split(',')
 	s_tuples = []
 	for elem in s_list:
-		split = lexString(elem)
-		s_tuples.append((split[1],split[2]))
+		split = elem.split[:]
+		s_tuples.append((split[0],split[1]))
 	return s_tuples
 
 def parseAbstractElement(s):
 	'''
 	Input - Output
-	navbar{link{abcd.com}(Home),link{facebook.com}(About)}(type1) - [Type , dict_{} , dict_()]
+	navbar(type1){Home:a.com,About:b.com} - [Type , dict_{} , dict_()]
 	'''
-	matchObj = re.match( r'([^{]*){(.*)}\((.*)\)' , s)
+	matchObj = re.match( r'(.*)\((.*)\){(.*)}' , s)
 	if matchObj:
 		keyword = matchObj.group(1)
-		content = matchObj.group(2)
-		style =  matchObj.group(3)
+		style = matchObj.group(2)
+		content =  matchObj.group(3)
 		#print ("matchObj.group() : ", matchObj.group())
 		#print ("matchObj.group(1) : ", matchObj.group(1))
 		#print ("matchObj.group(2) : ", matchObj.group(2))

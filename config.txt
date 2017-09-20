@@ -1,2 +1,2 @@
-navbar{link{a.com}(Home),link{b.com}(About),link{c.com}(Contact)}(type1)
-footer{link{d.com}(facebook),link{H2}(home),link{+91232321312}(phone)}(type1)
+navbar(type1){Home:a.com,About:b.com,contact:c.com}
+footer(type1){facebook:d.com,home:H2 Room 274,phone:+91232321312}
