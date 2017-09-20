@@ -1,0 +1,9 @@
+title:Welcome To My Blog
+font:16pt
+
+rest of the content, to be rendered by both parser and interpreter
+image{abc.png}(height=300px , width = 400px)
+The above need to be parsed into image
+link{https://google.co.in}(Google)
+
+slideshow{a.png, b.png, c.png}
