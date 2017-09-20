@@ -1,8 +1,8 @@
 title:CS 251 Course Homepage
 font-size:14pt
-background-color:yellow
+background-color:rgb(159,229,224)
 
-image(height:300px , width: 800px){background.gif}
+image(height:400px , width: 100%){background.gif}
 
 (h1){Informal Course Overview}
 This (bold){course} is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to script, build a web page, document your work (both theory and your code), and bulk up on your programming expertise coming from CS101 and CS152 (with their associated labs). Geeks are welcome. 

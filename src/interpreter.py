@@ -33,7 +33,7 @@ def makeNavbar(dict,filename):
 		else:
 			navbar=navbar+"\n"+line
 			line=file.readline().strip()
-	for (key,value) in dict[1:]:
+	for (key,value) in dict[1:][::-1]:
 		cline=line[:]
 		cline=cline.replace(keystr,key)
 		cline=cline.replace(valuestr,value)
@@ -70,7 +70,7 @@ def make_tuples(s):
 	s_list = s.split(',')
 	s_tuples = []
 	for elem in s_list:
-		split = elem.split[:]
+		split = elem.split(":")
 		s_tuples.append((split[0],split[1]))
 	return s_tuples
 
@@ -114,7 +114,7 @@ def makePage():
 			if(i.count('title') == 1):
 				title = i[i.find(':') + 1:]
 			else:
-				infile_css = infile_css + i[1:]
+				infile_css = infile_css + i[1:].strip('\n')+';\n'
 		else:
 			content = content + i
 	print ("<html>")

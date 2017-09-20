@@ -14,7 +14,7 @@ else
 fi
 
 cp -r ./img/* ./site/img
-if [-f "./site/css/style.css"]
+if [ -f "./site/css/style.css" ]
 	then
 	rm ./site/css/style.css
 fi
