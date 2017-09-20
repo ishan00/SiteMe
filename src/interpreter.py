@@ -1,50 +1,60 @@
 import re
 
-def dict(a):
-	element = a.split(',')
-	for
+def lexString(s): 
+	'''
+	Input - Output
+	"{content}(style)" - [ content, style ]
+	"keyword{content}(style)" - [ content , style , keyword ]
+	'''
+	matchObj = re.match( r'(.*){(.*)}\((.*)\)' , s)
+	if matchObj:
+		keyword = matchObj.group(1)
+		content = matchObj.group(2)
+		style =  matchObj.group(3)
+		return [keyword , style , content]
+	else:
+		print ("No match!!")
+		return []
 
-def titleLine(str):
-	return (str.find('title') != -1)
-def styleLine(str):
-	return (str.find('font') != -1)
+# This function doesn't have much use. There should be a generic make_dict which does (a:b , ) -> {a:b , }
 
-config_file=open('config.txt')
-lines = config_file.readlines()
-l1 = [line.strip('\n') for line in lines]
+def make_tuples(s):
+	'''
+	Input - Output
+	link{abcd.com}(Home),link{facebook.com}(About) - [ ("Home","abcd.com") , ("About","facebook.com") ]
+	'''
+	s_list = s.split(',')
+	s_tuples = []
+	for elem in s_list:
+		split = lexString(elem)
+		s_tuples.append((split[1],split[2]))
+	return s_tuples
 
-page_file = open('./pages/index.txt')
-l2 = [line.strip('\n') for line in page_file.readlines()]
+def parseAbstractElement(s):
+	'''
+	Input - Output
+	navbar{link{abcd.com}(Home),link{facebook.com}(About)}(type1) - [Type , dict_{} , dict_()]
+	'''
+	matchObj = re.match( r'([^{]*){(.*)}\((.*)\)' , s)
+	if matchObj:
+		keyword = matchObj.group(1)
+		content = matchObj.group(2)
+		style =  matchObj.group(3)
+		#print ("matchObj.group() : ", matchObj.group())
+		#print ("matchObj.group(1) : ", matchObj.group(1))
+		#print ("matchObj.group(2) : ", matchObj.group(2))
+		#print ("matchObj.group(2) : ", matchObj.group(3))
+		return [keyword , make_dict(content) , style]
+	else:
+		print ("No match!!")
+		return []
 
-#print(l1)
-#print(l2)
+def makePage():
+	config = open('../config.txt')
+	page = open('../tmp/index.temp')
+	print ("<head>")
+	print ("<title>" + title + "</title>")
+	print ("</head>")
 
-print ("""
-<html>
-<head>
-""")
-
-for temp_line in l2:
-	if(titleLine(temp_line)):
-		print ("<title>" + temp_line[temp_line.find(':')+1:] + "</title>")
-	elif(styleLine(temp_line)):
-		print ("<style>")
-		print ("body{")
-		print ("font-size:" + temp_line[temp_line.find(':')+1:])
-		print ("}")
-		print ("</style>")
-
-print ("""
-</head>
-<body>
-""")
-
-for temp_line in l1:
-	if(temp_line.find('navbar') != -1):
-		navbar = dict(temp_line[6:])
-
-
-print ("""
-</body>
-</html>
-""")
+if __name__ == '__main__':
+	main()

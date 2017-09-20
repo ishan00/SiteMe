@@ -16,6 +16,7 @@ Glimpse of web applications: Django
 
 
 {Lab Contents}(bold)
+list{
 * Lab 1 : HTML, CSS
 * Lab 2 : Bash Scripting
 * Lab 3 : Sed, Awk
@@ -24,3 +25,4 @@ Glimpse of web applications: Django
 * Lab 6 : LaTeX, Gnuplot
 * Lab 7 : Makefiles, Doxygen
 * Lab 8 : Python
+}(u)
