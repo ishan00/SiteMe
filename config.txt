@@ -1,2 +1,2 @@
 navbar{link{abcd.com}(Home),link{facebook.com}(About),link{www.cse.iitb.av.in}(CSE HOMEPAEG)}(type1)
-footer{link{https://facebook.com}(facebook),link{Address}(home), link{+91232321312}(phone)}(type1)
+footer{link{https://facebook.com}(facebook),link{Address}(home),link{+91232321312}(phone)}(type1)

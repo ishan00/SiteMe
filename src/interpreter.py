@@ -54,7 +54,14 @@ def makePage():
 	page = open('../tmp/index.temp')
 	print ("<head>")
 	print ("<title>" + title + "</title>")
+	print ("<style>")
+	print ("body {")
+	#
+	print ("}")
+	print ("</style>")
 	print ("</head>")
+	print ("<body>")
+	print (makeNavbar())
 
 if __name__ == '__main__':
 	main()
