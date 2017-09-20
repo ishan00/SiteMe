@@ -16,19 +16,18 @@ def lexString(s):
 		print ("No match!!")
 		return []
 
-# This function doesn't have much use. There should be a generic make_dict which does (a:b , ) -> {a:b , }
 def makeNavbar(dict,filename):
 	keystr="#####"
 	valuestr="$$$$$"
 	file=open(filename)
 	line=file.readline().strip();
-	navbar=line[:]
+	navbar='''<div class="navbar">\n'''+line[:]
 	line=file.readline().strip();
 	while(line):
 		if(line.find(keystr)):
 			line=line.replace(keystr,dict[0][0])
 			line=line.replace(valuestr,dict[0][1])
-			navbar=navbar+""""\n"""+line
+			navbar=navbar+"\n"+line
 			line=file.readline().strip()
 			break
 		else:
@@ -43,7 +42,25 @@ def makeNavbar(dict,filename):
 	while(line):
 		navbar=navbar+"\n"+line
 		line=file.readline().strip()
-		return navbar
+	navbar=navbar+"\n</div>"
+	return navbar
+
+def makeCSS(filename):
+	file=open(filename)
+	line=file.readline()
+	wfile=open("./site/css/style.css",'a')
+	while(line):
+		if(line.count('{')==1):
+			line=".navbar "+line
+			wfile.write(line)
+			line=file.readline()
+		else:
+			wfile.write(line)
+			line=file.readline()
+
+
+
+# There should be a generic make_dict which does (a:b , ) -> {a:b , }
 
 def make_tuples(s):
 	'''
@@ -71,24 +88,51 @@ def parseAbstractElement(s):
 		#print ("matchObj.group(1) : ", matchObj.group(1))
 		#print ("matchObj.group(2) : ", matchObj.group(2))
 		#print ("matchObj.group(2) : ", matchObj.group(3))
-		return [keyword , make_dict(content) , style]
+		return [keyword , make_tuples(content) , style]
 	else:
 		print ("No match!!")
 		return []
 
 def makePage():
-	config = open('../config.txt')
-	page = open('../tmp/index.temp')
+	config = open('config.txt')
+	page = open('tmp/index.tmp')
+	l_c = config.readlines()
+	l_p = page.readlines()
+	navbar = ""
+	footer = ""
+	content = ""
+	title = ""
+	infile_css = ""
+	for i in l_c:
+		temp = parseAbstractElement(i)
+		if(temp[0] == 'navbar'):
+			navbar = temp
+		elif(temp[0] == 'footer'):
+			footer = temp
+	for i in l_p:
+		if(i[0] == '#'):
+			if(i.count('title') == 1):
+				title = i[i.find(':') + 1:]
+			else:
+				infile_css = infile_css + i[1:]
+		else:
+			content = content + i
+	print ("<html>")
 	print ("<head>")
 	print ("<title>" + title + "</title>")
+	print ("<link rel=\"stylesheet\" href=\"./css/style.css\">")
 	print ("<style>")
 	print ("body {")
-	#
-	print ("}")
+	print (infile_css + "}")
 	print ("</style>")
 	print ("</head>")
 	print ("<body>")
-	print (makeNavbar())
+	print (makeNavbar(navbar[1],'layout/navbar.html'))
+	print (content)
+	print ("</body>")
+	print ("</html>")
+	makeCSS("./layout/navbar.css")
 
-if __name__ == '__main__':
-	main()
+makePage()
+#navbar = parseAbstractElement("navbar{link{a.com}(Home),link{b.com}(About),link{c.com}(Contact)}(type1)")
+#print (makeNavbar(navbar[1],'layout/navbar.html'))

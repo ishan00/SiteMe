@@ -1,9 +1,11 @@
 title:CS 251 Course Homepage
+font-size:14pt
+background-color:yellow
 
 image{background.gif}(height:300px , width: 800px)
 
 {Informal Course Overview}(h1)
-This course is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to script, build a web page, document your work (both theory and your code), and bulk up on your programming expertise coming from CS101 and CS152 (with their associated labs). Geeks are welcome. 
+This {course}(bold) is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to script, build a web page, document your work (both theory and your code), and bulk up on your programming expertise coming from CS101 and CS152 (with their associated labs). Geeks are welcome. 
 
 In this course we will cover some of
 HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot
