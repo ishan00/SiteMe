@@ -1,2 +1,2 @@
-navbar(type1){Home:a.com,About:b.com,contact:c.com}
+navbar(type1){Home:a.com,About:b.com,Contact:c.com,Blog:d.com}
 footer(type1){facebook:d.com,home:H2 Room 274,phone:+91232321312}

@@ -45,13 +45,13 @@ def makeNavbar(dict,filename):
 	navbar=navbar+"\n</div>"
 	return navbar
 
-def makeCSS(filename):
+def makeCSS(filename, keyword):
 	file=open(filename)
 	line=file.readline()
 	wfile=open("./site/css/style.css",'a')
 	while(line):
 		if(line.count('{')==1):
-			line=".navbar "+line
+			line="." + keyword +" "+line
 			wfile.write(line)
 			line=file.readline()
 		else:
@@ -73,6 +73,49 @@ def make_tuples(s):
 		split = elem.split(":")
 		s_tuples.append((split[0],split[1]))
 	return s_tuples
+
+def makeFooter(dict, filepath):
+	'''
+	Input - Output
+	dict = [("facebook","abcd.com") , [("home","H2 Room 48")]]
+	temp = <td><a href = "$$$$$"><img src = "#####"></a></td>
+	temp = <td>@@@@@</td>
+	'''
+	f = open(filepath)
+	img_str = "#####"
+	link_str = "$$$$$"
+	word_str = "@@@@@"
+	footer='''<div class="footer">\n'''
+	buffer_str = "<td> &nbsp; </td>\n"
+	r1 = "<tr>\n"
+	r2 = "<tr>\n"
+	line= f.readline().strip();
+	while(line):
+		if(line.count(link_str) > 0):
+			for i in range(len(dict)):
+				temp=line
+				temp=temp.replace(link_str,dict[i][1])
+				temp=temp.replace(img_str,'./img/icons/' + dict[i][0] + '.png')
+				if(i == len(dict) -1 ):
+					footer = footer +'\n' + temp
+				else:
+					footer = footer + '\n' + temp + buffer_str*10
+			line=f.readline().strip()
+		elif(line.count(word_str) > 0):
+			for i in range(len(dict)):
+				temp = line
+				temp = temp.replace(word_str,dict[i][0])
+				if(i == len(dict) -1 ):
+					footer = footer +'\n' + temp
+				else:
+					footer = footer + '\n' + temp + buffer_str*10
+			line=f.readline().strip()
+		else:
+			footer = footer + '\n' + line
+			line=f.readline().strip()
+	footer = footer + '\n</div>'
+	return footer
+	
 
 def parseAbstractElement(s):
 	'''
@@ -129,10 +172,10 @@ def makePage():
 	print ("<body>")
 	print (makeNavbar(navbar[1],'layout/navbar.html'))
 	print (content)
+	print (makeFooter(footer[1], 'layout/footer.html'))
 	print ("</body>")
 	print ("</html>")
-	makeCSS("./layout/navbar.css")
+	makeCSS("./layout/navbar.css","navbar")
+	makeCSS("./layout/footer.css","footer")
 
 makePage()
-#navbar = parseAbstractElement("navbar{link{a.com}(Home),link{b.com}(About),link{c.com}(Contact)}(type1)")
-#print (makeNavbar(navbar[1],'layout/navbar.html'))

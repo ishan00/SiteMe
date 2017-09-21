@@ -1,5 +1,5 @@
 title:CS 251 Course Homepage
-font-size:14pt
+font-size:18pt
 background-color:rgb(159,229,224)
 
 image(height:400px , width: 100%){background.gif}
