@@ -5,9 +5,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'KEYWORD STYLE REST NEWLINEmain : head bodyhead : head keyword\n            | head NEWLINE\n            |\n    body : body style\n            | body REST\n            | body newline\n            | \n    style : STYLEnewline : NEWLINEkeyword : KEYWORD'
+_lr_signature = 'KEYWORD PRE STYLE REST NEWLINEmain : head bodyhead : head keyword\n            | head NEWLINE\n            |\n    body : body style\n            | body REST\n            | body newline\n            | body pre\n            |\n    pre : PRE \n           |  \n    style : STYLEnewline : NEWLINEkeyword : KEYWORD'
     
-_lr_action_items = {'KEYWORD':([0,1,3,5,6,],[-4,3,-11,-3,-2,]),'$end':([0,1,2,3,4,5,6,7,8,9,10,11,],[-4,-8,0,-11,-1,-3,-2,-10,-6,-9,-7,-5,]),'NEWLINE':([0,1,3,4,5,6,7,8,9,10,11,],[-4,5,-11,7,-3,-2,-10,-6,-9,-7,-5,]),'STYLE':([0,1,3,4,5,6,7,8,9,10,11,],[-4,-8,-11,9,-3,-2,-10,-6,-9,-7,-5,]),'REST':([0,1,3,4,5,6,7,8,9,10,11,],[-4,-8,-11,8,-3,-2,-10,-6,-9,-7,-5,]),}
+_lr_action_items = {'$end':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,0,-9,-1,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),'NEWLINE':([0,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,5,7,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),'KEYWORD':([0,2,4,5,6,],[-4,6,-2,-3,-14,]),'REST':([0,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,-9,8,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),'PRE':([0,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,-9,10,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),'STYLE':([0,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,-9,11,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'body':([1,],[4,]),'head':([0,],[1,]),'main':([0,],[2,]),'keyword':([1,],[6,]),'newline':([4,],[10,]),'style':([4,],[11,]),}
+_lr_goto_items = {'main':([0,],[1,]),'head':([0,],[2,]),'body':([2,],[3,]),'keyword':([2,],[4,]),'style':([3,],[9,]),'newline':([3,],[12,]),'pre':([3,],[13,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,15 +26,18 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> main","S'",1,None,None,None),
-  ('main -> head body','main',2,'p_main','parser.py',40),
-  ('head -> head keyword','head',2,'p_head','parser.py',44),
-  ('head -> head NEWLINE','head',2,'p_head','parser.py',45),
-  ('head -> <empty>','head',0,'p_head','parser.py',46),
-  ('body -> body style','body',2,'p_body','parser.py',54),
-  ('body -> body REST','body',2,'p_body','parser.py',55),
-  ('body -> body newline','body',2,'p_body','parser.py',56),
-  ('body -> <empty>','body',0,'p_body','parser.py',57),
-  ('style -> STYLE','style',1,'p_style','parser.py',65),
-  ('newline -> NEWLINE','newline',1,'p_newline','parser.py',69),
-  ('keyword -> KEYWORD','keyword',1,'p_keyword','parser.py',73),
+  ('main -> head body','main',2,'p_main','parser.py',104),
+  ('head -> head keyword','head',2,'p_head','parser.py',108),
+  ('head -> head NEWLINE','head',2,'p_head','parser.py',109),
+  ('head -> <empty>','head',0,'p_head','parser.py',110),
+  ('body -> body style','body',2,'p_body','parser.py',118),
+  ('body -> body REST','body',2,'p_body','parser.py',119),
+  ('body -> body newline','body',2,'p_body','parser.py',120),
+  ('body -> body pre','body',2,'p_body','parser.py',121),
+  ('body -> <empty>','body',0,'p_body','parser.py',122),
+  ('pre -> PRE','pre',1,'p_pre','parser.py',130),
+  ('pre -> <empty>','pre',0,'p_pre','parser.py',131),
+  ('style -> STYLE','style',1,'p_style','parser.py',140),
+  ('newline -> NEWLINE','newline',1,'p_newline','parser.py',144),
+  ('keyword -> KEYWORD','keyword',1,'p_keyword','parser.py',148),
 ]

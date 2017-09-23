@@ -3,7 +3,7 @@ from sys import argv
 import re
 from lexer import tokens,styles
 
-ltaggedStyles={"literal":"pre","bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","center":"center"}
+ltaggedStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","center":"center"}
 
 def taggedMaker(style,content):
     if(not style):
@@ -57,6 +57,24 @@ def piechartMaker(style,content):
     else:
         return "image(){"+styleLabel.split(':')[1].strip()+".png}"
 
+def imageMaker(style,content):
+	if content:
+		return "<img src=\"./img/"+content.strip()+"\" style=\""+style.strip()+";\">"
+
+def linkMaker(style,content):
+	if content:
+		if style:
+			return "<a href=\""+content.strip()+"\">"+style.strip()+"</a>"
+		else:
+			return "<a href=\""+content.strip()+"\">"+content.strip()+"</a>"
+
+def listMaker(style,content):
+	if content:
+		if style:
+			return "<"+style.strip()+"l>"+''.join(["<li>"+x+"</li>" for x in [y.strip() for y in content.split('*')[1:]]])+"</"+style.strip()+"l>"
+
+styleFunctions={"image":imageMaker,"link":linkMaker,"list":listMaker,"piechart":piechartMaker}
+
 def styleMaker(s):
     # styleName=re.search(r'(.*?)\(',s).group(1)
     # styleStyle=re.search(r'\((.*?)\)',s).group(1)
@@ -66,22 +84,9 @@ def styleMaker(s):
     styleContent=s.split('(')[1].split(')')[1].strip('{}')
     styleStyle=styleStyle.replace(',',';')
     if(not styleName):
-        rs=taggedMaker(styleStyle,styleContent)
-    elif(styleName=="image"):
-        if styleContent:
-            rs="<img src=\"./img/"+styleContent.strip()+"\" style=\""+styleStyle.strip()+";\">"
-    elif(styleName=="link"):
-        if styleContent:
-            if styleStyle:
-                rs="<a href=\""+styleContent.strip()+"\">"+styleStyle.strip()+"</a>"
-            else:
-                rs="<a href=\""+styleContent.strip()+"\">"+styleContent.strip()+"</a>"
-    elif(styleName=="list"):
-        if styleContent:
-            if styleStyle:
-                rs="<"+styleStyle.strip()+"l>"+''.join(["<li>"+x+"</li>" for x in [y.strip() for y in styleContent.split('*')[1:]]])+"</"+styleStyle.strip()+"l>"
-    elif(styleName=="piechart"):
-        rs=piechartMaker(styleStyle,styleContent)
+        return taggedMaker(styleStyle,styleContent)
+    else:
+    	return styleFunctions[styleName](styleStyle,styleContent)
     # else:
     #     if styleContent:
     #         if(styleStyle=="bold"):
@@ -89,9 +94,7 @@ def styleMaker(s):
     #         elif(styleStyle[0]=='h'):
     #             rs="<div><"+styleStyle.strip()+">"+styleContent+"</"+styleStyle.strip()+"></div>"
     #         else:
-    #             rs="<div>"+styleContent+"</div>"
-
-    return rs
+    #             rs="<div>"+styleContent+"</div>
 
 # def mainMaker(head,body):
 #     rs="<html>\n<head>\n"+head+"\n</head>\n"+"<body>\n"+body+"\n</body>\n</html>"
@@ -115,10 +118,21 @@ def p_body(p):
     '''body : body style
             | body REST
             | body newline
-            | 
+            | body pre
+            |
     '''
     if(len(p)==3):
         p[0]=p[1]+p[2]
+    else:
+        p[0]=''
+
+def p_pre(p):
+    '''pre : PRE 
+           |  
+    '''
+    if(len(p)==2):
+        print(p[1])
+        p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
     else:
         p[0]=''
 
@@ -146,4 +160,5 @@ while(re.search(r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}',b))
     b=parser.parse(b.strip())
 b=b.split("<br>")
 b="<br>\n".join(b)
+b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}')
 print(b)
