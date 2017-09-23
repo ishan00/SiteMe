@@ -1,4 +1,5 @@
 import re
+from lexer import keywords
 
 def lexString(s): 
 	'''
@@ -58,7 +59,27 @@ def makeCSS(filename, keyword):
 			wfile.write(line)
 			line=file.readline()
 
-
+def makePieChart(s):
+	styleName=s.split("[[[")[0]
+	styleStyle=s.split("[[[")[1].split("]]]")[0]
+	styleContent=s.split("[[[")[1].split("]]]")[1]
+	tempFile=open("./tmp/"+styleStyle.split(':')[1].strip()+".csv",'w')
+	tempFile.write(styleContent.replace(',','\n'))
+	tempFile.close()
+	file=open("./layout/GNUPlot/piechart.plot")
+	newFile=open("./tmp/"+styleStyle.split(':')[1].strip()+".plot",'w')
+	line=file.readline()
+	templine=''
+	while(line):
+		if("XXXXX" in line):
+			templine=templine+line.replace("XXXXX","./tmp/"+styleStyle.split(':')[1].strip()+".csv")
+		elif("YYYYY" in line):
+			templine=templine+line.replace("YYYYY","./site/img/"+styleStyle.split(':')[1].strip()+".png")
+		else:
+			templine=templine+line
+		line=file.readline()
+	newFile.write(templine)
+	return "<img src=\"./img/"+styleStyle.split(':')[1].strip()+".png\">"
 
 # There should be a generic make_dict which does (a:b , ) -> {a:b , }
 
@@ -153,11 +174,13 @@ def makePage():
 		elif(temp[0] == 'footer'):
 			footer = temp
 	for i in l_p:
-		if(i[0] == '#'):
+		if(i[0:3] == '###'):
 			if(i.count('title') == 1):
 				title = i[i.find(':') + 1:]
+			elif(i[3:].split(':')[0].strip() in keywords):
+				infile_css = infile_css + i[3:].strip('\n')+';\n'
 			else:
-				infile_css = infile_css + i[1:].strip('\n')+';\n'
+				content=content+makePieChart(i[3:])
 		else:
 			content = content + i
 	print ("<html>")

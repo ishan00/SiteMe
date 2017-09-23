@@ -3,14 +3,14 @@ Created by PLY version 3.10 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> main
-Rule 1     main -> head content
+Rule 1     main -> head body
 Rule 2     head -> head keyword
 Rule 3     head -> head NEWLINE
 Rule 4     head -> <empty>
-Rule 5     content -> content style
-Rule 6     content -> content REST
-Rule 7     content -> content newline
-Rule 8     content -> <empty>
+Rule 5     body -> body style
+Rule 6     body -> body REST
+Rule 7     body -> body newline
+Rule 8     body -> <empty>
 Rule 9     style -> STYLE
 Rule 10    newline -> NEWLINE
 Rule 11    keyword -> KEYWORD
@@ -25,7 +25,7 @@ error                :
 
 Nonterminals, with rules where they appear
 
-content              : 1 5 6 7
+body                 : 1 5 6 7
 head                 : 1 2 3
 keyword              : 2
 main                 : 0
@@ -37,7 +37,7 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . main
-    (1) main -> . head content
+    (1) main -> . head body
     (2) head -> . head keyword
     (3) head -> . head NEWLINE
     (4) head -> .
@@ -48,37 +48,37 @@ state 0
     STYLE           reduce using rule 4 (head -> .)
     $end            reduce using rule 4 (head -> .)
 
-    main                           shift and go to state 1
-    head                           shift and go to state 2
+    head                           shift and go to state 1
+    main                           shift and go to state 2
 
 state 1
+
+    (1) main -> head . body
+    (2) head -> head . keyword
+    (3) head -> head . NEWLINE
+    (5) body -> . body style
+    (6) body -> . body REST
+    (7) body -> . body newline
+    (8) body -> .
+    (11) keyword -> . KEYWORD
+
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    NEWLINE         shift and go to state 5
+    REST            reduce using rule 8 (body -> .)
+    STYLE           reduce using rule 8 (body -> .)
+    $end            reduce using rule 8 (body -> .)
+    KEYWORD         shift and go to state 3
+
+  ! NEWLINE         [ reduce using rule 8 (body -> .) ]
+
+    keyword                        shift and go to state 6
+    body                           shift and go to state 4
+
+state 2
 
     (0) S' -> main .
 
 
-
-state 2
-
-    (1) main -> head . content
-    (2) head -> head . keyword
-    (3) head -> head . NEWLINE
-    (5) content -> . content style
-    (6) content -> . content REST
-    (7) content -> . content newline
-    (8) content -> .
-    (11) keyword -> . KEYWORD
-
-  ! shift/reduce conflict for NEWLINE resolved as shift
-    NEWLINE         shift and go to state 4
-    REST            reduce using rule 8 (content -> .)
-    STYLE           reduce using rule 8 (content -> .)
-    $end            reduce using rule 8 (content -> .)
-    KEYWORD         shift and go to state 3
-
-  ! NEWLINE         [ reduce using rule 8 (content -> .) ]
-
-    keyword                        shift and go to state 6
-    content                        shift and go to state 5
 
 state 3
 
@@ -93,6 +93,23 @@ state 3
 
 state 4
 
+    (1) main -> head body .
+    (5) body -> body . style
+    (6) body -> body . REST
+    (7) body -> body . newline
+    (9) style -> . STYLE
+    (10) newline -> . NEWLINE
+
+    $end            reduce using rule 1 (main -> head body .)
+    REST            shift and go to state 8
+    STYLE           shift and go to state 9
+    NEWLINE         shift and go to state 7
+
+    newline                        shift and go to state 10
+    style                          shift and go to state 11
+
+state 5
+
     (3) head -> head NEWLINE .
 
     NEWLINE         reduce using rule 3 (head -> head NEWLINE .)
@@ -101,23 +118,6 @@ state 4
     STYLE           reduce using rule 3 (head -> head NEWLINE .)
     $end            reduce using rule 3 (head -> head NEWLINE .)
 
-
-state 5
-
-    (1) main -> head content .
-    (5) content -> content . style
-    (6) content -> content . REST
-    (7) content -> content . newline
-    (9) style -> . STYLE
-    (10) newline -> . NEWLINE
-
-    $end            reduce using rule 1 (main -> head content .)
-    REST            shift and go to state 8
-    STYLE           shift and go to state 7
-    NEWLINE         shift and go to state 10
-
-    style                          shift and go to state 9
-    newline                        shift and go to state 11
 
 state 6
 
@@ -132,36 +132,6 @@ state 6
 
 state 7
 
-    (9) style -> STYLE .
-
-    REST            reduce using rule 9 (style -> STYLE .)
-    STYLE           reduce using rule 9 (style -> STYLE .)
-    NEWLINE         reduce using rule 9 (style -> STYLE .)
-    $end            reduce using rule 9 (style -> STYLE .)
-
-
-state 8
-
-    (6) content -> content REST .
-
-    REST            reduce using rule 6 (content -> content REST .)
-    STYLE           reduce using rule 6 (content -> content REST .)
-    NEWLINE         reduce using rule 6 (content -> content REST .)
-    $end            reduce using rule 6 (content -> content REST .)
-
-
-state 9
-
-    (5) content -> content style .
-
-    REST            reduce using rule 5 (content -> content style .)
-    STYLE           reduce using rule 5 (content -> content style .)
-    NEWLINE         reduce using rule 5 (content -> content style .)
-    $end            reduce using rule 5 (content -> content style .)
-
-
-state 10
-
     (10) newline -> NEWLINE .
 
     REST            reduce using rule 10 (newline -> NEWLINE .)
@@ -170,16 +140,46 @@ state 10
     $end            reduce using rule 10 (newline -> NEWLINE .)
 
 
+state 8
+
+    (6) body -> body REST .
+
+    REST            reduce using rule 6 (body -> body REST .)
+    STYLE           reduce using rule 6 (body -> body REST .)
+    NEWLINE         reduce using rule 6 (body -> body REST .)
+    $end            reduce using rule 6 (body -> body REST .)
+
+
+state 9
+
+    (9) style -> STYLE .
+
+    REST            reduce using rule 9 (style -> STYLE .)
+    STYLE           reduce using rule 9 (style -> STYLE .)
+    NEWLINE         reduce using rule 9 (style -> STYLE .)
+    $end            reduce using rule 9 (style -> STYLE .)
+
+
+state 10
+
+    (7) body -> body newline .
+
+    REST            reduce using rule 7 (body -> body newline .)
+    STYLE           reduce using rule 7 (body -> body newline .)
+    NEWLINE         reduce using rule 7 (body -> body newline .)
+    $end            reduce using rule 7 (body -> body newline .)
+
+
 state 11
 
-    (7) content -> content newline .
+    (5) body -> body style .
 
-    REST            reduce using rule 7 (content -> content newline .)
-    STYLE           reduce using rule 7 (content -> content newline .)
-    NEWLINE         reduce using rule 7 (content -> content newline .)
-    $end            reduce using rule 7 (content -> content newline .)
+    REST            reduce using rule 5 (body -> body style .)
+    STYLE           reduce using rule 5 (body -> body style .)
+    NEWLINE         reduce using rule 5 (body -> body style .)
+    $end            reduce using rule 5 (body -> body style .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for NEWLINE in state 2 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 1 resolved as shift
