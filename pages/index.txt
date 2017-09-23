@@ -5,7 +5,9 @@ background-color:rgb(159,229,224)
 image(height:400px , width: 100%){background.gif}
 
 (h1,text-align:right){Informal Course Overview}
-This (bold){course} is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to build a (align:right){piechart(label:Match){india:234,pakistan:123,australia:189,bangladesh:23,new zealand:35}} web page, document your work (both theory and your code), and bulk up on your programming expertise coming from CS101 and CS152 (with their associated labs). Geeks are welcome. 
+This (bold){course} is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to build a 
+piechart(label:Match,width:100%){india:234,pakistan:123,australia:189,bangladesh:23,new zealand:35}
+ web page, document your work (both theory and your code), and bulk up on your programming expertise coming from CS101 and CS152 (with their associated labs). Geeks are welcome. 
 
 In this course we will cover some of
 HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot

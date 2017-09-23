@@ -59,27 +59,6 @@ def makeCSS(filename, keyword):
 			wfile.write(line)
 			line=file.readline()
 
-def makePieChart(s):
-	styleName=s.split("[[[")[0]
-	styleStyle=s.split("[[[")[1].split("]]]")[0]
-	styleContent=s.split("[[[")[1].split("]]]")[1]
-	tempFile=open("./tmp/"+styleStyle.split(':')[1].strip()+".csv",'w')
-	tempFile.write(styleContent.replace(',','\n'))
-	tempFile.close()
-	file=open("./layout/GNUPlot/piechart.plot")
-	newFile=open("./tmp/"+styleStyle.split(':')[1].strip()+".plot",'w')
-	line=file.readline()
-	templine=''
-	while(line):
-		if("XXXXX" in line):
-			templine=templine+line.replace("XXXXX","./tmp/"+styleStyle.split(':')[1].strip()+".csv")
-		elif("YYYYY" in line):
-			templine=templine+line.replace("YYYYY","./site/img/"+styleStyle.split(':')[1].strip()+".png")
-		else:
-			templine=templine+line
-		line=file.readline()
-	newFile.write(templine)
-	return "<img src=\"./img/"+styleStyle.split(':')[1].strip()+".png\">"
 
 # There should be a generic make_dict which does (a:b , ) -> {a:b , }
 
@@ -180,7 +159,7 @@ def makePage():
 			elif(i[3:].split(':')[0].strip() in keywords):
 				infile_css = infile_css + i[3:].strip('\n')+';\n'
 			else:
-				content=content+makePieChart(i[3:])
+				content=content+i
 		else:
 			content = content + i
 	print ("<html>")

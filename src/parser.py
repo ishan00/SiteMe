@@ -3,7 +3,7 @@ from sys import argv
 import re
 from lexer import tokens,styles
 
-ltaggedStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i"}
+ltaggedStyles={"literal":"pre","bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","center":"center"}
 
 def taggedMaker(style,content):
     if(not style):
@@ -30,6 +30,33 @@ def taggedMaker(style,content):
             htagged=';'.join(htagged)+';'
             return "<div style=\""+htagged+"\">"+content+"</div>"
 
+def piechartMaker(style,content):
+    style=style.split(';')
+    r1 = re.compile("label.*")
+    styleLabel = list(filter(r1.match, style))[0]
+    r2=re.compile("(?!label).*")
+    styleStyle=list(filter(r2.match, style))
+    tempFile=open("./tmp/"+styleLabel.split(':')[1].strip()+".csv",'w')
+    tempFile.write(content.replace(',','\n'))
+    tempFile.close()
+    file=open("./layout/GNUPlot/piechart.plot")
+    newFile=open("./tmp/"+styleLabel.split(':')[1].strip()+".plot",'w')
+    line=file.readline()
+    templine=''
+    while(line):
+        if("XXXXX" in line):
+            templine=templine+line.replace("XXXXX","./tmp/"+styleLabel.split(':')[1].strip()+".csv")
+        elif("YYYYY" in line):
+            templine=templine+line.replace("YYYYY","./site/img/"+styleLabel.split(':')[1].strip()+".png")
+        else:
+            templine=templine+line
+        line=file.readline()
+    newFile.write(templine)
+    if(styleStyle):
+        return "image("+','.join(styleStyle)+"){"+styleLabel.split(':')[1].strip()+".png}"
+    else:
+        return "image(){"+styleLabel.split(':')[1].strip()+".png}"
+
 def styleMaker(s):
     # styleName=re.search(r'(.*?)\(',s).group(1)
     # styleStyle=re.search(r'\((.*?)\)',s).group(1)
@@ -42,7 +69,7 @@ def styleMaker(s):
         rs=taggedMaker(styleStyle,styleContent)
     elif(styleName=="image"):
         if styleContent:
-            rs="<img src=\"../img/"+styleContent.strip()+"\" style=\""+styleStyle.strip()+";\">"
+            rs="<img src=\"./img/"+styleContent.strip()+"\" style=\""+styleStyle.strip()+";\">"
     elif(styleName=="link"):
         if styleContent:
             if styleStyle:
@@ -54,7 +81,7 @@ def styleMaker(s):
             if styleStyle:
                 rs="<"+styleStyle.strip()+"l>"+''.join(["<li>"+x+"</li>" for x in [y.strip() for y in styleContent.split('*')[1:]]])+"</"+styleStyle.strip()+"l>"
     elif(styleName=="piechart"):
-        rs="\n###"+styleName+'[[['+styleStyle+']]]'+styleContent+'\n'
+        rs=piechartMaker(styleStyle,styleContent)
     # else:
     #     if styleContent:
     #         if(styleStyle=="bold"):
