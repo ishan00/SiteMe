@@ -26,6 +26,7 @@ if [ ! -d './tmp' ]
 	mkdir tmp
 fi
 
-python3 ./src/parser.py ./pages/index.txt >./tmp/index.tmp
+python3 ./src/parser.py ./pages/index.siteme >./tmp/index.tmp
 python3 ./src/interpreter.py >./site/index.html
 gnuplot ./tmp/*.plot
+
