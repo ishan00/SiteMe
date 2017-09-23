@@ -22,8 +22,6 @@ syn match BinVal2 '\(rgb[ ]*([0-9 ]*,[0-9 ]*,[0-9 ]*)\|#[0-9a-zA-Z]\+\|blue\|yel
 syn match BinVal3 '\([0-9]\+\(pt\|px\)\|[0-9]\+%\)'
 syn match BinVal4 '\(\b\left\b\|\b\right\b\|\bcenter\b\|\bjustified\b\)'
 
-syn region start="{" end="}" contain=BinType1,BinVal1
-
 let b:current_syntax = "siteme"
 
 hi def link abstractKeyword Statement

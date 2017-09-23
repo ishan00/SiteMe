@@ -28,5 +28,7 @@ fi
 
 python3 ./src/parser.py ./pages/index.siteme >./tmp/index.tmp
 python3 ./src/interpreter.py >./site/index.html
-gnuplot ./tmp/*.plot
+if [ -f "./tmp/*.plot" ]
+	then gnuplot ./tmp/*.plot
+fi
 
