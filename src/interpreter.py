@@ -137,7 +137,7 @@ def parseAbstractElement(s):
 		return []
 
 def makePage():
-	config = open('config.txt')
+	config = open('config.siteme')
 	page = open('tmp/index.tmp')
 	l_c = config.readlines()
 	l_p = page.readlines()
