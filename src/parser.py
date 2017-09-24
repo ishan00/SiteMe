@@ -79,6 +79,7 @@ def styleMaker(s):
     # styleName=re.search(r'(.*?)\(',s).group(1)
     # styleStyle=re.search(r'\((.*?)\)',s).group(1)
     # styleContent=re.search(r'\{(.*?)\}',s).group(1)
+    s=s.replace('\n','')
     styleName=s.split('(')[0]
     styleStyle=s.split('(')[1].split(')')[0]
     styleContent=s.split('(')[1].split(')')[1].strip('{}')
@@ -131,7 +132,6 @@ def p_pre(p):
            |  
     '''
     if(len(p)==2):
-        print(p[1])
         p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
     else:
         p[0]=''
