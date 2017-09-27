@@ -1,5 +1,100 @@
 import re
-from lexer import keywords
+#from lexer import keywords
+
+
+'''
+Boolean function which returns true if the keyword given goes inside style=""
+
+TODO Add an exhaustive list of keywords
+'''
+def isContained(s):
+	keywords = {'id':False , 'href':False , 'class':False , 'width':True , 'height':True , 'background-color':True , 'font-size':True}
+	return keywords[s]
+
+'''
+Input
+> dictionary of attributes
+
+Example
+{class:"a" , width:10px , height:30px , href:url ..} -> 'class = "a" style = "width:10px;height:30px;" href=url'
+
+Types of keywords
+href, class -> Standalone
+width, height, font-size, background-color ->Contained Inside style
+
+We may need a more generic function that this at later point of time. !!
+'''
+def attributeString(d):
+	keywords = list(d.keys())
+	standalone_str = ""
+	contained_str = ""
+	for keyword in keywords:
+		if(isContained(keyword)):
+			contained_str = contained_str + ('%s:%s;')%(keyword,d[keyword])
+		else:
+			standalone_str = standalone_str + ('%s="%s" ')%(keyword,d[keyword])
+	if contained_str == "":
+		return (standalone_str)
+	elif standalone_str == "":
+		return  (('style="%s"')%contained_str)
+	else:
+		return (standalone_str) + (('style="%s"')%contained_str)
+
+
+'''
+This function is used to make container elements like
+<html>...</html>
+<body>...</body>
+<div>...</div>
+<table>...</table>
+
+This should be a generic function, to be used for most of the HTML generation.
+
+Input (dictionary,bool) -> Output (string)
+{type:attributes , content:"Inside"}
+
+If newline is True the output is
+	<type>
+		Inside
+	</type>
+Else
+	<type>Inside</type>
+
+
+Examples
+
+{a:{href:url} , content:Text}
+
+<a href=url>Text</a>
+
+{li:{class:"active"} , content:<a href=url>Text</a>}
+
+<li class="active"><a href=url>Text</a></li>
+
+{ul:{} , content:<li class="active"><a href=url>Text</a></li>}
+
+<ul>
+	<li class="active"><a href=url>Text</a></li>
+</ul>
+
+{div:{class=navbar} content:<ul>\n<li class="active"><a href=url>Text</a></li>\n</ul>}
+<div class="navbar">
+	<ul>
+		<li class="active"><a href=url>Text</a></li>
+	</ul>
+</div>
+
+There we have our navbar complete using this function recursively.
+'''
+def ContainerElement(d,newline):
+	container_name = list(d.keys())
+	container_name.remove('content');
+	result = ""
+	if (newline):
+		result = '\n'.join((('<%s %s>'%(container_name[0] , attributeString(d[container_name[0]]))) , d['content'] ,('</%s>'%container_name[0])))
+	else:
+		result = ' '.join((('<%s %s>'%(container_name[0] , attributeString(d[container_name[0]]))) , d['content'] ,('</%s>'%container_name[0])))
+	return result
 
 def lexString(s): 
 	'''
@@ -17,51 +112,6 @@ def lexString(s):
 		print ("No match!!")
 		return []
 
-def makeNavbar(dict,filename):
-	keystr="#####"
-	valuestr="$$$$$"
-	file=open(filename)
-	line=file.readline().strip();
-	navbar='''<div class="navbar">\n'''+line[:]
-	line=file.readline().strip();
-	while(line):
-		if(line.find(keystr)):
-			line=line.replace(keystr,dict[0][0])
-			line=line.replace(valuestr,dict[0][1])
-			navbar=navbar+"\n"+line
-			line=file.readline().strip()
-			break
-		else:
-			navbar=navbar+"\n"+line
-			line=file.readline().strip()
-	for (key,value) in dict[1:][::-1]:
-		cline=line[:]
-		cline=cline.replace(keystr,key)
-		cline=cline.replace(valuestr,value)
-		navbar=navbar+"\n"+cline
-	line=file.readline().strip()
-	while(line):
-		navbar=navbar+"\n"+line
-		line=file.readline().strip()
-	navbar=navbar+"\n</div>"
-	return navbar
-
-def makeCSS(filename, keyword):
-	file=open(filename)
-	line=file.readline()
-	wfile=open("./site/css/style.css",'a')
-	while(line):
-		if(line.count('{')==1):
-			line="." + keyword +" "+line
-			wfile.write(line)
-			line=file.readline()
-		else:
-			wfile.write(line)
-			line=file.readline()
-
-
-# There should be a generic make_dict which does (a:b , ) -> {a:b , }
-
 def make_tuples(s):
 	'''
 	Input - Output
@@ -73,68 +123,6 @@ def make_tuples(s):
 		split = elem.split(":")
 		s_tuples.append((split[0],split[1]))
 	return s_tuples
-
-def makeFooter(dict, filepath):
-	'''
-	Input - Output
-	dict = [("facebook","abcd.com") , [("home","H2 Room 48")]]
-	temp = <td><a href = "$$$$$"><img src = "#####"></a></td>
-	temp = <td>@@@@@</td>
-	'''
-	f = open(filepath)
-	img_str = "#####"
-	link_str = "$$$$$"
-	word_str = "@@@@@"
-	footer='''<div class="footer">\n'''
-	buffer_str = "<td> &nbsp; </td>\n"
-	r1 = "<tr>\n"
-	r2 = "<tr>\n"
-	line= f.readline().strip();
-	while(line):
-		if(line.count(link_str) > 0):
-			for i in range(len(dict)):
-				temp=line
-				temp=temp.replace(link_str,dict[i][1])
-				temp=temp.replace(img_str,'./img/icons/' + dict[i][0] + '.png')
-				if(i == len(dict) -1 ):
-					footer = footer +'\n' + temp
-				else:
-					footer = footer + '\n' + temp + buffer_str*10
-			line=f.readline().strip()
-		elif(line.count(word_str) > 0):
-			for i in range(len(dict)):
-				temp = line
-				temp = temp.replace(word_str,dict[i][0])
-				if(i == len(dict) -1 ):
-					footer = footer +'\n' + temp
-				else:
-					footer = footer + '\n' + temp + buffer_str*10
-			line=f.readline().strip()
-		else:
-			footer = footer + '\n' + line
-			line=f.readline().strip()
-	footer = footer + '\n</div>'
-	return footer
-	
-
-def parseAbstractElement(s):
-	'''
-	Input - Output
-	navbar(type1){Home:a.com,About:b.com} - [Type , dict_{} , dict_()]
-	'''
-	matchObj = re.match( r'(.*)\((.*)\){(.*)}' , s)
-	if matchObj:
-		keyword = matchObj.group(1)
-		style = matchObj.group(2)
-		content =  matchObj.group(3)
-		#print ("matchObj.group() : ", matchObj.group())
-		#print ("matchObj.group(1) : ", matchObj.group(1))
-		#print ("matchObj.group(2) : ", matchObj.group(2))
-		#print ("matchObj.group(2) : ", matchObj.group(3))
-		return [keyword , make_tuples(content) , style]
-	else:
-		print ("No match!!")
-		return []
 
 def makePage():
 	config = open('config.siteme')
@@ -165,19 +153,20 @@ def makePage():
 	print ("<html>")
 	print ("<head>")
 	print ("<title>" + title + "</title>")
+	print ('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">')
 	print ("<link rel=\"stylesheet\" href=\"./css/style.css\">")
 	print ("<style>")
 	print ("body {")
 	print (infile_css + "}")
+	print ('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>')
+	print ('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>')
 	print ("</style>")
 	print ("</head>")
 	print ("<body>")
-	print (makeNavbar(navbar[1],'layout/navbar.html'))
+	#print (makeNavbar(navbar[1],'layout/navbar.html'))
 	print (content)
 	print (makeFooter(footer[1], 'layout/footer.html'))
 	print ("</body>")
 	print ("</html>")
-	makeCSS("./layout/navbar.css","navbar")
+	#makeCSS("./layout/navbar.css","navbar")
 	makeCSS("./layout/footer.css","footer")
-
-makePage()
