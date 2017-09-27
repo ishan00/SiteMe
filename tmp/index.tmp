@@ -1,0 +1,23 @@
+###title:CS 251 Course Homepage
+###font-size:18pt
+###background-color:rgb(159,229,224)
+
+<img src="./img/background.gif" style="height:400px ; width: 100%;"><br>
+<br>
+<div style="text-align:right;"><h1>Informal Course Overview</h1></div><br>
+This <pre>ds (bold){ds} </pre>  is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to build a <br>
+<table><tr><td colspan=2>23</td><td>34</td><td>355</td></tr><tr><td>aa</td><td>ngn</td><td colspan=2 rowspan=2>fjf</td><td>fsf</td></tr></table><br>
+ web page, document your work both theory and your code, and bulk up on your programming expertise coming from CS101 and CS152 with their associated labs. Geeks are welcome.<br>
+<br>
+In this course we will cover some of<br>
+HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot<br>
+Reading and Writing Code, Profiling, Debugging, Editors, IDE, Makefiles, Compilation, Linking, Version Control, C++, Java, Python, Bash<br>
+Basic Linux Utilities<br>
+Glimpse of web applications: Django<br>
+<br>
+<div style="color:blue;"><b>Texts</b></div>: Note the description in the text section.<br>
+<i>Course s <b>ds</b></i>: There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.<br>
+<br>
+<br>
+<b>Lab Contents</b><br>
+<ul><li>Lab 1 :HTML, CSS</li><li>Lab 2 : Bash Scripting</li><li>Lab 3 : Sed, Awk</li><li>Lab 4 : Git, LaTeX</li><li>Lab 5 : Java</li><li>Lab 6 : LaTeX, Gnuplot</li><li>Lab 7 : Makefiles, Doxygen</li><li>Lab 8 : Python</li></ul>

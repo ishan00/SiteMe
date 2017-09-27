@@ -5,9 +5,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'KEYWORD PRE STYLE REST NEWLINEmain : head bodyhead : head keyword\n            | head NEWLINE\n            |\n    body : body style\n            | body REST\n            | body newline\n            | body pre\n            |\n    pre : PRE \n           |  \n    style : STYLEnewline : NEWLINEkeyword : KEYWORD'
+_lr_signature = 'KEYWORD PRE STYLE REST NEWLINEmain : head bodyhead : head keyword\n            | head NEWLINE\n            |\n    body : body style\n            | body REST\n            | body newline\n            | body pre\n            | body fakekeyword\n            |\n    pre : PRE \n           |  \n    style : STYLEnewline : NEWLINEkeyword : KEYWORDfakekeyword : KEYWORD'
     
-_lr_action_items = {'$end':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,0,-9,-1,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),'NEWLINE':([0,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,5,7,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),'KEYWORD':([0,2,4,5,6,],[-4,6,-2,-3,-14,]),'REST':([0,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,-9,8,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),'PRE':([0,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,-9,10,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),'STYLE':([0,2,3,4,5,6,7,8,9,10,11,12,13,],[-4,-9,11,-2,-3,-14,-13,-6,-5,-10,-12,-7,-8,]),}
+_lr_action_items = {'KEYWORD':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,],[-4,3,-15,-2,8,-3,-11,-16,-6,-5,-14,-8,-13,-7,-9,]),'NEWLINE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,],[-4,6,-15,-2,11,-3,-11,-16,-6,-5,-14,-8,-13,-7,-9,]),'REST':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,],[-4,-10,-15,-2,9,-3,-11,-16,-6,-5,-14,-8,-13,-7,-9,]),'STYLE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,],[-4,-10,-15,-2,13,-3,-11,-16,-6,-5,-14,-8,-13,-7,-9,]),'PRE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,],[-4,-10,-15,-2,7,-3,-11,-16,-6,-5,-14,-8,-13,-7,-9,]),'$end':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,],[-4,0,-10,-15,-2,-1,-3,-11,-16,-6,-5,-14,-8,-13,-7,-9,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'main':([0,],[1,]),'head':([0,],[2,]),'body':([2,],[3,]),'keyword':([2,],[4,]),'style':([3,],[9,]),'newline':([3,],[12,]),'pre':([3,],[13,]),}
+_lr_goto_items = {'body':([2,],[5,]),'style':([5,],[10,]),'fakekeyword':([5,],[15,]),'pre':([5,],[12,]),'main':([0,],[1,]),'keyword':([2,],[4,]),'newline':([5,],[14,]),'head':([0,],[2,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,18 +26,20 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> main","S'",1,None,None,None),
-  ('main -> head body','main',2,'p_main','parser.py',104),
-  ('head -> head keyword','head',2,'p_head','parser.py',108),
-  ('head -> head NEWLINE','head',2,'p_head','parser.py',109),
-  ('head -> <empty>','head',0,'p_head','parser.py',110),
-  ('body -> body style','body',2,'p_body','parser.py',118),
-  ('body -> body REST','body',2,'p_body','parser.py',119),
-  ('body -> body newline','body',2,'p_body','parser.py',120),
-  ('body -> body pre','body',2,'p_body','parser.py',121),
-  ('body -> <empty>','body',0,'p_body','parser.py',122),
-  ('pre -> PRE','pre',1,'p_pre','parser.py',130),
-  ('pre -> <empty>','pre',0,'p_pre','parser.py',131),
-  ('style -> STYLE','style',1,'p_style','parser.py',140),
-  ('newline -> NEWLINE','newline',1,'p_newline','parser.py',144),
-  ('keyword -> KEYWORD','keyword',1,'p_keyword','parser.py',148),
+  ('main -> head body','main',2,'p_main','parser.py',134),
+  ('head -> head keyword','head',2,'p_head','parser.py',138),
+  ('head -> head NEWLINE','head',2,'p_head','parser.py',139),
+  ('head -> <empty>','head',0,'p_head','parser.py',140),
+  ('body -> body style','body',2,'p_body','parser.py',148),
+  ('body -> body REST','body',2,'p_body','parser.py',149),
+  ('body -> body newline','body',2,'p_body','parser.py',150),
+  ('body -> body pre','body',2,'p_body','parser.py',151),
+  ('body -> body fakekeyword','body',2,'p_body','parser.py',152),
+  ('body -> <empty>','body',0,'p_body','parser.py',153),
+  ('pre -> PRE','pre',1,'p_pre','parser.py',161),
+  ('pre -> <empty>','pre',0,'p_pre','parser.py',162),
+  ('style -> STYLE','style',1,'p_style','parser.py',170),
+  ('newline -> NEWLINE','newline',1,'p_newline','parser.py',174),
+  ('keyword -> KEYWORD','keyword',1,'p_keyword','parser.py',178),
+  ('fakekeyword -> KEYWORD','fakekeyword',1,'p_fakekeyword','parser.py',185),
 ]
