@@ -151,6 +151,40 @@ def filler(d,path,replace):
 	else:
 		d[path[0]] = filler(d[path[0]] , path[1:],replace)
 		return d
+'''
+This function converts dictionaries to html codes.
+Note: It is assumed that styles provided are valid
+'''
+standAlone=['href', 'src', 'class', 'id']
+Tags={'img':False,'br':False,'hr':False,'a':True,'table':True,'ul':True,'ol':True,'h1':True,'h2':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'div':True}
+def makeHTML(d):
+	if(isinstance(d,dict)):
+		keysList=list(d.keys())
+		keysList.remove('content')
+		Tag=keysList[0]
+		if Tag in list(Tags.keys()):
+			rs="<"+Tag;
+			style=''
+			for x in d[Tag].keys():
+				if(x in standAlone):
+					rs=rs+" "+x+"='"+d[Tag][x]+"'"
+				else:
+					style=style+x+':'+d[Tag][x]+'; '
+			if style=='':
+				rs=rs+'>'
+			else:
+				rs=rs+''' style="'''+style+'''">'''
+			if Tags[Tag]:
+				if(isinstance(d['content'],dict)):
+					for i in range(0,len(d['content'])):
+						rs=rs+makeHTML(d['content'][i+1])
+				else:
+					rs=rs+d['content']
+				rs=rs+"</"+Tag+">\n"
+			return rs
+	else:
+		return d
+
 
 def makeNavbar(list_of_tuples):
 	#simple_navs = ['orange' , 'flat' , 'indented' , 'wrap' , 'toogle' , 'open' , 'breadcrumbs']
