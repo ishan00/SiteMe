@@ -1,10 +1,11 @@
 import re
-#from lexer import keywords
+import copy
+from lexer import keywords
 from sys import argv
+short_syntax = {'r' : 'right' , 'l' : 'left','c':'center'}
+#script , pagefile , configfile = argv
 
-script , pagefile , configfile = argv
 
-short_syntax = {'r' : "'align':'right'" , 'l' : "'align':'left'"}
 
 
 #---------------------------------------------------------------------------------------
@@ -150,6 +151,34 @@ def filler(d,path,replace):
 		return d
 	else:
 		d[path[0]] = filler(d[path[0]] , path[1:],replace)
+		return d
+'''
+input:- slideshow(type:1){(r){caption}:img,caption:img,img}
+output:- dictionary of slideshow
+'''
+def slideshowMaker(i):
+	type=i.split('(')[1].split(')')[0].split(':')[1]
+	content=re.match(r'slideshow\(.*?\)\{(.*)\}',i).group(1).split(',')
+	if content:
+		d=copy.deepcopy(slideshow_button)
+		i=1
+		Slides=copy.deepcopy(d[1]['content'][1])
+		for x in content:
+			x.strip('}')
+			mySlides=copy.deepcopy(Slides)
+			if(':' in x):
+				mySlides['content'][2]['img']['src']="img/"+x.split(':')[1]
+				mySlides['content'][1]['content']=str(i)+" / "+str(len(content))
+				if('(' in x):
+					mySlides['content'][3]['div']['text-align']=short_syntax[x.split('(')[1].split(')')[0]]
+					mySlides['content'][3]['content']=x.split(':')[0].split(')')[1].strip('{}')
+				else:
+					mySlides['content'][3]['content']=x.split(':')[0]
+			else:
+				mySlides['content'][2]['img']['src']="img/"+x
+				mySlides['content'][1]['content']=str(i)+" / "+str(len(content))
+			d[1]['content'][i]=mySlides
+			i=i+1
 		return d
 '''
 This function converts dictionaries to html codes.

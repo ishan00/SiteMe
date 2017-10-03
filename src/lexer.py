@@ -1,7 +1,7 @@
 import ply.lex as lex
 from sys import argv
 
-script , filename = argv
+#script , filename = argv
 
 tokens=['KEYWORD','PRE','STYLE','REST','NEWLINE']
 keywords=['title','font-size','background-color']
@@ -24,17 +24,11 @@ t_NEWLINE=r'\n\r|\r\n|\r|\n'
 
 lexer=lex.lex()
 
-<<<<<<< HEAD
-a=open(filename)
-b=a.read()
-lexer.input(b.strip())
-#print(b.strip())
-print([t for t in lexer])
-=======
+
 # a=open("../pages/index.siteme")
 # b=a.read()
 # lexer.input(b.strip())
 # #print(b.strip())
 # print([t for t in lexer])
 
->>>>>>> e36cafa2957bd8376ec496cc6556873ea32dca8e
+
