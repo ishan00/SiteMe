@@ -395,60 +395,40 @@ def makeHTML(d):
 		return d
 
 
-def makeNavbar(list_of_tuples):
-	#simple_navs = ['orange' , 'flat' , 'indented' , 'wrap' , 'toogle' , 'open' , 'breadcrumbs']
-	fixed = {'div':{'id':'cssmenu'}, 'content':{'ul':{} , 'content':'@@@@' } }
-	list_element = {'li':{}, 'content':{'a':{'href':'$$$$$'} ,'content':'#####'}}
-	#sub_list = {'ul':{} , 'content':{'li':{} , 'content':{'a':{'href':'$$$$$'}, 'content':'#####' } } }
-	final_code = ""
-	for (index,(i,j)) in enumerate(list_of_tuples):
-		# print (index, i , j) #
-		# i can be Home or (r){Home} or (l){Home}
-		# j can be url or {a:url , b:url}
-		code_for_this_pair = ""
-		dropdown_code = ""
-		copy_list_element = list_element.copy()
-		if (index == 0):
-			copy_list_element = filler(copy_list_element,['li', 'class'] ,'active')
+def makeNavbar(navbar_lines):
+	matchObj = re.match(r'.*navbar\((.*?)\){(.*)}' , navbar_lines , re.DOTALL)
+	if matchObj:
+		print (matchObj.group(0))
+		print (matchObj.group(1))
+		print (matchObj.group(2))
+		navbar_style = str(matchObj.group(1))
+		navbar_style = "".join(navbar_style.split())
+		navbar_content = matchObj.group(2)
+		navbar_content = [t.strip() for t in navbar_content.strip('\n').split('\n')]
+		navbar_content = [(temp[:temp.find(':')].strip(),temp[temp.find(':')+1:].strip()) for temp in navbar_content]
+		print(navbar_content)
 
-		matchObj2 = re.match( r'{(.*)}',j, re.M|re.I)
-		# print(copy_list_element) #
-		if matchObj2:
-			print ("Mathched Part 2")
-			sub_links = listoftupleMaker(str(matchObj2.group(2)))
-			str_dropdown = ""
-			for (x,y) in sub_links:
-				copy_sub_list = list_element.copy()
-				copy_sub_list = filler(copy_sub_list , [ 'content' , 'a' , 'href'] , y)
-				copy_sub_list = filler(copy_sub_list , [ 'content' , 'content' ] , x)
-				str_dropdown = str_dropdown + recursiveBuild(copy_sub_list) + '\n'
-			dropdown_code = content_code + ContainerElement({'ul':{} , 'content':str_dropdown}) + '\n'
-			copy_list_element = filler(copy_list_element,['content' , 'a' , 'href'] , '#')
-		else:
-			copy_list_element = filler(copy_list_element,['content' , 'a' , 'href'] , j)
+		navbar_type = navbar_style[navbar_style.find(':')+1:]
+		if navbar_type=='orange':
+		elif navbar_type == 'flat':
+		elif navbar_type == 'indented':
+		elif navbar_type == 'toggle':
+		elif navbar_type == 'open':
+		elif navbar_type == 'breadcrumbs':
+	else :
+		print ("NO MATCH FOUND")
+def main():
+	config = open(filename)
+	lines = config.readlines()
+	line = "".join(lines)
+	#print (line)
+	pos = line.find('\n}')
+	navbar_lines = line[:pos+2]
+	footer_lines = line[pos+2:]
 
-		matchObj1 = re.match( r'\((.*)\)[ \t]*{.*}',i,re.M|re.I)
-		# print(copy_list_element) #
-		if matchObj1:
-			print ("Mathched Part 1")
-			style = str(matchObj1.group(1))
-			text = str(matchObj1.group(2))
-			style = style.strip()
-			if (short_syntax.keys().find(style) != -1):
-				copy_list_element = filler(copy_list_element,['content', 'content'],ContainerElement({'span':short_syntax[style] , 'content':text},False) + dropdown_code)
-			else:
-				copy_list_element = filler(copy_list_element,['content', 'content'],text + dropdown_code)
-		else:
-			copy_list_element = filler(copy_list_element,['content', 'content'],i + dropdown_code)
+	makeFooter(footer_lines)
 
-		print(copy_list_element) #
-
-		final_code = final_code + recursiveBuild(copy_list_element) + '\n'
-
-		print(final_code) #
-
-	fixed = filler(fixed, ['content' , 'content'] ,final_code)
-	return recursiveBuild(fixed)
+	makeNavbar(navbar_lines)
 
 '''
 FOOTERS

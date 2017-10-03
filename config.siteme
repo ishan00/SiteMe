@@ -1,3 +1,10 @@
+navbar( type : orange ){
+	(l){Home}:#
+	About : www.ishan00.github.io
+	Contact : www.cse.iitb.ac.in
+	(r){Blog} : facebook.com		
+}
+
 footer( type : basic ){
 	MOTTO: Better than Jekyll
 	NAME: SiteMe
