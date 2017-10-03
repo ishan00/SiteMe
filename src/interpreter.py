@@ -156,32 +156,38 @@ This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
 standAlone=['href', 'src', 'class', 'id']
-Tags={'img':False,'br':False,'hr':False,'a':True,'table':True,'ul':True,'ol':True,'h1':True,'h2':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'div':True}
+Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,'h2':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'div':True,'span':True,'nav':True,'button':True}
 def makeHTML(d):
 	if(isinstance(d,dict)):
 		keysList=list(d.keys())
-		keysList.remove('content')
-		Tag=keysList[0]
-		if Tag in list(Tags.keys()):
-			rs="<"+Tag;
-			style=''
-			for x in d[Tag].keys():
-				if(x in standAlone):
-					rs=rs+" "+x+"='"+d[Tag][x]+"'"
-				else:
-					style=style+x+':'+d[Tag][x]+'; '
-			if style=='':
-				rs=rs+'>'
-			else:
-				rs=rs+''' style="'''+style+'''">'''
-			if Tags[Tag]:
-				if(isinstance(d['content'],dict)):
-					for i in range(0,len(d['content'])):
-						rs=rs+makeHTML(d['content'][i+1])
-				else:
-					rs=rs+d['content']
-				rs=rs+"</"+Tag+">\n"
+		if(1 in keysList):
+			rs=''
+			for i in range(1,len(keysList)+1):
+				rs=rs+makeHTML(d[i])
 			return rs
+		else:
+			keysList.remove('content')
+			Tag=keysList[0]
+			if Tag in list(Tags.keys()):
+				rs="\n<"+Tag;
+				style=''
+				for x in d[Tag].keys():
+					if(x in standAlone):
+						rs=rs+" "+x+"='"+d[Tag][x]+"'"
+					else:
+						style=style+x+':'+d[Tag][x]+'; '
+				if style=='':
+					rs=rs+'>'
+				else:
+					rs=rs+''' style="'''+style+'''">'''
+				if Tags[Tag]:
+					if(isinstance(d['content'],dict)):
+						for i in range(0,len(d['content'])):
+							rs=rs+makeHTML(d['content'][i+1])
+					else:
+						rs=rs+d['content']
+					rs=rs+"</"+Tag+">\n"
+				return rs
 	else:
 		return d
 
