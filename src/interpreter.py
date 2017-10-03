@@ -1,9 +1,10 @@
-import re
+import re,itertools
 import copy
-from lexer import keywords
 from sys import argv
 short_syntax = {'r' : 'right' , 'l' : 'left','c':'center'}
-#script , pagefile , configfile = argv
+import ply.yacc as yacc
+from lexer import tokens,styles,keywords
+script , pagefile , configfile = argv
 
 
 
@@ -151,6 +152,180 @@ def modifyDictionary(d , path , newvalue):
 		return d
 	else:
 		return modifyDictionary(d[path[0]], path[1:] ,newvalue)
+
+ltaggedStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","center":"center"}
+
+def taggedMaker(style,content):
+    if(not style):
+        return content
+    else:
+        style=style.split(',')
+        ltagged=[]
+        htagged=[]
+        for x in style:
+            if(':' in x):
+                htagged.append(x)
+            else:
+                ltagged.append(x)
+        if(ltagged and htagged):
+            htagged=';'.join(htagged)+';'
+            ltaggedStart=''.join(['<'+ltaggedStyles[x]+'>' for x in ltagged])
+            ltaggedEnd=''.join(['</'+ltaggedStyles[x]+'>' for x in ltagged[::-1]])
+            return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>"
+        elif(ltagged):
+            ltaggedStart=''.join(['<'+str(ltaggedStyles[x])+'>' for x in ltagged])
+            ltaggedEnd=''.join(['</'+str(ltaggedStyles[x])+'>' for x in ltagged[::-1]])
+            return ltaggedStart+content+ltaggedEnd
+        elif(htagged):
+            htagged=';'.join(htagged)+';'
+            return "<div style=\""+htagged+"\">"+content+"</div>"
+
+TwoNonCSS={'class':'class','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor','width':'width','height':'height','align':'align','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
+OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},'hover':{'class':'hover'}}
+CSS={'card':[1,1],'fade':[2,1]}
+
+def cardMaker(d,s):
+	cardDict={'div':{'class':'polaroid'+str(CSS['card'][1])},'content':{1:{},2:{'div':{'class':'polaroid-container'+str(CSS['card'][1])},'content':{1:{'p':{},'content':{}}}}}}
+	cardDict['content'][1]=d
+	cardDict['content'][2]['content'][1]['content']=s[s.find(':')+1:]
+	CSS['card'][1]=CSS['card'][1]+1
+	return cardDict
+
+def fadeMaker(d,s):
+	fadeDict={'div':{'class':'fade-container'+str(CSS['fade'][1])},'content':{1:{},2:{'div':{'class':'fade-overlay'+str(CSS['fade'][1])},'content':{1:{'div':'fade-text'+str(CSS['fade'][1])},'content':{}}}}}
+	if 'class' in d['img'].keys():
+		d['img']['class']=d['img']['class']+' fade-image'+str(CSS['fade'][1])
+	else:
+		d['img']['class']='fade-image'+str(CSS['fade'][1])
+	fadeDict['content'][1]=d
+	fadeDict['content'][2]['content'][1]['content']=s[s.find(':')+1:]
+	CSS['fade'][1]=CSS['fade'][1]+1
+	return fadeDict
+
+CodeDict={'card':cardMaker,'fade':fadeMaker}
+
+def imageMaker(style,content):
+	if content:
+		styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+		for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+			if list(x.keys())[0] in styleDict.keys():
+				styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
+			else:
+				styleDict[list(x.keys())[0]]=list(x.values())[0]
+		extraDict={y:CSS[y[:y.find(':')].split('-')[0]] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].split('-')[0] in CSS.keys()]}
+		styleDict.update({'src':content})
+		currDict={'img':styleDict,'content':{}}
+		for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
+			currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
+		return currDict
+
+def linkMaker(style,content):
+	if content:
+		if style:
+			styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+			for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+				if list(x.keys())[0] in styleDict.keys():
+					styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
+				else:
+					styleDict[list(x.keys())[0]]=list(x.values())[0]
+			styleDict.update({'href':content})
+			if(style[:style.find(',')] not in OneNonCSS.keys() and ':' not in style[:style.find(',')]):
+				return {'a':styleDict,'content':style[:style.find(',')]}
+			else:
+				return {'a':styleDict,'content':content}
+		else:
+			return {'a':{'href':content},'content':content}
+
+def listMaker(style,content):
+	if content:
+		if style:
+			styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys() and not(x[x.find(':')+1]=='<')]}
+			for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+				if list(x.keys())[0] in styleDict.keys():
+					styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
+				else:
+					styleDict[list(x.keys())[0]]=list(x.values())[0]
+			listType=style.strip()[0]
+			if listType=='d':
+				listData=[y[1:].strip('* ') for y in content.split('\n')[1:-1]]
+				listData=list(itertools.chain.from_iterable([x.split('**') for x in listData]))
+				listDict={}
+				for i in range(0,len(listData)):
+					if(i%2==0):
+						listDict.update({i+1:{'dt':{},'content':listData[i]}})
+					else:
+						listDict.update({i+1:{'dd':{},'content':listData[i]}})
+			else:
+				listData=[y[1:].strip() for y in content.split('\n')[1:-1]]
+				listDict={}
+				for i in range(0,len(listData)):
+					listDict.update({i+1:{'li':{},'content':listData[i]}})
+			return {listType+'l':styleDict,'content':listDict}
+
+#tableTypes={"avacado":"table table-bordered","durian":"table table-condensed table-hover","pitaya":"table table-striped","cherimoya":"table table-striped table-hover","kiwano":"table table-bordered table-striped table-hover table-condensed"}
+
+def tableMaker(style,content):
+	def f(l,t):
+		tableDict={}
+		for j in range(0,len(l)):
+			tmpDict={}
+			for i in range(0,len(l[j])):
+				if(l[j][i][0]=='*' and l[j][i][-1]=='*'):
+					l[j][i]=l[j][i].strip('*')
+					tmp=int((i/2)+1)
+					if(l[j][i] and l[j][i].count(',')==1):
+						l[j][i]=l[j][i].split(',')
+						tmptmpDict={tmp:{'td':{'colspan':l[j][i][0],'rowspan':l[j][i][1]},'content':{}}}
+					elif(not l[j][i]):
+						tmptmpDict={tmp:{'td':{},'content':{}}}
+					else:
+						tmptmpDict={tmp:{'td':{'colspan':l[j][i][0]},'content':{}}}
+				else:
+					tmptmpDict[(i+1)/2]['content']=l[j][i]
+					tmpDict.update(tmptmpDict)
+					tmptmpDict={}
+			tableDict.update({j+1+t:{'tr':{},'content':tmpDict}})
+		return tableDict
+
+	if content:
+		styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+		if 'class' in styleDict.keys():
+			styleDict['class']=styeDict['class']+' table'
+		else:
+			styleDict['class']='table'
+		for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+			if list(x.keys())[0] in styleDict.keys():
+				styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
+			else:
+				styleDict[list(x.keys())[0]]=list(x.values())[0]
+		content=content.split('\n')
+		r1 = re.compile("(\*[0-9,]*\*)")
+		contents = [re.split(r1,x)[1:] for x in content[1:-1]]
+		if 'caption' in styleDict.keys():
+			captionText=styleDict['caption']
+			del styleDict['caption']
+			dataDict=f(contents,1)
+			dataDict.update({1:{'caption':captionText}})
+		else:
+			dataDict=f(contents,0)
+		return {'table':styleDict,'content':dataDict}
+
+styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker}
+
+def styleMaker(s):
+    # styleName=re.search(r'(.*?)\(',s).group(1)
+    # styleStyle=re.search(r'\((.*?)\)',s).group(1)
+    # styleContent=re.search(r'\{(.*?)\}',s).group(1)
+    # s=s.replace('\n','')
+    styleName=s.split('(')[0]
+    styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
+    styleContent=s.split('(')[1].split(')')[1].strip('{}')
+    # styleStyle=styleStyle.replace(',',';')
+    if(not styleName):
+        return taggedMaker(styleStyle,styleContent)
+    else:
+    	return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
+
 '''
 input:- slideshow(type:1){(r){caption}:img,caption:img,img}
 output:- dictionary of slideshow
@@ -184,7 +359,7 @@ This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
 standAlone=['href', 'src', 'class', 'id']
-Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,'h2':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'div':True,'span':True,'nav':True,'button':True}
+Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'div':True,'span':True,'nav':True,'button':True}
 def makeHTML(d):
 	if(isinstance(d,dict)):
 		keysList=list(d.keys())
@@ -197,7 +372,7 @@ def makeHTML(d):
 			keysList.remove('content')
 			Tag=keysList[0]
 			if Tag in list(Tags.keys()):
-				rs="\n<"+Tag;
+				rs="<"+Tag;
 				style=''
 				for x in d[Tag].keys():
 					if(x in standAlone):
@@ -208,13 +383,13 @@ def makeHTML(d):
 					rs=rs+'>'
 				else:
 					rs=rs+''' style="'''+style+'''">'''
-				if Tags[Tag]:
+				if Tags[Tag]	:
 					if(isinstance(d['content'],dict)):
-						for i in range(0,len(d['content'])):
+						for i in range(0,len(list(d['content'].keys()))):
 							rs=rs+makeHTML(d['content'][i+1])
 					else:
 						rs=rs+d['content']
-					rs=rs+"</"+Tag+">\n"
+					rs=rs+"</"+Tag+">"
 				return rs
 	else:
 		return d
@@ -420,50 +595,121 @@ def parseAbstractElement(s):
 	else:
 		print ("No match!!")
 
-def makePage():
-	config = open(configfile)
-	page = open(pagefile)
-	l_c = config.readlines()
-	l_p = page.readlines()
-	navbar = ""
-	footer = ""
-	content = ""
-	title = ""
-	infile_css = ""
-	for i in l_c:
-		temp = parseAbstractElement(i)
-		if(temp[0] == 'navbar'):
-			navbar = temp
-		elif(temp[0] == 'footer'):
-			footer = temp
-	for i in l_p:
-		if(i[0:3] == '###'):
-			if(i.count('title') == 1):
-				title = i[i.find(':') + 1:]
-			elif(i[3:].split(':')[0].strip() in keywords):
-				infile_css = infile_css + i[3:].strip('\n')+';\n'
-			else:
-				content=content+i
-		else:
-			content = content + i
-	print ("<html>")
-	print ("<head>")
-	print ("<title>" + title + "</title>")
-	print ('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">')
-	print ("<link rel=\"stylesheet\" href=\"./css/style.css\">")
-	print ("<style>")
-	print ("body {")
-	print (infile_css + "}")
-	print ('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>')
-	print ('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>')
-	print ("</style>")
-	print ("</head>")
-	print ("<body>")
-	#print (makeNavbar(navbar[1],'layout/navbar.html'))
-	print (content)
-	print (makeFooter(footer[1], 'layout/footer.html'))
-	print ("</body>")
-	print ("</html>")
+def p_main(p):
+    'main : head body'
+    p[0]=p[1]+p[2]
 
-line_from_config = 'navbar(type1){Home:{a:alpha,b:beta},About:about.com,Contact:contact.org,Blog:blog.com}'
-print (parseAbstractElement(line_from_config))
+def p_head(p):
+    '''head : head keyword
+            | head NEWLINE
+            |
+    '''
+    if(len(p)==3):
+        p[0]=p[1]+p[2]
+    else:
+        p[0]=''
+
+def p_body(p):
+    '''body : body style
+            | body REST
+            | body newline
+            | body pre
+            | body fakekeyword
+            |
+    '''
+    if(len(p)==3):
+        p[0]=p[1]+p[2]
+    else:
+        p[0]=''
+
+def p_pre(p):
+    '''pre : PRE 
+           |  
+    '''
+    if(len(p)==2):
+        p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
+    else:
+        p[0]=''
+
+def p_style(p):
+    'style : STYLE'
+    p[0]=styleMaker(p[1])
+
+def p_newline(p):
+    'newline : NEWLINE'
+    p[0]="<br>"
+
+def p_keyword(p):
+    'keyword : KEYWORD'
+    if(p[1][0:3]=="###"):
+        p[0]=p[1]
+    else:
+        p[0]="###"+p[1]
+
+def p_fakekeyword(p):
+	'fakekeyword : KEYWORD'
+	p[0]=p[1]
+
+parser=yacc.yacc()
+
+###########################################################################
+# This Part Applies Above Grammar On The File
+###########################################################################
+
+
+a=open(pagefile)
+b=a.read()
+while(re.search(r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}',b)):
+    b=parser.parse(b.strip())
+b=b.split("<br>")
+b="<br>\n".join(b)
+b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}')
+print(b)
+
+# def makePage():
+# 	config = open(configfile)
+# 	page = open(pagefile)
+# 	l_c = config.readlines()
+# 	l_p = page.readlines()
+# 	navbar = ""
+# 	footer = ""
+# 	content = ""
+# 	title = ""
+# 	infile_css = ""
+# 	for i in l_c:
+# 		temp = parseAbstractElement(i)
+# 		if(temp[0] == 'navbar'):
+# 			navbar = temp
+# 		elif(temp[0] == 'footer'):
+# 			footer = temp
+# 	for i in l_p:
+# 		if(i[0:3] == '###'):
+# 			if(i.count('title') == 1):
+# 				title = i[i.find(':') + 1:]
+# 			elif(i[3:].split(':')[0].strip() in keywords):
+# 				infile_css = infile_css + i[3:].strip('\n')+';\n'
+# 			else:
+# 				content=content+i
+# 		else:
+# 			content = content + i
+# 	print ("<html>")
+# 	print ("<head>")
+# 	print ("<title>" + title + "</title>")
+# 	print ('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">')
+# 	print ("<link rel=\"stylesheet\" href=\"./css/style.css\">")
+# 	print ("<style>")
+# 	print ("body {")
+# 	print (infile_css + "}")
+# 	print ('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>')
+# 	print ('<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>')
+# 	print ("</style>")
+# 	print ("</head>")
+# 	print ("<body>")
+# 	#print (makeNavbar(navbar[1],'layout/navbar.html'))
+# 	print (content)
+# 	print (makeFooter(footer[1], 'layout/footer.html'))
+# 	print ("</body>")
+# 	print ("</html>")
+
+# line_from_config = 'navbar(type1){Home:{a:alpha,b:beta},About:about.com,Contact:contact.org,Blog:blog.com}'
+# print (parseAbstractElement(line_from_config))
