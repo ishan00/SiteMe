@@ -145,13 +145,12 @@ def recursiveBuild(dictionary):
 		return ContainerElement(dictionary,True);
 
 # MOST POWERFUL FUNCTION
-def filler(d,path,replace):
+def modifyDictionary(d , path , newvalue):
 	if(len(path) == 1):
-		d[path[0]] = replace
+		d[path[0]] = newvalue
 		return d
 	else:
-		d[path[0]] = filler(d[path[0]] , path[1:],replace)
-		return d
+		return modifyDictionary(d[path[0]], path[1:] ,newvalue)
 '''
 input:- slideshow(type:1){(r){caption}:img,caption:img,img}
 output:- dictionary of slideshow
@@ -275,6 +274,133 @@ def makeNavbar(list_of_tuples):
 
 	fixed = filler(fixed, ['content' , 'content'] ,final_code)
 	return recursiveBuild(fixed)
+
+'''
+FOOTERS
+
+TYPE:basic
+
+footer(type:basic){
+	MOTTO:
+	Home:
+	Blog:
+	Pricing:
+	About:
+	FAQ:
+	LAST:
+}
+
+TYPE:distributed
+
+footer(type:distributed){
+	Home:
+	Blog:
+	Pricing:
+	About:
+	Contact:
+	NAME:
+	FACEBOOK:
+	TWITTER:
+	GITHUB:
+	GOOGLE+:
+}
+
+TYPE:distributed_phone_address
+
+footer(type:distributed_phone_address){
+	Home:
+	Contact:
+	Blog:
+	Pricing:
+	ADDRESS:
+	PHONE:
+	EMAIL:
+	FACEBOOK:
+	GITHUB:
+	LINKEDIN:
+}
+
+TYPE:distributed_search
+
+footer(){
+	Home:
+	Blog:
+	Pricing:
+	Faq:
+}
+
+
+TYPE:distributed_contact{
+	Home:
+	Contact:
+	Blog:
+	Faq:
+	FACEBOOK:
+	LINKEDIN:
+	TWITTER:
+	GITHUB:
+}
+
+TYPE:social
+
+footer(social){
+	FACEBOOK:
+	LINKEDIN:
+	GITHUB:
+	TWITTER:
+}
+'''
+
+def makeFooter():
+	matchObj = re.match(r'.*footer.*\((.*)\){(.*)}' , line , re.DOTALL)
+	if matchObj:
+		#print (matchObj.group(0))
+		#print (matchObj.group(1))
+		#print (matchObj.group(2))
+		footer_style = str(matchObj.group(1))
+		footer_style = "".join(footer_style.split())
+		print(footer_style)
+		footer_content = matchObj.group(2)
+		footer_content = [t.strip() for t in footer_content.strip('\n').split('\n')]
+		footer_content = [(temp[:temp.find(':')].strip(),temp[temp.find(':')+1:].strip()) for temp in footer_content]
+		print(footer_content)
+		footer_type = footer_style[footer_style.find(':')+1:]
+		print(footer_type)
+		if footer_type == 'basic':
+			footer_dict = copy.deepcopy(footer_basic)
+			for (i,j) in footer_content:
+				if(i == 'MOTTO'):
+					modifyDictionary(footer_dict, ['content' , 1 , 'content'] , j)
+				elif (i == 'NAME'):
+					modifyDictionary(footer_dict, ['content' , 3 , 'content'] , j)
+				else:
+					sample_li = copy.deepcopy(footer_dict['content'][2]['content'][1])
+					modifyDictionary(sample_li,['a','href'] , j)
+					modifyDictionary(sample_li , ['content'] , i)
+					modifyDictionary(footer_dict, ['content' , 2 , 'content' , footer_content.index((i,j))+1], sample_li)
+
+			print (footer_dict)
+		elif footer_type == 'social':
+			footer_dict = copy.deepcopy(footer_social)
+		elif footer_type == 'distributed':
+			footer_dict = copy.deepcopy(footer_distributed)
+			print (footer_dict)
+		elif footer_type == 'distributed_contact':
+			footer_dict = copy.deepcopy(footer_distributed_contact)
+			print (footer_dict)
+		elif footer_type == 'distributed_search':
+			footer_dict = copy.deepcopy(footer_distributed_search)
+			print (footer_dict)
+		elif footer_type == 'distributed_phone_address':
+			footer_dict = copy.deepcopy(footer_distributed_phone_address)
+			print (footer_dict)
+
+		footer_content = matchObj.group(2)
+		footer_content = [t.strip() for t in footer_content.strip('\n').split('\n')]
+		print(footer_content)
+
+	else:
+		print ("No Match !")
 
 
 '''
