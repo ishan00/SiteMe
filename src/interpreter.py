@@ -3,6 +3,7 @@ import copy
 from sys import argv
 short_syntax = {'r' : 'right' , 'l' : 'left','c':'center'}
 import ply.yacc as yacc
+from HTML_slideshow import slideshow_button
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
 
@@ -153,13 +154,15 @@ def modifyDictionary(d , path , newvalue):
 	else:
 		return modifyDictionary(d[path[0]], path[1:] ,newvalue)
 
-ltaggedStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","center":"center"}
+DirectChangeStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","center":"center"}
+IndirectChangeStyles={'r':'text-align:right','l':'text-align:left','c':'text-align:center'}
 
 def taggedMaker(style,content):
     if(not style):
         return content
     else:
         style=style.split(',')
+        style=[IndirectChangeStyles[x] if x in IndirectChangeStyles else x for x in style]
         ltagged=[]
         htagged=[]
         for x in style:
@@ -169,12 +172,12 @@ def taggedMaker(style,content):
                 ltagged.append(x)
         if(ltagged and htagged):
             htagged=';'.join(htagged)+';'
-            ltaggedStart=''.join(['<'+ltaggedStyles[x]+'>' for x in ltagged])
-            ltaggedEnd=''.join(['</'+ltaggedStyles[x]+'>' for x in ltagged[::-1]])
+            ltaggedStart=''.join(['<'+DirectChangeStyles[x]+'>' for x in ltagged])
+            ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
             return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>"
         elif(ltagged):
-            ltaggedStart=''.join(['<'+str(ltaggedStyles[x])+'>' for x in ltagged])
-            ltaggedEnd=''.join(['</'+str(ltaggedStyles[x])+'>' for x in ltagged[::-1]])
+            ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
+            ltaggedEnd=''.join(['</'+str(DirectChangeStyles[x])+'>' for x in ltagged[::-1]])
             return ltaggedStart+content+ltaggedEnd
         elif(htagged):
             htagged=';'.join(htagged)+';'
@@ -310,22 +313,6 @@ def tableMaker(style,content):
 			dataDict=f(contents,0)
 		return {'table':styleDict,'content':dataDict}
 
-styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker}
-
-def styleMaker(s):
-    # styleName=re.search(r'(.*?)\(',s).group(1)
-    # styleStyle=re.search(r'\((.*?)\)',s).group(1)
-    # styleContent=re.search(r'\{(.*?)\}',s).group(1)
-    # s=s.replace('\n','')
-    styleName=s.split('(')[0]
-    styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
-    styleContent=s.split('(')[1].split(')')[1].strip('{}')
-    # styleStyle=styleStyle.replace(',',';')
-    if(not styleName):
-        return taggedMaker(styleStyle,styleContent)
-    else:
-    	return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
-
 '''
 input:- slideshow(type:1){(r){caption}:img,caption:img,img}
 output:- dictionary of slideshow
@@ -335,6 +322,7 @@ def slideshowMaker(i):
 	content=re.match(r'slideshow\(.*?\)\{(.*)\}',i).group(1).split(',')
 	if content:
 		d=copy.deepcopy(slideshow_button)
+		extra = copy.deepcopy(d[1]['content'])
 		i=1
 		Slides=copy.deepcopy(d[1]['content'][1])
 		for x in content:
@@ -353,12 +341,33 @@ def slideshowMaker(i):
 				mySlides['content'][1]['content']=str(i)+" / "+str(len(content))
 			d[1]['content'][i]=mySlides
 			i=i+1
+		d[1]['content'][i] = extra[2]
+		d[1]['content'][i+1] = extra[3]
 		return d
+
+styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker}
+
+def styleMaker(s):
+    # styleName=re.search(r'(.*?)\(',s).group(1)
+    # styleStyle=re.search(r'\((.*?)\)',s).group(1)
+    # styleContent=re.search(r'\{(.*?)\}',s).group(1)
+    # s=s.replace('\n','')
+    styleName=s.split('(')[0]
+    styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
+    styleContent=s.split('(')[1].split(')')[1].strip('{}')
+    # styleStyle=styleStyle.replace(',',';')
+    if(not styleName):
+        return taggedMaker(styleStyle,styleContent)
+    elif(styleName=='slideshow'):
+    	return makeHTML(styleFunctions[styleName](s))
+    else:
+    	return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
+
 '''
 This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
-standAlone=['href', 'src', 'class', 'id']
+standAlone=['href', 'src', 'class', 'id', 'onclick']
 Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'div':True,'span':True,'nav':True,'button':True}
 def makeHTML(d):
 	if(isinstance(d,dict)):
