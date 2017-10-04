@@ -1,16 +1,36 @@
-navbar( type : orange ){
-	(l){Home}:#
-	About : www.ishan00.github.io
-	Contact : www.cse.iitb.ac.in
-	(r){Blog} : facebook.com		
-}
+ navbar ( type : none , inverted ) {
+	NAME: SITEME	
+	Home : www.google.com
+About : http://www.parser.c..s.s
+	(r){Contact} : Me.com
 
-footer( type : basic ){
-	MOTTO: Better than Jekyll
+		(l){List}:{
+
+			sub:l1
+			sub:l2
+		sub:l3
+		}
+	
+	Resume:{
+		onepage : link
+		twopage : samelink
+	}	
+	
+	
+	}
+
+
+ footer ( type : basic ){
+		MOTTO: Better than Jekyll
+	
 	NAME: SiteMe
-	facebook : facebook.com/SiteMe
+		facebook : facebook.com/SiteMe
+
 	reddit :redditSiteMe
+
 	github : ggigigg
+
 	linkedin : asdsa
-	twitter :sads
-}
+
+twitter :sads
+	}

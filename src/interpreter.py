@@ -417,6 +417,8 @@ def makeNavbar(navbar_lines):
 		elif navbar_type == 'breadcrumbs':
 	else :
 		print ("NO MATCH FOUND")
+
+
 def main():
 	config = open(filename)
 	lines = config.readlines()
