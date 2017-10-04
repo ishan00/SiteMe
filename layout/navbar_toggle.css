@@ -1,0 +1,127 @@
+@import url(https://fonts.googleapis.com/css?family=Allan);
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+
+/* Style for */
+
+$CLASS${
+	  position: relative;
+	  background-color:$COLOR$;
+}
+$CLASS$ ul.nav{
+  	overflow: hidden;
+}
+$CLASS$ ul.nav li{
+  	position: relative;
+	  float: left;
+	  width: 20%;
+}
+$CLASS$ ul.nav li a{
+  	display: block;
+	  height: 50px;
+  opacity: 0;
+  font: 400 $FONT-SIZE$ 'Allan', serif;
+	  line-height: 50px;
+	  color: $FONT-COLOR$;
+  text-decoration: none;
+	  text-align: center;
+  	cursor: default;
+	  -webkit-transition: all 0.25s ease;
+  	-moz-transition: all 0.25s ease;
+  &:hover{
+    color: $HOVER-FONT-COLOR$;
+    	background-color: $HOVER-COLOR$;
+  }
+}
+
+@media screen and (max-width: 600px){
+  	$CLASS$ ul.nav li{
+		    float: none;
+    		width: 100%;
+  	}
+	  $CLASS$ ul.nav li a{
+		    height: 0;
+  	}
+}
+
+/* Style for header with active class name */
+
+$CLASS$.active ul.nav li a{
+	  height: 120px;
+  	opacity: 1;
+	  line-height: 120px;
+	  cursor: pointer;
+}
+
+@media screen and (max-width: 600px){
+  	$CLASS$.active ul.nav li a{
+		    height: 60px;
+		    line-height: 60px;
+    border-bottom: 1px solid #222b2f;
+	  }
+}
+
+/* Style for the plus button */
+
+$CLASS$ button.toggle-nav{
+  	position: absolute;
+  top: 50px;
+  	left: calc(50% - 30px);
+  	width: 60px;
+	  height: 35px;
+  	background-color: $TOGGLE-COLOR$;
+  font: 400 1.2em 'Allan', serif;
+  	color: #fff;
+  border: none;
+  	line-height: 30px;
+  	vertical-align: middle;
+	  outline: none;
+  cursor: pointer;
+  	border-bottom-left-radius: 10px;
+	  border-bottom-right-radius: 10px;
+	  -webkit-transition: all 0.25s ease;
+	  -moz-transition: all 0.25s ease;
+}
+$CLASS$ button.toggle-nav:hover{
+  	height: 50px;
+}
+$CLASS$ button.toggle-nav span{
+	  display: block;
+  	-webkit-transform: rotate(90deg);
+  	-moz-transform: rotate(90deg);
+  	-webkit-transition: all 0.25s ease;
+  	-moz-transition: all 0.25s ease;
+}
+
+/* Style for the plus button when has active classe name */
+
+$CLASS$.active button.toggle-nav{
+  	top: 120px;
+  background-color: $TOGGLE-COLOR$;
+}
+$CLASS$.active button.toggle-nav span{
+	  -webkit-transform: rotate(270deg);
+  	-moz-transform: rotate(270deg);
+}
+
+@media screen and (max-width: 600px){
+	  $CLASS$ button.toggle-nav{
+		    top: 0;
+		    left: 15px;
+	  }
+  	$CLASS$.active button.toggle-nav{
+    		top: 305px;
+	  }
+}
+
+/* Other styles */
+
+$CLASS$ .loud{
+	  text-transform: uppercase;
+}
+
+
+@media screen and (max-width: 600px){
+  section{
+    padding: 1.5em;
+  }
+}
