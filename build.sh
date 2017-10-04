@@ -19,7 +19,10 @@ if [ -f "./site/css/style.css" ]
 	rm ./site/css/style.css
 fi
 
-touch ./site/css/style.css
+#touch ./site/css/style.css
+cp ./layout/slideshow.css ./site/css/style.css
+cp ./layout/slideshow.js ./site/css/slideshow.js
+cp ./layout/footer_basic.css ./site/css/footer_basic.css
 
 if [ ! -d './tmp' ]
 	then

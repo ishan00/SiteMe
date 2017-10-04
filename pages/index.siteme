@@ -2,12 +2,12 @@ title:CS 251 Course Homepage
 font-size:18pt
 background-color:rgb(159,229,224)
 
-image(height:400px , width: 100%){background.gif}
+image(height:400px,width:100%){background.jpg}
 
 (h1,text-
-align:right){Informal Course Overview}
+align:center){Informal Course Overview}
 This (Pre){{ds (bold){ds} }}  is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to build a 
-table(type:kiwano,background-color:red,width:100%){
+table(type:kiwano,background-color:white,width:100%){
 *1,2*Item**hello**world
 **ohmy**god**daf
 }
@@ -22,6 +22,13 @@ Glimpse of web applications: Django
 (bold,color:blue){Texts}: Note the description in the text section.
 (italic){Course s (bold){ds}}: There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.
 
+(code){Snippet of Code will be placed here}
+
+2+2(sup){2} = 6
+C(sub){n} = Catalan Number
+(kbd){Ctrl + C} and (kbd){Ctrl + V} is what we are doing
+
+(quote){Fake it till you make it}
 
 (bold){Lab Contents}
 list(u){

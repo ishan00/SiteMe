@@ -1,36 +1,15 @@
- navbar ( type : none , inverted ) {
-	NAME: SITEME	
-	Home : www.google.com
-About : http://www.parser.c..s.s
-	(r){Contact} : Me.com
+navbar ( type : orange ) {
+	Home : #
+	About : http://facebook.com
+	(r){Contact} : https://google.co.in
+}
 
-		(l){List}:{
-
-			sub:l1
-			sub:l2
-		sub:l3
-		}
-	
-	Resume:{
-		onepage : link
-		twopage : samelink
-	}	
-	
-	
-	}
-
-
- footer ( type : basic ){
-		MOTTO: Better than Jekyll
-	
+footer ( type : basic ){
+	MOTTO: BetterthanJekyll	
 	NAME: SiteMe
-		facebook : facebook.com/SiteMe
-
+	facebook : facebook.com/SiteMe
 	reddit :redditSiteMe
-
 	github : ggigigg
-
 	linkedin : asdsa
-
-twitter :sads
-	}
+	twitter :sads
+}
