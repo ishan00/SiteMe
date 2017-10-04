@@ -1,0 +1,177 @@
+/* A simple, css only, (some-what) responsive menu */
+
+ 
+$CLASS$ {
+  display: inline-block;
+  -webkit-box-shadow: 0 0 70px #fff;
+  -moz-box-shadow: 0 0 70px #fff;
+  box-shadow: 0 0 70px #fff;
+  margin-top: 40px;
+  text-transform: uppercase;
+  font-size: $FONT-SIZE$;
+}
+
+/* a little "umph" */
+$CLASS$ .decor {
+  background: #6EAF8D;
+  background: -webkit-linear-gradient(left, #CDEBDB 50%, #6EAF8D 50%);
+  background: -moz-linear-gradient(left, #CDEBDB 50%, #6EAF8D 50%);
+  background: -o-linear-gradient(left, #CDEBDB 50%, #6EAF8D 50%);
+  background: linear-gradient(left, white 50%, #6EAF8D 50%);
+  background-size: 50px 25%;;
+  padding: 2px;
+  display: block;
+}
+
+$CLASS$ a {
+  text-decoration: none;
+  color: $FONT-COLOR$;
+  display: block;
+}
+
+$CLASS$ ul {
+  list-style: none;
+  position: relative;
+  text-align: left;
+}
+
+$CLASS$ li {
+  float: left;
+}
+
+/* clear'n floats */
+$CLASS$ ul:after {
+  clear: both;
+}
+
+$CLASS$ ul:before,
+$CLASS$ ul:after {
+    content: " ";
+    display: table;
+}
+
+$CLASS$ nav {
+  position: relative;
+  background: #2B2B2B;
+  background-image: -webkit-linear-gradient(bottom, #2B2B2B 7%, #333333 100%);
+  background-image: -moz-linear-gradient(bottom, #2B2B2B 7%, #333333 100%);
+  background-image: -o-linear-gradient(bottom, #2B2B2B 7%, #333333 100%);
+  background-image: linear-gradient(bottom, #2B2B2B 7%, #333333 100%);
+  text-align: center;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 1px #0E0E0E;
+  -webkit-box-shadow: 2px 2px 3px #888;
+  -moz-box-shadow: 2px 2px 3px #888;
+  box-shadow: 2px 2px 3px #888;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+/* prime */
+$CLASS$ ul.primary li a {
+  display: block;
+  padding: 20px 30px;
+  border-right: 1px solid #3D3D3D;
+  background:$COLOR$;
+}
+
+$CLASS$ ul.primary li:last-child a {
+  border-right: none;
+}
+
+$CLASS$ ul.primary li a:hover {
+  
+  color: #000;
+}
+
+/* subs */
+$CLASS$ ul.sub {
+  position: absolute;
+  z-index: 200;
+  box-shadow: 2px 2px 0 #BEBEBE;
+  width: 35%;
+  display:none;
+}
+
+$CLASS$ ul.sub li {
+  float: none;
+  margin: 0;
+}
+
+$CLASS$ ul.sub li a {
+  border-bottom: 1px dotted #ccc;
+  border-right: none;
+  color: #000;
+  padding: 15px 30px;
+}
+
+$CLASS$ ul.sub li:last-child a {
+  border-bottom: none;
+}
+
+$CLASS$ ul.sub li a:hover {
+  color: #000;
+  background: #eeeeee;
+}
+
+/* sub display*/
+$CLASS$ ul.primary li:hover ul {
+  display: block;
+  background: #fff;
+}
+
+/* keeps the tab background white */
+$CLASS$ ul.primary li:hover a {
+  background: $DROPDOWN-COLOR$;
+  color: $DROPDOWN-FONT-COLOR$;
+  text-shadow: none;
+}
+
+$CLASS$ ul.primary li:hover > a{
+  color: $HOVER-FONT-COLOR$;
+} 
+
+@media only screen and (max-width: 600px) {
+  $CLASS$ .decor {
+    padding: 3px;
+  }
+  
+  $CLASS$ .wrap {
+    width: 100%;
+    margin-top: 0px;
+  }
+  
+  $CLASS$ li {
+    float: none;
+  }
+  
+  $CLASS$ ul.primary li:hover a {
+    background: none;
+    color: #8B8B8B;
+    text-shadow: 1px 1px #000;
+  }
+
+  $CLASS$ ul.primary li:hover ul {
+    display: block;
+    background: #272727;
+    color: #fff;
+  }
+  
+  $CLASS$ ul.sub {
+    display: block;  
+    position: static;
+    box-shadow: none;
+    width: 100%;
+  }
+  
+  $CLASS$ ul.sub li a {
+    background: #272727;
+  	border: none;
+    color: #8B8B8B;
+  }
+  
+  $CLASS$ ul.sub li a:hover {
+    color: #ccc;
+    backgound: none;
+  }
+}

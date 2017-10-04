@@ -1,16 +1,19 @@
 #slideshow_with_button
-
-slideshow_button = \
-	{1:{'div':{'class':'slideshow-container'} , 'content':{ 
-		1:{'div':{'class':'mySlides fade'} , 'content':{
-			1:{'div':{'class':'numbertext'} , 'content':''} , 
-			2:{'img':{'src':'' , 'style':'width:100%'} , 'content':''}, 
-			3:{'div':{'class':'text'}, 'content':''}}} , 
-		2:{'a':{'class':'prev' , 'onclick':'plusSlides(-1)'} , 'content':'&#10094'},
-		3:{'a':{'class':'next' , 'onclick':'plusSlides(1)'} , 'content':'&#10095'}}},
-	2:{'div':{'text-align':'center'} , 'content' :{
-		1:{'span':{'class':'dot' , 'onclick':'currentSlide(1)'} , 'content':''},
-		2:{'span':{'class':'dot' , 'onclick':'currentSlide(2)'} , 'content':''} , 
-		3:{'span':{'class':'dot' , 'onclick':'currentSlide(3)'} , 'content':''}}}}
+slideshow_carousel = \
+{'div':{'id':'myCarousel', 'class':'carousel slide' , 'data-ride':'carousel'} , 'content':{
+	1:{'ol':{'class':'carousel-indicators'} , 'content':{
+      		1:{'li':{'data-target':'#myCarousel' , 'data-slide-to':""} , 'content':''}}},
+	2:{'div':{'class':'carousel-inner'} , 'content':{
+		1:{'div':{'class':'item'} , 'content':{
+        		1:{'img':{'src':'', 'width':'100%'} , 'content':''},
+			2:{'div':{'class':'carousel-caption'} , 'content':{
+        				1:{'h3':{} , 'content':''}}}}}}},
+	3:{'div':{} , 'content':{
+	   	1:{'a':{'class':'left carousel-control' , 'href':'#myCarousel' ,'data-slide':'prev'} , 'content':{
+			1:{ 'span':{'class':'glyphicon glyphicon-chevron-left'} , 'content':''},	
+			2:{ 'span':{'class':'sr-only'} , 'content':'Previous'}}},
+		2:{'a':{'class':'right carousel-control' , 'href':'#myCarousel' ,'data-slide':'next'} , 'content':{	
+			1:{ 'span':{'class':'glyphicon glyphicon-chevron-right'} , 'content':''},
+			2:{ 'span':{'class':'sr-only'} , 'content':'Next'}}}}}}}
 
 #slideshow_auto_scroll

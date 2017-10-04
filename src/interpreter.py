@@ -6,7 +6,7 @@ sys.path.append('./layout/')
 sys.path.append('../src/')
 from sys import argv
 import ply.yacc as yacc
-from HTML_slideshow import slideshow_button
+from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
 from lexer import tokens,styles,keywords
@@ -135,8 +135,8 @@ def taggedMaker(style,content):
             htagged=';'.join(htagged)+';'
             return "<div style=\""+htagged+"\">"+content+"</div>"
 
-TwoNonCSS={'class':'class','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
-'width':'width','height':'height','align':'align','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
+TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
+'width':'width','height':'height','data-target':'data-target','data-slide-to':'data-slide-to','align':'align','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'}}
@@ -273,32 +273,35 @@ input:- slideshow(type:1){(r){caption}:img,caption:img,img}
 output:- dictionary of slideshow
 '''
 def slideshowMaker(i):
-	type=i.split('(')[1].split(')')[0].split(':')[1]
-	content=re.match(r'slideshow\(.*?\)\{(.*)\}',i).group(1).split(',')
-	if content:
-		d=copy.deepcopy(slideshow_button)
-		extra = copy.deepcopy(d[1]['content'])
+	match=re.match(r'slideshow\((.*?)\)\{(.*)\}',i)
+	if match:
+		content = str(match.group(2)).split(',')
+		type = match.group(1).split(':')[1].strip()
+		slideshow_dict = copy.deepcopy(slideshow_carousel)
+		#print(slideshow_carousel)
+		elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
+		extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
 		i=1
-		Slides=copy.deepcopy(d[1]['content'][1])
 		for x in content:
-			x.strip('}')
-			mySlides=copy.deepcopy(Slides)
+			row =copy.deepcopy(elem)
+			extra_this_row = copy.deepcopy(extra)
 			if(':' in x):
-				mySlides['content'][2]['img']['src']="img/"+x.split(':')[1]
-				mySlides['content'][1]['content']=str(i)+" / "+str(len(content))
-				if('(' in x):
-					mySlides['content'][3]['div']['text-align']=short_syntax[x.split('(')[1].split(')')[0]]
-					mySlides['content'][3]['content']=x.split(':')[0].split(')')[1].strip('{}')
-				else:
-					mySlides['content'][3]['content']=x.split(':')[0]
+				row['content'][2]['content'][1]['content']= x.split(':')[0].strip()
+				row['content'][1]['img']['src'] = 'img/' + x.split(':')[1].strip()
 			else:
-				mySlides['content'][2]['img']['src']="img/"+x
-				mySlides['content'][1]['content']=str(i)+" / "+str(len(content))
-			d[1]['content'][i]=mySlides
+				del row['content'][2]
+				row['content'][1]['img']['src'] = 'img/' + x.strip()
+			
+			if(i == 1):
+				row['div']['class'] = 'active ' + row['div']['class']
+				extra_this_row['li']['class'] = 'active'
+
+			extra_this_row['li']['data-slide-to'] = str(i-1) 
+			slideshow_dict['content'][2]['content'][i] = row
+			slideshow_dict['content'][1]['content'][i] = extra_this_row
 			i=i+1
-		d[1]['content'][i] = extra[2]
-		d[1]['content'][i+1] = extra[3]
-		return d
+		#print(slideshow_dict)
+		return slideshow_dict
 
 styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker}
 
@@ -322,7 +325,7 @@ def styleMaker(s):
 This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
-standAlone=['href', 'src', 'class', 'id', 'onclick' , 'rel']
+standAlone=['href', 'src', 'class', 'id', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target']
 Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
 'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'p':True,
 'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
@@ -424,7 +427,7 @@ def cleanUp(l):
 
 def makeFooter(footer_style,footer_content):
 	footer_type = footer_style[0][1]
-	print(footer_type)
+	#print(footer_type)
 	#print (footer_content)
 	if footer_type == 'basic':
 		footer_dict = copy.deepcopy(footer_basic)
@@ -438,7 +441,7 @@ def makeFooter(footer_style,footer_content):
 			row['a']['href'] = footer_content[i][1]
 			row['content'] = footer_content[i][0]
 			footer_dict['content'][2]['content'][i+1] = row
-		print (footer_dict)
+		#print (footer_dict)
 		return footer_dict
 	elif footer_type == 'social':
 		footer_dict = copy.deepcopy(footer_social)
@@ -454,8 +457,6 @@ def makeFooter(footer_style,footer_content):
 	elif footer_type == 'distributed_phone_address':
 		footer_dict = copy.deepcopy(footer_distributed_phone_address)
 		print (footer_dict)
-	footer_content = matchObj.group(2)
-	footer_content = [t.strip() for t in footer_content.strip('\n').split('\n')]
 '''
 FOOTERS
 
@@ -628,9 +629,11 @@ def main():
 			2:{'style':{} , 'content' : ''},
 			3:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
 			4:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
-			5:{'script':{'src':'css/slideshow.js'} , 'content' : ''},
-			6:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			7:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+			5:{'link':{'rel':'stylesheet', 'href':'css/footer_basic.css'} , 'content':''},
+			6:{'link':{'rel':'stylesheet', 'href':'css/navbar_orange.css'} , 'content':''},
+			7:{'script':{'src':'css/slideshow.js'} , 'content' : ''},
+			8:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			9:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',
@@ -647,7 +650,6 @@ def main():
 	#nav = makeNavbar(c[index_navbar+1], c[index_navbar+2])
 	main_dict['content'][2]['content'][1] =  makeNavbar(c[index_navbar+1],c[index_navbar+2])
 	main_dict['content'][2]['content'][3] = makeFooter(c[index_footer+1],c[index_footer+2])
-
 	#print (main_dict)
 
 	page=open(pagefile)
@@ -674,3 +676,4 @@ def main():
 	print(makeHTML(main_dict))
 
 main()
+#slideshowMaker('slideshow(type:a){ img1.jpg , Cat: img2.jpg , Scenery:img3.jpg}')

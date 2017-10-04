@@ -20,9 +20,12 @@ if [ -f "./site/css/style.css" ]
 fi
 
 #touch ./site/css/style.css
+
+# The Following Lines needs to be removed later
 cp ./layout/slideshow.css ./site/css/style.css
 cp ./layout/slideshow.js ./site/css/slideshow.js
 cp ./layout/footer_basic.css ./site/css/footer_basic.css
+cp ./layout/navbar_orange.css ./site/css/navbar_orange.css
 
 if [ ! -d './tmp' ]
 	then
