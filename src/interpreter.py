@@ -403,43 +403,180 @@ def makeHTML(d):
 	else:
 		return d
 
+from pyparsing import *
+PAIR_1 = Word(alphas) + ':' + Word(printables)
+PAIR_2 = Group('(' + Word(alphas , max= 1) + ')' + '{' + Word(alphas) + '}') +':' + Word(printables)
+PAIR_3 = Word(alphas) +':' + Group('{' + OneOrMore(Group(PAIR_1)) +'}')
+PAIR_4 = Group('(' + Word(alphas , max= 1) + ')' + '{' + Word(alphas)  + '}') +':' + Group('{' +  OneOrMore(Group(PAIR_1)) +'}')
 
-def makeNavbar(navbar_lines):
-	matchObj = re.match(r'.*navbar\((.*?)\){(.*)}' , navbar_lines , re.DOTALL)
+PAIR = Group(PAIR_4 | PAIR_3 | PAIR_2 | PAIR_1)
+
+#PAIR_3.parseString(' Resume: { onepage : a twopage : b } ').pprint()
+
+STYLE_1 = Word(alphas) + ':' + Word(alphas)
+STYLE_2 = Word(alphas)
+
+STYLE = Group(STYLE_1|STYLE_2) + ZeroOrMore(',' + Group(STYLE_1 | STYLE_2))
+
+#STYLE.parseString(' type : none inverted ').pprint()
+
+CONTENT = OneOrMore(PAIR)
+
+#CONTENT.parseString('Home : www.google.com About : http://www.parser.c..s.s (r){Contact} : Me.ccom').pprint()
+
+ABSTRACT = Word(alphas) + Group('(' + STYLE + ')') + Group('{' + CONTENT + '}')
+
+CONFIG = OneOrMore(ABSTRACT)
+
+
+def modifyDictionary(d , path , newvalue):
+	if(len(path) == 1):
+		d[path[0]] = newvalue
+		return d
+	else:
+		return modifyDictionary(d[path[0]], path[1:] ,newvalue)
+
+def makeNavbar(navbar_style,  navbar_content):
+	type_name = navbar_style[0][1]
+	if (type_name == 'orange' or type_name == 'flat' or type_name == 'indented'):
+		navbar_dict = copy.deepcopy(navbar_flat)
+		li_element = copy.deepcopy(navbar_flat['content'][1]['content'][1])
+		for i in range(len(navbar_content)):
+			row = modifyDictionary(li_element, ['content', 1, 'a', 'href'] , navbar_content[i][1])
+			if i == 0:
+				row = modifyDictionary(row, ['li' , 'class'] , 'active')
+			if (isinstance(navbar_content[i][0],list)):
+				row = modifyDictionary(row, ['content', 1, 'content'] , navbar_content[i][0][1])
+				if(navbar_content[i][0][0] == 'r'):
+					row = modifyDictionary(row, ['li' , 'float'] , 'right')
+				else:
+					row = modifyDictionary(row, ['li' , 'float'] , 'left')
+			else:
+				row = modifyDictionary(row, ['content', 1, 'content'] , navbar_content[i][0])
+			navbar_dict = modifyDictionary(navbar_dict, ['content', 1 , i+1] , row)
+		print(navbar_dict)
+	elif type_name == 'none':
+		navbar_dict = copy.deepcopy(navbar_none)
+		navbar_dict = modifyDictionary(navbar_dict, ['content', 1, 'content', 1, 'content' , 1,'content'], navbar_content[0][1])
+		li_element = copy.deepcopy(navbar_none['content'][2]['content'][1])
+		drowdown_element = copy.deepcopy(navbar_none['content'][2]['content'][2])
+		li_dropdown_element = copy.deepcopy(navbar_none['content'][2]['content'][2]['content'][2]['content'][1])
+		for i in range(1,len(navbar_content)):
+			if (isinstance(navbar_content[i][1]) , list):
+				if (isinstance(navbar_content[i][0],list)):
+					row = modifyDictionary(drowdown_element,['content',1,'content',1],navbar_content[i][0][1])
+					### I don't know how to right align in case of bootstrap.
+				else:
+					row = modifyDictionary(drowdown_element, ['content' , 1 , 'content' ,1] , navbar_content[i][0])
+				for j in range(len(navbar_content[i][1])):
+					row_row = modifyDictionary(li_dropdown_element, ['content' , 1 , 'content'] , navbar_content[i][1][j][0])
+					row_row = modifyDictionary(li_dropdown_element, ['content' , 1 , 'a' , 'href'] , navbar_content[i][1][j][1])
+					row = modifyDictionary(row , ['content', 2 , 'content', j + 1], row_row)
+				navbar_dict = modifyDictionary(navbar_dict, ['content', 2 , 'content' i] , row)
+			else if (isinstance(navbar_content[i][0],list)):
+					row = modifyDictionary(li_element, ['content', 1, 'content'] , navbar_content[i][0][1])
+					if(navbar_content[i][0][0] == 'r'):
+						row = modifyDictionary(row, ['li' , 'float'] , 'right')
+					else:
+						row = modifyDictionary(row, ['li' , 'float'] , 'left')
+			else:
+					row = modifyDictionary(row, ['content', 1, 'content'] , navbar_content[i][0])
+			navbar_dict = modifyDictionary(navbar_dict, ['content', 1 , i+1] , li_element)
+		print(navbar_dict)
+
+		
+
+def cleanUp(l):
+	l = [y for y in l if (y != '{' and y != '}' and y != '(' and y != ')' and y!= ',' and y != ':')]
+	for i in range(len(l)):
+		if isinstance(l[i],list):
+			l[i] = cleanUp(l[i])
+	return l
+
+def makeFooter(footer_lines):
+	matchObj = re.match(r'.*footer.*\((.*)\){(.*)}' , footer_lines , re.DOTALL)
 	if matchObj:
-		print (matchObj.group(0))
-		print (matchObj.group(1))
-		print (matchObj.group(2))
-		navbar_style = str(matchObj.group(1))
-		navbar_style = "".join(navbar_style.split())
-		navbar_content = matchObj.group(2)
-		navbar_content = [t.strip() for t in navbar_content.strip('\n').split('\n')]
-		navbar_content = [(temp[:temp.find(':')].strip(),temp[temp.find(':')+1:].strip()) for temp in navbar_content]
-		print(navbar_content)
+		footer_style = str(matchObj.group(1))
+		footer_style = "".join(footer_style.split())
+		print(footer_style)
+		footer_content = matchObj.group(2)
+		footer_content = [t.strip() for t in footer_content.strip('\n').split('\n')]
+		footer_content = [(temp[:temp.find(':')].strip(),temp[temp.find(':')+1:].strip()) for temp in footer_content]
+		print(footer_content)
+		footer_type = footer_style[footer_style.find(':')+1:]
+		print(footer_type)
+		if footer_type == 'basic':
+			footer_dict = copy.deepcopy(footer_basic)
+			for (i,j) in footer_content:
+				if(i == 'MOTTO'):
+					modifyDictionary(footer_dict, ['content' , 1 , 'content'] , j)
+				elif (i == 'NAME'):
+					modifyDictionary(footer_dict, ['content' , 3 , 'content'] , j)
+				else:
+					sample_li = copy.deepcopy(footer_dict['content'][2]['content'][1])
+					modifyDictionary(sample_li,['a','href'] , j)
+					modifyDictionary(sample_li , ['content'] , i)
+					modifyDictionary(footer_dict, ['content' , 2 , 'content' , footer_content.index((i,j))+1], sample_li)
 
-		navbar_type = navbar_style[navbar_style.find(':')+1:]
-		if navbar_type=='orange':
-		elif navbar_type == 'flat':
-		elif navbar_type == 'indented':
-		elif navbar_type == 'toggle':
-		elif navbar_type == 'open':
-		elif navbar_type == 'breadcrumbs':
-	else :
-		print ("NO MATCH FOUND")
+			print (footer_dict)
+		elif footer_type == 'social':
+			footer_dict = copy.deepcopy(footer_social)
+		elif footer_type == 'distributed':
+			footer_dict = copy.deepcopy(footer_distributed)
+			print (footer_dict)
+		elif footer_type == 'distributed_contact':
+			footer_dict = copy.deepcopy(footer_distributed_contact)
+			print (footer_dict)
+		elif footer_type == 'distributed_search':
+			footer_dict = copy.deepcopy(footer_distributed_search)
+			print (footer_dict)
+		elif footer_type == 'distributed_phone_address':
+			footer_dict = copy.deepcopy(footer_distributed_phone_address)
+			print (footer_dict)
 
+		footer_content = matchObj.group(2)
+		footer_content = [t.strip() for t in footer_content.strip('\n').split('\n')]
+		print(footer_content)
+
+	else:
+		print ("No Match !")
 
 def main():
-	config = open(filename)
-	lines = config.readlines()
-	line = "".join(lines)
-	#print (line)
-	pos = line.find('\n}')
-	navbar_lines = line[:pos+2]
-	footer_lines = line[pos+2:]
+	config_parsed = CONFIG.parseString(''' navbar ( type : none , inverted , noninverted , left ) {
+		Home : www.google.com
+	About : http://www.parser.c..s.s
+		(r){Contact} : Me.com
 
-	makeFooter(footer_lines)
+			(l){List}:{
 
-	makeNavbar(navbar_lines)
+				sub:l1
+				sub:l2
+			sub:l3
+			}
+	
+		Resume:{
+			onepage : link
+			twopage : samelink
+		}	
+	
+	
+		}
+	 footer ( type : basic ){
+			MOTTO: BetterThanJekyll
+		NAME: SiteMe
+			facebook : facebook.com/SiteMe
+		reddit :redditSiteMe
+		github : ggigigg
+		linkedin : asdsa
+	twitter :sads
+		}''').asList()
+	index_navbar = config_parsed.index('navbar')
+	#print (index_navbar)
+	index_footer = config_parsed.index('footer')
+	#print (index_footer)
+	config_parsed = cleanUp(config_parsed)
+	print (config_parsed)
+main()
 
 '''
 FOOTERS
@@ -515,63 +652,6 @@ footer(social){
 	GITHUB:
 	TWITTER:
 }
-'''
-
-def makeFooter():
-	matchObj = re.match(r'.*footer.*\((.*)\){(.*)}' , line , re.DOTALL)
-	if matchObj:
-		#print (matchObj.group(0))
-		#print (matchObj.group(1))
-		#print (matchObj.group(2))
-		footer_style = str(matchObj.group(1))
-		footer_style = "".join(footer_style.split())
-		print(footer_style)
-		footer_content = matchObj.group(2)
-		footer_content = [t.strip() for t in footer_content.strip('\n').split('\n')]
-		footer_content = [(temp[:temp.find(':')].strip(),temp[temp.find(':')+1:].strip()) for temp in footer_content]
-		print(footer_content)
-		footer_type = footer_style[footer_style.find(':')+1:]
-		print(footer_type)
-		if footer_type == 'basic':
-			footer_dict = copy.deepcopy(footer_basic)
-			for (i,j) in footer_content:
-				if(i == 'MOTTO'):
-					modifyDictionary(footer_dict, ['content' , 1 , 'content'] , j)
-				elif (i == 'NAME'):
-					modifyDictionary(footer_dict, ['content' , 3 , 'content'] , j)
-				else:
-					sample_li = copy.deepcopy(footer_dict['content'][2]['content'][1])
-					modifyDictionary(sample_li,['a','href'] , j)
-					modifyDictionary(sample_li , ['content'] , i)
-					modifyDictionary(footer_dict, ['content' , 2 , 'content' , footer_content.index((i,j))+1], sample_li)
-
-			print (footer_dict)
-		elif footer_type == 'social':
-			footer_dict = copy.deepcopy(footer_social)
-		elif footer_type == 'distributed':
-			footer_dict = copy.deepcopy(footer_distributed)
-			print (footer_dict)
-		elif footer_type == 'distributed_contact':
-			footer_dict = copy.deepcopy(footer_distributed_contact)
-			print (footer_dict)
-		elif footer_type == 'distributed_search':
-			footer_dict = copy.deepcopy(footer_distributed_search)
-			print (footer_dict)
-		elif footer_type == 'distributed_phone_address':
-			footer_dict = copy.deepcopy(footer_distributed_phone_address)
-			print (footer_dict)
-
-		footer_content = matchObj.group(2)
-		footer_content = [t.strip() for t in footer_content.strip('\n').split('\n')]
-		print(footer_content)
-
-	else:
-		print ("No Match !")
-
-
-'''
-This function parses abstract element and converts it into dictionary / listoftuple
-
 '''
 
 def parseAbstractElement(s):
