@@ -1,23 +1,18 @@
 /* A simple, css only, (some-what) responsive menu */
 
-body { 
-  background: #ccc;
-  font-family: helvetica, arial, serif;
-  font-size: 13px;
-  text-transform: uppercase;
-  text-align: center;
-}
  
-.wrap {
+$CLASS$ {
   display: inline-block;
   -webkit-box-shadow: 0 0 70px #fff;
   -moz-box-shadow: 0 0 70px #fff;
   box-shadow: 0 0 70px #fff;
   margin-top: 40px;
+  text-transform: uppercase;
+  font-size: $FONT-SIZE$;
 }
 
 /* a little "umph" */
-.decor {
+$CLASS$ .decor {
   background: #6EAF8D;
   background: -webkit-linear-gradient(left, #CDEBDB 50%, #6EAF8D 50%);
   background: -moz-linear-gradient(left, #CDEBDB 50%, #6EAF8D 50%);
@@ -28,34 +23,34 @@ body {
   display: block;
 }
 
-a {
+$CLASS$ a {
   text-decoration: none;
-  color: #fff;
+  color: $FONT-COLOR$;
   display: block;
 }
 
-ul {
+$CLASS$ ul {
   list-style: none;
   position: relative;
   text-align: left;
 }
 
-li {
+$CLASS$ li {
   float: left;
 }
 
 /* clear'n floats */
-ul:after {
+$CLASS$ ul:after {
   clear: both;
 }
 
-ul:before,
-ul:after {
+$CLASS$ ul:before,
+$CLASS$ ul:after {
     content: " ";
     display: table;
 }
 
-nav {
+$CLASS$ nav {
   position: relative;
   background: #2B2B2B;
   background-image: -webkit-linear-gradient(bottom, #2B2B2B 7%, #333333 100%);
@@ -73,23 +68,24 @@ nav {
 }
 
 /* prime */
-ul.primary li a {
+$CLASS$ ul.primary li a {
   display: block;
   padding: 20px 30px;
   border-right: 1px solid #3D3D3D;
+  background:$COLOR$;
 }
 
-ul.primary li:last-child a {
+$CLASS$ ul.primary li:last-child a {
   border-right: none;
 }
 
-ul.primary li a:hover {
+$CLASS$ ul.primary li a:hover {
   
   color: #000;
 }
 
 /* subs */
-ul.sub {
+$CLASS$ ul.sub {
   position: absolute;
   z-index: 200;
   box-shadow: 2px 2px 0 #BEBEBE;
@@ -97,85 +93,85 @@ ul.sub {
   display:none;
 }
 
-ul.sub li {
+$CLASS$ ul.sub li {
   float: none;
   margin: 0;
 }
 
-ul.sub li a {
+$CLASS$ ul.sub li a {
   border-bottom: 1px dotted #ccc;
   border-right: none;
   color: #000;
   padding: 15px 30px;
 }
 
-ul.sub li:last-child a {
+$CLASS$ ul.sub li:last-child a {
   border-bottom: none;
 }
 
-ul.sub li a:hover {
+$CLASS$ ul.sub li a:hover {
   color: #000;
   background: #eeeeee;
 }
 
 /* sub display*/
-ul.primary li:hover ul {
+$CLASS$ ul.primary li:hover ul {
   display: block;
   background: #fff;
 }
 
 /* keeps the tab background white */
-ul.primary li:hover a {
-  background: #fff;
-  color: #666;
+$CLASS$ ul.primary li:hover a {
+  background: $DROPDOWN-COLOR$;
+  color: $DROPDOWN-FONT-COLOR$;
   text-shadow: none;
 }
 
-ul.primary li:hover > a{
-  color: #000;
+$CLASS$ ul.primary li:hover > a{
+  color: $HOVER-FONT-COLOR$;
 } 
 
 @media only screen and (max-width: 600px) {
-  .decor {
+  $CLASS$ .decor {
     padding: 3px;
   }
   
-  .wrap {
+  $CLASS$ .wrap {
     width: 100%;
     margin-top: 0px;
   }
   
-   li {
+  $CLASS$ li {
     float: none;
   }
   
-  ul.primary li:hover a {
+  $CLASS$ ul.primary li:hover a {
     background: none;
     color: #8B8B8B;
     text-shadow: 1px 1px #000;
   }
 
-  ul.primary li:hover ul {
+  $CLASS$ ul.primary li:hover ul {
     display: block;
     background: #272727;
     color: #fff;
   }
   
-  ul.sub {
+  $CLASS$ ul.sub {
     display: block;  
     position: static;
     box-shadow: none;
     width: 100%;
   }
   
-  ul.sub li a {
+  $CLASS$ ul.sub li a {
     background: #272727;
   	border: none;
     color: #8B8B8B;
   }
   
-  ul.sub li a:hover {
+  $CLASS$ ul.sub li a:hover {
     color: #ccc;
-    background: none;
+    backgound: none;
   }
 }

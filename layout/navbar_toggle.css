@@ -121,7 +121,7 @@ $CLASS$ .loud{
 
 
 @media screen and (max-width: 600px){
-  section{
+  $CLASS$ section{
     padding: 1.5em;
   }
 }
