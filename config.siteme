@@ -1,9 +1,10 @@
-footer( type : basic ){
+{footer(type : basic ){
 	MOTTO: Better than Jekyll
 	NAME: SiteMe
-	facebook : facebook.com/SiteMe
+	facebook : {
+a:b,c:d,e:j}
 	reddit :redditSiteMe
 	github : ggigigg
 	linkedin : asdsa
 	twitter :sads
-}
+}}

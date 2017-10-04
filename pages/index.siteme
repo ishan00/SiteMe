@@ -12,7 +12,7 @@ table(type:kiwano,background-color:red,width:100%){
 **ohmy**god**daf
 }
  web page, document your work both theory and your code, and bulk up on your programming expertise coming from CS101 and CS152 with their associated labs. Geeks are welcome.
-
+slideshow(type:kuchbhi){hello:1.jpg,sd:2.jpg,3.jpg}
 In this course we will cover some of
 HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot
 Reading and Writing Code, (){Profiling}, Debugging, Editors, IDE, Makefiles, Compilation, Linking, Version Control, C++, Java, Python, Bash
