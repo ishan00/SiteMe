@@ -415,6 +415,61 @@ def makeNavbar(navbar_style,  navbar_content):
 			navbar_dict['content'][1][i+1] = li_element
 		#print (navbar_dict)
 		return navbar_dict
+	elif type_name == 'open':
+		navbar_dict = copy.deepcopy(navbar_open)
+		li_element = copy.deepcopy(navbar_open['content'][2]['content'][1]['content'][1])
+		for i in range(len(navbar_content)):
+			row = copy.deepcopy(li_element)
+			row['content'][1]['a']['href']  = navbar_content[i][1]
+			if i == 0:
+				row['li']['class'] = 'active'
+			if (isinstance(navbar_content[i][0],list)):
+				row['content'][1]['content'] =  navbar_content[i][0][1]
+				if(navbar_content[i][0][0] == 'r'):
+					row['li']['float'] =  'right'
+				else:
+					row['li']['float']  =  'left'
+			else:
+				row['content'][1]['content'] = navbar_content[i][0]
+			navbar_dict['content'][2]['content'][1]['content'][i+1] = row
+		return navbar_dict
+	elif type_name == 'breadcrumbs':
+		navbar_dict = copy.deepcopy(navbar_breadcrumbs)
+		li_element = copy.deepcopy(navbar_breadcrumbs['content'][1]['content'][1]['content'][1])
+		for i in range(len(navbar_content)):
+			row = copy.deepcopy(li_element)
+			row['content'][1]['content'][1]['content'] = str(i+1)
+			row['content'][1]['a']['href']  = navbar_content[i][1]
+			if i == 0:
+				row['li']['class'] = 'active'
+			if (isinstance(navbar_content[i][0],list)):
+				row['content'][1]['content'][2]['content']  = navbar_content[i][0][1]
+				#if(navbar_content[i][0][0] == 'r'):
+				#	row['li']['float'] =  'right'
+				#else:
+				#	row['li']['float']  =  'left'
+				
+				# No align support for breadcrumbs. It beats the purpose
+			else:
+				row['content'][1]['content'][2]['content']  = navbar_content[i][0]
+			navbar_dict['content'][1]['content'][1]['content'][i+1] = row
+		return navbar_dict
+	elif type_name == 'toggle':
+		navbar_dict = copy.deepcopy(navbar_toggle)
+		li_element = copy.deepcopy(navbar_toggle['content'][2]['content'][1])
+		for i in range(len(navbar_content)):
+			row = copy.deepcopy(li_element)
+			row['content'][1]['a']['href']  = navbar_content[i][1]
+			#if i == 0:
+			#	row['li']['class'] = 'active'
+			if (isinstance(navbar_content[i][0],list)):
+				row['content'][1]['content']  = navbar_content[i][0][1]
+				# No align support for breadcrumbs. It beats the purpose
+			else:
+				row['content'][1]['content']  = navbar_content[i][0]
+			navbar_dict['content'][2]['content'][i+1] = row
+		return navbar_dict
+
 
 		
 
@@ -445,6 +500,13 @@ def makeFooter(footer_style,footer_content):
 		return footer_dict
 	elif footer_type == 'social':
 		footer_dict = copy.deepcopy(footer_social)
+		elem = copy.deepcopy(footer_social['content'][1]['content'][1])
+		for i in range(len(footer_content)):
+			row = copy.deepcopy(elem)
+			row['content'][1]['i']['class'] = 'fa fa-'+footer_content[i][0].strip()
+			row['a']['href'] = footer_content[i][1].strip()
+			footer_dict['content'][1]['content'][i+1] = row
+		return footer_dict
 	elif footer_type == 'distributed':
 		footer_dict = copy.deepcopy(footer_distributed)
 		print (footer_dict)
@@ -631,9 +693,10 @@ def main():
 			4:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
 			5:{'link':{'rel':'stylesheet', 'href':'css/footer_basic.css'} , 'content':''},
 			6:{'link':{'rel':'stylesheet', 'href':'css/navbar_orange.css'} , 'content':''},
-			7:{'script':{'src':'css/slideshow.js'} , 'content' : ''},
-			8:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			9:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+			7:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
+			8:{'script':{'src':'css/slideshow.js'} , 'content' : ''},
+			9:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			10:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',
