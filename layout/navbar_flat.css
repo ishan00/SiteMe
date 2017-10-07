@@ -1,8 +1,8 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway);
-#cssmenu,
-#cssmenu ul,
-#cssmenu ul li,
-#cssmenu ul li a {
+$CLASS$ #cssmenu,
+$CLASS$ #cssmenu ul,
+$CLASS$ #cssmenu ul li,
+$CLASS$ #cssmenu ul li a {
   margin: 0;
   padding: 0;
   border: 0;
@@ -14,8 +14,8 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-#cssmenu:after,
-#cssmenu > ul:after {
+$CLASS$ #cssmenu:after,
+$CLASS$ #cssmenu > ul:after {
   content: ".";
   display: block;
   clear: both;
@@ -23,40 +23,40 @@
   line-height: 0;
   height: 0;
 }
-#cssmenu {
+$CLASS$ #cssmenu {
   width: auto;
-  border-bottom: 3px solid #47c9af;
+  border-bottom: 3px solid $COLOR$;
   font-family: Raleway, sans-serif;
   line-height: 1;
 }
-#cssmenu ul {
-  background: #ffffff;
+$CLASS$ #cssmenu ul {
+  background: none;
 }
-#cssmenu > ul > li {
+$CLASS$ #cssmenu > ul > li {
   float: left;
 }
-#cssmenu.align-center > ul {
+$CLASS$ #cssmenu.align-center > ul {
   font-size: 0;
   text-align: center;
 }
-#cssmenu.align-center > ul > li {
+$CLASS$ #cssmenu.align-center > ul > li {
   display: inline-block;
   float: none;
 }
-#cssmenu.align-right > ul > li {
+$CLASS$ #cssmenu.align-right > ul > li {
   float: right;
 }
-#cssmenu.align-right > ul > li > a {
+$CLASS$ #cssmenu.align-right > ul > li > a {
   margin-right: 0;
   margin-left: -4px;
 }
-#cssmenu > ul > li > a {
+$CLASS$ #cssmenu > ul > li > a {
   z-index: 2;
   padding: 18px 25px 12px 25px;
-  font-size: 15px;
+  font-size: $FONT-SIZE$;
   font-weight: 400;
   text-decoration: none;
-  color: #444444;
+  color: $FONT-COLOR$;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -ms-transition: all .2s ease;
@@ -64,12 +64,12 @@
   transition: all .2s ease;
   margin-right: -4px;
 }
-#cssmenu > ul > li.active > a,
-#cssmenu > ul > li:hover > a,
-#cssmenu > ul > li > a:hover {
-  color: #ffffff;
+$CLASS$ #cssmenu > ul > li.active > a,
+$CLASS$ #cssmenu > ul > li:hover > a,
+$CLASS$ #cssmenu > ul > li > a:hover {
+  color: $HOVER-FONT-COLOR$;
 }
-#cssmenu > ul > li > a:after {
+$CLASS$ #cssmenu > ul > li > a:after {
   position: absolute;
   left: 0;
   bottom: 0;
@@ -90,8 +90,8 @@
   transform: perspective(5px) rotateX(2deg);
   transform-origin: bottom;
 }
-#cssmenu > ul > li.active > a:after,
-#cssmenu > ul > li:hover > a:after,
-#cssmenu > ul > li > a:hover:after {
-  background: #47c9af;
+$CLASS$ #cssmenu > ul > li.active > a:after,
+$CLASS$ #cssmenu > ul > li:hover > a:after,
+$CLASS$ #cssmenu > ul > li > a:hover:after {
+  background: $COLOR$;
 }

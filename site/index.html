@@ -1,0 +1,43 @@
+<html><head><title>CS 251 Course Homepage</title><style>font-size:18pt;
+background-color:rgb(159,229,224);
+</style><link href='css/style.css' rel='stylesheet'><link href='css/footer_basic.css' rel='stylesheet'><link href='css/navbar_open.css' rel='stylesheet'><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script></head><body><div class='open'><span class='cls'></span><span><ul class='sub-menu'><li class='active'><a href='#'>Home</a></li><li><a href='http://facebook.com'>About</a></li><li style="float:right; "><a href='https://google.co.in'>Contact</a></li></ul></span><span class='cls'></span></div>
+<script> 
+$(document).ready(function() {
+		$(document).delegate('.open', 'click', function(event){
+			$(this).addClass('oppenned');
+			event.stopPropagation();
+		})
+		$(document).delegate('body', 'click', function(event) {
+			$('.open').removeClass('oppenned');
+		})
+		$(document).delegate('.cls', 'click', function(event){
+			$('.open').removeClass('oppenned');
+			event.stopPropagation();
+		});
+	});
+	</script>
+<div style="text-align:center;"><h1>Informal Course Overview</h1></div><br>
+This <pre>ds (bold){ds} </pre>  is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to build a <br>
+<table class='table' style="background-color:white; width:100%; "><tr><td style="rowspan:2; colspan:1; ">Item</td><td>hello</td><td>world</td></tr><tr><td>ohmy</td><td>god</td><td>daf</td></tr></table><br>
+ web page, document your work both theory and your code, and bulk up on your programming expertise coming from CS101 and CS152 with their associated labs. Geeks are welcome.<br>
+<div id='myCarousel' data-ride='carousel' class='carousel slide'><ol class='carousel-indicators'><li data-slide-to='0' data-target='#myCarousel' class='active'></li><li data-slide-to='1' data-target='#myCarousel'></li><li data-slide-to='2' data-target='#myCarousel'></li></ol><div class='carousel-inner'><div class='active item'><img src='img/1.jpg' style="width:100%; "><div class='carousel-caption'><h3>Caption1</h3></div></div><div class='item'><img src='img/2.jpg' style="width:100%; "><div class='carousel-caption'><h3>Caption2</h3></div></div><div class='item'><img src='img/3.jpg' style="width:100%; "></div></div><div><a href='#myCarousel' data-slide='prev' class='left carousel-control'><span class='glyphicon glyphicon-chevron-left'></span><span class='sr-only'>Previous</span></a><a href='#myCarousel' data-slide='next' class='right carousel-control'><span class='glyphicon glyphicon-chevron-right'></span><span class='sr-only'>Next</span></a></div></div><br>
+In this course we will cover some of<br>
+HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot<br>
+Reading and Writing Code, Profiling, Debugging, Editors, IDE, Makefiles, Compilation, Linking, Version Control, C++, Java, Python, Bash<br>
+Basic Linux Utilities<br>
+Glimpse of web applications: Django<br>
+<br>
+<div style="color:blue;"><b>Texts</b></div>: Note the description in the text section.<br>
+<i>Course s <b>ds</b></i>: There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.<br>
+<br>
+<code>Snippet of Code will be placed here</code><br>
+<br>
+2+2<sup>2</sup> = 6<br>
+C<sub>n</sub> = Catalan Number<br>
+<kbd>Ctrl + C</kbd> and <kbd>Ctrl + V</kbd> is what we are doing<br>
+<br>
+<blockquote>Fake it till you make it</blockquote><br>
+<br>
+<b>Lab Contents</b><br>
+<ul><li>Lab 1 :HTML, CSS</li><li>Lab 2 : Bash Scripting</li><li>Lab 3 : Sed, Awk</li><li>Lab 4 : Git, LaTeX</li><li>Lab 5 : Java</li><li>Lab 6 : LaTeX, Gnuplot</li><li>Lab 7 : Makefiles, Doxygen</li><li>Lab 8 : Python</li></ul>
+<footer class='footer-basic-centered'><p class='footer-company-motto'>BetterthanJekyll</p><p class='footer-links'><a href='facebook.com/SiteMe'>facebook</a><a href='redditSiteMe'>reddit</a><a href='ggigigg'>github</a><a href='asdsa'>linkedin</a><a href='sads'>twitter</a></p><p class='footer-company-name'>SiteMe</p></footer></body></html>

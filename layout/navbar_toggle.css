@@ -3,19 +3,19 @@
 
 /* Style for */
 
-$CLASS${
+$CLASS$ .head{
 	  position: relative;
 	  background-color:$COLOR$;
 }
-$CLASS$ ul.nav{
+$CLASS$ .head ul.nav{
   	overflow: hidden;
 }
-$CLASS$ ul.nav li{
+$CLASS$ .head ul.nav li{
   	position: relative;
 	  float: left;
 	  width: 20%;
 }
-$CLASS$ ul.nav li a{
+$CLASS$ .head ul.nav li a{
   	display: block;
 	  height: 50px;
   opacity: 0;
@@ -34,18 +34,18 @@ $CLASS$ ul.nav li a{
 }
 
 @media screen and (max-width: 600px){
-  	$CLASS$ ul.nav li{
+  	$CLASS$ .head ul.nav li{
 		    float: none;
     		width: 100%;
   	}
-	  $CLASS$ ul.nav li a{
+	  $CLASS$ .head ul.nav li a{
 		    height: 0;
   	}
 }
 
 /* Style for header with active class name */
 
-$CLASS$.active ul.nav li a{
+$CLASS$ .head.active ul.nav li a{
 	  height: 120px;
   	opacity: 1;
 	  line-height: 120px;
@@ -53,7 +53,7 @@ $CLASS$.active ul.nav li a{
 }
 
 @media screen and (max-width: 600px){
-  	$CLASS$.active ul.nav li a{
+  	$CLASS$ .head.active ul.nav li a{
 		    height: 60px;
 		    line-height: 60px;
     border-bottom: 1px solid #222b2f;
@@ -62,7 +62,7 @@ $CLASS$.active ul.nav li a{
 
 /* Style for the plus button */
 
-$CLASS$ button.toggle-nav{
+$CLASS$ .head button.toggle-nav{
   	position: absolute;
   top: 50px;
   	left: calc(50% - 30px);
@@ -81,10 +81,10 @@ $CLASS$ button.toggle-nav{
 	  -webkit-transition: all 0.25s ease;
 	  -moz-transition: all 0.25s ease;
 }
-$CLASS$ button.toggle-nav:hover{
+$CLASS$ .head button.toggle-nav:hover{
   	height: 50px;
 }
-$CLASS$ button.toggle-nav span{
+$CLASS$ .head button.toggle-nav span{
 	  display: block;
   	-webkit-transform: rotate(90deg);
   	-moz-transform: rotate(90deg);
@@ -94,34 +94,34 @@ $CLASS$ button.toggle-nav span{
 
 /* Style for the plus button when has active classe name */
 
-$CLASS$.active button.toggle-nav{
+$CLASS$ .head.active button.toggle-nav{
   	top: 120px;
   background-color: $TOGGLE-COLOR$;
 }
-$CLASS$.active button.toggle-nav span{
+$CLASS$ .head.active button.toggle-nav span{
 	  -webkit-transform: rotate(270deg);
   	-moz-transform: rotate(270deg);
 }
 
 @media screen and (max-width: 600px){
-	  $CLASS$ button.toggle-nav{
+	  $CLASS$ .head button.toggle-nav{
 		    top: 0;
 		    left: 15px;
 	  }
-  	$CLASS$.active button.toggle-nav{
+  	$CLASS$ .head.active button.toggle-nav{
     		top: 305px;
 	  }
 }
 
 /* Other styles */
 
-$CLASS$ .loud{
+$CLASS$ .head .loud{
 	  text-transform: uppercase;
 }
 
 
 @media screen and (max-width: 600px){
-  $CLASS$ section{
+  $CLASS$ .head section{
     padding: 1.5em;
   }
 }
