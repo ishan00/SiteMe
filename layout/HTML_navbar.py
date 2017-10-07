@@ -25,7 +25,7 @@ navbar_wrap = {'div':{'class':'wrap'} , 'content':{ 1:{'span':{'class':'decor'} 
 #type:toggle
 navbar_toggle = {'header':{} , 'content':{ 1:{'button':{'class':'toggle-nav'} , 'content':{ 1:{'span':{} , 'content':'>' } } } , 2:{'ul':{'class':'nav'} , 'content':{ 1:{'li':{'class':'loud'} , 'content':{1:{'a':{'href':''} , 'content':''} } } } } } }
 #type:open
-navbar_open = {'div':{'class':'open'} , 'content':{ 1:{'span':{'class':'cls'} , 'content':''} , 2:{'span':{} , 'content':{ 1:{'ul':{'class':'sub-menu'} , 'content':{ 1:{'li':{} , 'content':{ 1:{'a':{'href':''} , 'content':''} } } } } } } } }
+navbar_open = {'div':{'class':'open'} , 'content':{ 1:{'span':{'class':'cls'} , 'content':''} , 2:{'span':{} , 'content':{ 1:{'ul':{'class':'sub-menu'} , 'content':{ 1:{'li':{} , 'content':{ 1:{'a':{'href':''} , 'content':''} } } } } } } , 3:{'span':{'class':'cls'} , 'content':'' } } }
 
 #type:breadcrumbs
-navbar_breadcrumbs = {'div':{'class':'breadcrumbs'} , 'content':{ 1:{'div':{'class':'inner'} , 'content':{ 1:{'ul':{'class':'cf'} , 'content':{ 1:{'li':{} , 'content':{ 1:{'a':{'href':'' , 'class':'active'} , 'content':{ 1: {'span':{}, 'content':''} } } } } } } } } } }
+navbar_breadcrumbs = {'div':{'class':'breadcrumbs'} , 'content':{ 1:{'div':{'class':'inner'} , 'content':{ 1:{'ul':{'class':'cf'} , 'content':{ 1:{'li':{} , 'content':{ 1:{'a':{'href':'' , 'class':'active'} , 'content':{ 1: {'span':{}, 'content':''} , 2:{'span':{} , 'content':''} } } } } } } } } } }

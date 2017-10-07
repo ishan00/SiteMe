@@ -1,14 +1,15 @@
-navbar ( type : orange ) {
+navbar ( type : open ) {
 	Home : #
 	About : http://facebook.com
-	(r){Contact} : https://google.co.in
+	Contact : https://google.co.in
+	Resume : resume2page.pdf
 }
 
 footer ( type : basic ){
-	MOTTO: BetterthanJekyll	
-	NAME: SiteMe
-	facebook : facebook.com/SiteMe
-	reddit :redditSiteMe
+	NAME : NameOfWebsite
+	MOTTO : BetterThanJekyll	
+	Blog : https://facebook.com
+	About : https://reddit.com
 	github : ggigigg
 	linkedin : asdsa
 	twitter :sads

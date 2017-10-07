@@ -3,11 +3,7 @@ footer_social = \
 {'footer':{'id':'myFooter'} , 'content':{ 
 	1:{'div':{'class':'footer-social'} , 'content': { 
 		1:{ 'a':{'href':'', 'class':'social-icons'} , 'content': { 
-			1:{'i':{'class':'fa fa-facebook'} , 'content':''}}},  
-		2:{ 'a':{'href':'', 'class':'social-icons'} , 'content': { 
-			1:{'i':{'class':'fa fa-google-plus'} , 'content':''}}},
-		3:{ 'a':{'href':'', 'class':'social-icons'} , 'content': { 
-			1:{'i':{'class':'fa fa-twitter'} , 'content':''}}}}}}}
+			1:{'i':{'class':'fa fa-facebook'} , 'content':''}}}}}}}
 
 #type:basic
 footer_basic = \

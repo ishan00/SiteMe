@@ -5,7 +5,7 @@ from sys import argv
 
 tokens=['KEYWORD','PRE','STYLE','REST','NEWLINE']
 keywords=['title','font-size','background-color']
-styles=['image','link','list','piechart','table','slideshow']
+styles=['image','link','list','piechart','table','slideshow','parallax']
 
 def t_error(t):
 	return

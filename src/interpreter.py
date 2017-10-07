@@ -272,54 +272,55 @@ def tableMaker(style,content):
 input:- slideshow(type:1){(r){caption}:img,caption:img,img}
 output:- dictionary of slideshow
 '''
-def slideshowMaker(i):
-	match=re.match(r'slideshow\((.*?)\)\{(.*)\}',i)
-	if match:
-		content = str(match.group(2)).split(',')
-		type = match.group(1).split(':')[1].strip()
-		slideshow_dict = copy.deepcopy(slideshow_carousel)
-		#print(slideshow_carousel)
-		elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
-		extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
-		i=1
-		for x in content:
-			row =copy.deepcopy(elem)
-			extra_this_row = copy.deepcopy(extra)
-			if(':' in x):
-				row['content'][2]['content'][1]['content']= x.split(':')[0].strip()
-				row['content'][1]['img']['src'] = 'img/' + x.split(':')[1].strip()
-			else:
-				del row['content'][2]
-				row['content'][1]['img']['src'] = 'img/' + x.strip()
-			
-			if(i == 1):
-				row['div']['class'] = 'active ' + row['div']['class']
-				extra_this_row['li']['class'] = 'active'
+def slideshowMaker(s,i):
+	content = i.split(',')
+	type = s.split(':')[1].strip()
+	slideshow_dict = copy.deepcopy(slideshow_carousel)
+	#print(slideshow_carousel)
+	elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
+	extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
+	i=1
+	for x in content:
+		row =copy.deepcopy(elem)
+		extra_this_row = copy.deepcopy(extra)
+		if(':' in x):
+			row['content'][2]['content'][1]['content']= x.split(':')[0].strip()
+			row['content'][1]['img']['src'] = 'img/' + x.split(':')[1].strip()
+		else:
+			del row['content'][2]
+			row['content'][1]['img']['src'] = 'img/' + x.strip()
+		
+		if(i == 1):
+			row['div']['class'] = 'active ' + row['div']['class']
+			extra_this_row['li']['class'] = 'active'
+		extra_this_row['li']['data-slide-to'] = str(i-1) 
+		slideshow_dict['content'][2]['content'][i] = row
+		slideshow_dict['content'][1]['content'][i] = extra_this_row
+		i=i+1
+	#print(slideshow_dict)
+	return slideshow_dict
 
-			extra_this_row['li']['data-slide-to'] = str(i-1) 
-			slideshow_dict['content'][2]['content'][i] = row
-			slideshow_dict['content'][1]['content'][i] = extra_this_row
-			i=i+1
-		#print(slideshow_dict)
-		return slideshow_dict
+def parallaxMaker(s,i):
+	parallax_dict = {'div':{'class':'parallax' , 'background-image':''} , 'content':''}
+	content = i.strip()
+	parallax_dict['div']['background-image'] = "url('img/" + content + "')"
+	return parallax_dict
 
-styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker}
+styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker, 'parallax':parallaxMaker}
 
 def styleMaker(s):
-    # styleName=re.search(r'(.*?)\(',s).group(1)
-    # styleStyle=re.search(r'\((.*?)\)',s).group(1)
-    # styleContent=re.search(r'\{(.*?)\}',s).group(1)
-    # s=s.replace('\n','')
-    styleName=s.split('(')[0]
-    styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
-    styleContent=s.split('(')[1].split(')')[1].strip('{}')
-    # styleStyle=styleStyle.replace(',',';')
-    if(not styleName):
-        return taggedMaker(styleStyle,styleContent)
-    elif(styleName=='slideshow'):
-    	return makeHTML(styleFunctions[styleName](s))
-    else:
-    	return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
+	# styleName=re.search(r'(.*?)\(',s).group(1)
+	# styleStyle=re.search(r'\((.*?)\)',s).group(1)
+	# styleContent=re.search(r'\{(.*?)\}',s).group(1)
+	# s=s.replace('\n','')
+	styleName=s.split('(')[0]
+	styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
+	styleContent=s.split('(')[1].split(')')[1].strip('{}')
+	# styleStyle=styleStyle.replace(',',';')
+	if(not styleName):
+		return taggedMaker(styleStyle,styleContent)
+	else:
+		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 '''
 This function converts dictionaries to html codes.
@@ -692,10 +693,10 @@ def main():
 			3:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
 			4:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
 			5:{'link':{'rel':'stylesheet', 'href':'css/footer_basic.css'} , 'content':''},
-			6:{'link':{'rel':'stylesheet', 'href':'css/navbar_orange.css'} , 'content':''},
+			6:{'link':{'rel':'stylesheet', 'href':'css/navbar_open.css'} , 'content':''},
 			7:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
-			8:{'script':{'src':'css/slideshow.js'} , 'content' : ''},
-			9:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			8:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			9:{'script':{'src':'css/navbar_open.js'} , 'content' : ''},
 			10:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
 		}} , 
 		2:{'body':{} , 'content':{
