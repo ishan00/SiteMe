@@ -9,6 +9,7 @@ import ply.yacc as yacc
 from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
+from makeCSS import makeCSS
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
 from pyparsing import *
@@ -272,54 +273,55 @@ def tableMaker(style,content):
 input:- slideshow(type:1){(r){caption}:img,caption:img,img}
 output:- dictionary of slideshow
 '''
-def slideshowMaker(i):
-	match=re.match(r'slideshow\((.*?)\)\{(.*)\}',i)
-	if match:
-		content = str(match.group(2)).split(',')
-		type = match.group(1).split(':')[1].strip()
-		slideshow_dict = copy.deepcopy(slideshow_carousel)
-		#print(slideshow_carousel)
-		elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
-		extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
-		i=1
-		for x in content:
-			row =copy.deepcopy(elem)
-			extra_this_row = copy.deepcopy(extra)
-			if(':' in x):
-				row['content'][2]['content'][1]['content']= x.split(':')[0].strip()
-				row['content'][1]['img']['src'] = 'img/' + x.split(':')[1].strip()
-			else:
-				del row['content'][2]
-				row['content'][1]['img']['src'] = 'img/' + x.strip()
-			
-			if(i == 1):
-				row['div']['class'] = 'active ' + row['div']['class']
-				extra_this_row['li']['class'] = 'active'
+def slideshowMaker(s,i):
+	content = i.split(',')
+	type = s.split(':')[1].strip()
+	slideshow_dict = copy.deepcopy(slideshow_carousel)
+	#print(slideshow_carousel)
+	elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
+	extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
+	i=1
+	for x in content:
+		row =copy.deepcopy(elem)
+		extra_this_row = copy.deepcopy(extra)
+		if(':' in x):
+			row['content'][2]['content'][1]['content']= x.split(':')[0].strip()
+			row['content'][1]['img']['src'] = 'img/' + x.split(':')[1].strip()
+		else:
+			del row['content'][2]
+			row['content'][1]['img']['src'] = 'img/' + x.strip()
+		
+		if(i == 1):
+			row['div']['class'] = 'active ' + row['div']['class']
+			extra_this_row['li']['class'] = 'active'
+		extra_this_row['li']['data-slide-to'] = str(i-1) 
+		slideshow_dict['content'][2]['content'][i] = row
+		slideshow_dict['content'][1]['content'][i] = extra_this_row
+		i=i+1
+	#print(slideshow_dict)
+	return slideshow_dict
 
-			extra_this_row['li']['data-slide-to'] = str(i-1) 
-			slideshow_dict['content'][2]['content'][i] = row
-			slideshow_dict['content'][1]['content'][i] = extra_this_row
-			i=i+1
-		#print(slideshow_dict)
-		return slideshow_dict
+def parallaxMaker(s,i):
+	parallax_dict = {'div':{'class':'parallax' , 'background-image':''} , 'content':''}
+	content = i.strip()
+	parallax_dict['div']['background-image'] = "url('img/" + content + "')"
+	return parallax_dict
 
-styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker}
+styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker, 'parallax':parallaxMaker}
 
 def styleMaker(s):
-    # styleName=re.search(r'(.*?)\(',s).group(1)
-    # styleStyle=re.search(r'\((.*?)\)',s).group(1)
-    # styleContent=re.search(r'\{(.*?)\}',s).group(1)
-    # s=s.replace('\n','')
-    styleName=s.split('(')[0]
-    styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
-    styleContent=s.split('(')[1].split(')')[1].strip('{}')
-    # styleStyle=styleStyle.replace(',',';')
-    if(not styleName):
-        return taggedMaker(styleStyle,styleContent)
-    elif(styleName=='slideshow'):
-    	return makeHTML(styleFunctions[styleName](s))
-    else:
-    	return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
+	# styleName=re.search(r'(.*?)\(',s).group(1)
+	# styleStyle=re.search(r'\((.*?)\)',s).group(1)
+	# styleContent=re.search(r'\{(.*?)\}',s).group(1)
+	# s=s.replace('\n','')
+	styleName=s.split('(')[0]
+	styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
+	styleContent=s.split('(')[1].split(')')[1].strip('{}')
+	# styleStyle=styleStyle.replace(',',';')
+	if(not styleName):
+		return taggedMaker(styleStyle,styleContent)
+	else:
+		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 '''
 This function converts dictionaries to html codes.
@@ -365,6 +367,11 @@ def makeHTML(d):
 
 def makeNavbar(navbar_style,  navbar_content):
 	type_name = navbar_style[0][1]
+	css_for_navbar = {'navbar':{}}
+	css_for_navbar['navbar']['type'] = type_name
+	css_for_navbar['navbar']['class'] = '.navbar'
+	for i in navbar_style:
+		css_for_navbar[i[0]] = i[1]
 	if (type_name == 'orange' or type_name == 'flat' or type_name == 'indented'):
 		navbar_dict = copy.deepcopy(navbar_flat)
 		li_element = copy.deepcopy(navbar_flat['content'][1]['content'][1])
@@ -386,11 +393,13 @@ def makeNavbar(navbar_style,  navbar_content):
 		return navbar_dict 
 	elif type_name == 'none':
 		navbar_dict = copy.deepcopy(navbar_none)
+		navbar_dict['div']['class'] = 'navbar'
 		navbar_dict['content'][1]['content'][1]['content'][1]['content'] = navbar_content[0][1]
 		li_element = copy.deepcopy(navbar_none['content'][2]['content'][1])
 		drowdown_element = copy.deepcopy(navbar_none['content'][2]['content'][2])
 		li_dropdown_element = copy.deepcopy(navbar_none['content'][2]['content'][2]['content'][2]['content'][1])
 		for i in range(1,len(navbar_content)):
+			makeCSS(css_for_navbar)
 			row = copy.deepcopy(drowdown_element)
 			if (isinstance(navbar_content[i][1]) , list):
 				if (isinstance(navbar_content[i][0],list)):
@@ -416,7 +425,9 @@ def makeNavbar(navbar_style,  navbar_content):
 		#print (navbar_dict)
 		return navbar_dict
 	elif type_name == 'open':
+		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_open)
+		navbar_dict['div']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_open['content'][2]['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -434,7 +445,9 @@ def makeNavbar(navbar_style,  navbar_content):
 			navbar_dict['content'][2]['content'][1]['content'][i+1] = row
 		return navbar_dict
 	elif type_name == 'breadcrumbs':
+		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_breadcrumbs)
+		navbar_dict['div']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_breadcrumbs['content'][1]['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -455,7 +468,9 @@ def makeNavbar(navbar_style,  navbar_content):
 			navbar_dict['content'][1]['content'][1]['content'][i+1] = row
 		return navbar_dict
 	elif type_name == 'toggle':
+		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_toggle)
+		navbar_dict['header']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_toggle['content'][2]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -469,9 +484,6 @@ def makeNavbar(navbar_style,  navbar_content):
 				row['content'][1]['content']  = navbar_content[i][0]
 			navbar_dict['content'][2]['content'][i+1] = row
 		return navbar_dict
-
-
-		
 
 def cleanUp(l):
 	l = [y for y in l if (y != '{' and y != '}' and y != '(' and y != ')' and y!= ',' and y != ':')]
@@ -684,24 +696,23 @@ parser=yacc.yacc()
 # This Part Applies Above Grammar On The File
 ###########################################################################
 
-def main():
-	main_dict = {'html':{} , 'content':{ 
+main_dict = {'html':{} , 'content':{ 
 		1:{'head':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
 			2:{'style':{} , 'content' : ''},
 			3:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
-			4:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
-			5:{'link':{'rel':'stylesheet', 'href':'css/footer_basic.css'} , 'content':''},
-			6:{'link':{'rel':'stylesheet', 'href':'css/navbar_orange.css'} , 'content':''},
-			7:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
-			8:{'script':{'src':'css/slideshow.js'} , 'content' : ''},
-			9:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			10:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
+			5:{'link':{'rel':'stylesheet', 'href':'css/style.css', 'content':''}},
+			6:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			7:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',
 			2:'',
 			3:'',}}}}
+
+def main():
+	global main_dict
 	con = open(configfile)
 	c = con.read()
 	c = parseAbstractElement(c)
