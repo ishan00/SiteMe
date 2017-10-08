@@ -75,7 +75,7 @@ def makeParallaxCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-footerDict={'$COLOR$':'#292c2f','$FONT-COLOR$';'#ffffff','$FONT-SIZE$':'18px','$MOTTO-FONT-COLOR$':'#8d9093','$MOTTO-FONT-SIZE$':'24px','$NAME-FONT-COLOR$':'#8f9296','$NAME-FONT-SIZE$':'14px'}
+footerDict={'$CLASS$':'.footer','$COLOR$':'#292c2f','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'18px','$MOTTO-FONT-COLOR$':'#8d9093','$MOTTO-FONT-SIZE$':'24px','$NAME-FONT-COLOR$':'#8f9296','$NAME-FONT-SIZE$':'14px'}
 
 def makeFooterCSS(d):
 	CSSFile=open('./layout/footer_'+d['type']+'.css')
@@ -89,7 +89,7 @@ def makeFooterCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS}
+CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS,'footer':makeFooterCSS}
 
 def makeCSS(d):
 	CSSDict[list(d.keys())[0]](d[list(d.keys())[0]])

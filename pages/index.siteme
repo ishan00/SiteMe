@@ -17,7 +17,7 @@ Reading and Writing Code, (){Profiling}, Debugging, Editors, IDE, Makefiles, Com
 Basic Linux Utilities
 Glimpse of web applications: Django
 -----------
-fade(left){hello:background.jpg}
+fade(top){hello:background.jpg}
 
 (bold,color:blue){Texts}: Note the description in the text section.
 (italic){Course s (bold){ds}}: There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.

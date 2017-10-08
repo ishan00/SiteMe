@@ -385,15 +385,22 @@ def makeHTML(d):
 		return d
 
 def makeNavbar(navbar_style,  navbar_content):
+	#print (navbar_style)
 	navbar_type = findCorrespondingPair(navbar_style, 'type')[1]
 	del navbar_style[findCorrespondingPair(navbar_style,'type')[0]]
 	css_for_navbar = {'navbar':{}}
+	#print (navbar_type)
 	css_for_navbar['navbar']['type'] = navbar_type
 	css_for_navbar['navbar']['class'] = '.navbar'
+	#print (navbar_style)
+	#print (css_for_navbar)
 	for i in navbar_style:
+		#print ("Hi")
 		css_for_navbar['navbar'][i[0]] = i[1]
-	if (type_name == 'orange' or type_name == 'flat' or type_name == 'indented'):
+	if (navbar_type == 'orange' or navbar_type == 'flat' or navbar_type == 'indented'):
+		#print (css_for_navbar)
 		makeCSS(css_for_navbar)
+		#print (css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_flat)
 		navbar_dict['div']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_flat['content'][1]['content'][1])
@@ -413,7 +420,7 @@ def makeNavbar(navbar_style,  navbar_content):
 			navbar_dict['content'][1]['content'][i+1] = row
 		#print (navbar_dict)
 		return navbar_dict 
-	elif type_name == 'none':
+	elif navbar_type == 'none':
 		navbar_dict = copy.deepcopy(navbar_none)
 		navbar_dict['content'][1]['content'][1]['content'][1]['content'] = navbar_content[0][1]
 		li_element = copy.deepcopy(navbar_none['content'][2]['content'][1])
@@ -444,7 +451,7 @@ def makeNavbar(navbar_style,  navbar_content):
 			navbar_dict['content'][1][i+1] = li_element
 		#print (navbar_dict)
 		return navbar_dict
-	elif type_name == 'open':
+	elif navbar_type == 'open':
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_open)
 		navbar_dict['div']['class'] = 'navbar'
@@ -464,7 +471,7 @@ def makeNavbar(navbar_style,  navbar_content):
 				row['content'][1]['content'] = navbar_content[i][0]
 			navbar_dict['content'][2]['content'][1]['content'][i+1] = row
 		return navbar_dict
-	elif type_name == 'breadcrumbs':
+	elif navbar_type == 'breadcrumbs':
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_breadcrumbs)
 		navbar_dict['div']['class'] = 'navbar'
@@ -487,7 +494,7 @@ def makeNavbar(navbar_style,  navbar_content):
 				row['content'][1]['content'][2]['content']  = navbar_content[i][0]
 			navbar_dict['content'][1]['content'][1]['content'][i+1] = row
 		return navbar_dict
-	elif type_name == 'toggle':
+	elif navbar_type == 'toggle':
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_toggle)
 		navbar_dict['header']['class'] = 'navbar'
@@ -513,67 +520,83 @@ def cleanUp(l):
 	return l
 
 def findCorrespondingPair( lol , val):
-	for i in lol:
+	for i in range(len(lol)):
 		if lol[i][0] == val:
 			return [i,lol[i][1]]
 		else:
 			return False
 
-social_icons = ['facebook', 'gplus' , 'reddit' , 'email' , 'github' , 'home' , 'phone' , 'phone', 'twitter']
+social_icons = ['facebook', 'gplus' , 'reddit' , 'email' , 'github' , 'home' , 'phone' , 'linkedin', 'twitter']
 
 def makeFooter(footer_style,footer_content):
 	footer_type = findCorrespondingPair(footer_style, 'type')[1]
 	del footer_style[findCorrespondingPair(footer_style,'type')[0]]
 	css_for_footer = {'footer':{'class':'.footer' , 'type':footer_type}}
-	for i in navbar_style:
-		css_for_navbar[i[0]] = i[1]
+	for i in footer_style:
+		css_for_footer['footer'][i[0]] = i[1]
+	#print(css_for_footer)
 	makeCSS(css_for_footer)
-	#print(footer_type)
 	#print (footer_content)
 	if footer_type == 'basic':
 		footer_dict = copy.deepcopy(footer_basic)
+		#print (footer_content)
+		footer_dict['footer']['class'] = 'footer'
 		sample_li = copy.deepcopy(footer_basic['content'][2]['content'][1])
-		motto = findCorrespondingPair(footer_content,'MOTTO')
-		if (isinstance(motto,list)):
-			footer_dict['content'][1]['content'] = motto[1]
-			del footer_content[motto[0]]
 		company_name = findCorrespondingPair(footer_content,'NAME')
 		if (isinstance(company_name,list)):
 			footer_dict['content'][3]['content'] = company_name[1]
 			del footer_content[company_name[0]]
+		motto = findCorrespondingPair(footer_content,'MOTTO')
+		if (isinstance(motto,list)):
+			footer_dict['content'][1]['content'] = motto[1]
+			del footer_content[motto[0]]
 		for i in range(len(footer_content)):
 			row = copy.deepcopy(sample_li)
 			row['a']['href'] = footer_content[i][1]
 			row['content'] = footer_content[i][0]
-			footer_dict['content'][2]['content'][i+1] = row
+			footer_dict['content'][2]['content'][2*i+1] = row
+			if (i != len(footer_content) -1 ):
+				footer_dict['content'][2]['content'][2*i+2] = ' · '
 		#print (footer_dict)
 		return footer_dict
 	elif footer_type == 'social':
 		footer_dict = copy.deepcopy(footer_social)
+		footer_dict['footer']['class'] = 'footer'
 		elem = copy.deepcopy(footer_social['content'][1]['content'][1])
 		for i in range(len(footer_content)):
 			row = copy.deepcopy(elem)
-			row['content'][1]['img']['src'] = 'img/' + footer_content[i][0].strip() +'.png'
+			row['content'][1]['img']['src'] = 'img/icons/' + footer_content[i][0].strip() +'.png'
 			row['a']['href'] = footer_content[i][1].strip()
 			footer_dict['content'][1]['content'][i+1] = row
 		return footer_dict
 	elif footer_type == 'distributed':
 		footer_dict = copy.deepcopy(footer_distributed)
+		footer_dict['footer']['class'] = 'footer'
 		elem_left = copy.deepcopy(footer_distributed['content'][2]['content'][1]['content'][1])
 		elem_right = copy.deepcopy(footer_distributed['content'][1]['content'][1])
+		company_name = findCorrespondingPair(footer_content,'NAME')
+		temp = ""
+		if (isinstance(company_name,list)):
+			temp = company_name[1]
+			del footer_content[company_name[0]]
+		del footer_dict['content'][1]['content'][1]
 		for i in range(len(footer_content)):
 			if(footer_content[i][0] in social_icons):
 				row = copy.deepcopy(elem_right)
-				row['content'][1]['img']['src'] = 'img/' + footer_content[i][0].strip() +'.png'
+				row['content'][1]['img']['src'] = 'img/icons/' + footer_content[i][0].strip() +'.png'
 				row['a']['href'] = footer_content[i][1].strip()
-				new_index_of_insertion = max(footer_dict['content'][1]['content'].keys())
+				new_index_of_insertion = len(footer_dict['content'][1]['content'].keys())
 				footer_dict['content'][1]['content'][new_index_of_insertion+1] = row
 			else:
 				row = copy.deepcopy(elem_left)
 				row['content'] = footer_content[i][0].strip()
 				row['a']['href'] = footer_content[i][1].strip()
-				new_index_of_insertion = max(footer_dict['content'][2]['content'][1]['content'].keys())
+				new_index_of_insertion = len(footer_dict['content'][2]['content'][1]['content'].keys())
 				footer_dict['content'][2]['content'][1]['content'][new_index_of_insertion+1] = row
+				footer_dict['content'][2]['content'][1]['content'][new_index_of_insertion+2] = ' · '
+		to_remove = max(footer_dict['content'][2]['content'][1]['content'].keys())
+		footer_dict['content'][2]['content'][2] = temp
+		del footer_dict['content'][2]['content'][1]['content'][to_remove]
 		return footer_dict
 	elif footer_type == 'distributed_contact':
 		footer_dict = copy.deepcopy(footer_distributed_contact)
@@ -759,9 +782,9 @@ main_dict = {'html':{} , 'content':{
 		1:{'head':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
 			2:{'style':{} , 'content' : ''},
-			3:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
+			5:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
-			5:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
+			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
 			6:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
 			7:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
 		}} , 

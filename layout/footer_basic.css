@@ -3,72 +3,62 @@ $CLASS$ {
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
 	box-sizing: border-box;
 	width: 100%;
-	text-align: left;
-	font: normal 16px sans-serif;
+	text-align: center;
+	font: normal 18px sans-serif;
 
-	padding: 45px 50px;
+	padding: 45px;
 	margin-top: 80px;
 }
 
-$CLASS$ .footer-left p{
+$CLASS$ .footer-company-motto{
+	color:  $MOTTO-FONT-COLOR$;
+	font-size: $MOTTO-FONT-SIZE$;
+	margin: 0;
+}
+
+$CLASS$ .footer-company-name{
 	color:  $NAME-FONT-COLOR$;
 	font-size: $NAME-FONT-SIZE$;
 	margin: 0;
 }
 
-/* Footer links */
-
-$CLASS$ p.footer-links{
-	font-size:$FONT-SIZE$;
+$CLASS$ .footer-links{
+	list-style: none;
 	font-weight: bold;
 	color:  $FONT-COLOR$;
-	margin: 0 0 10px;
-	padding: 0;
+        font-size: $FONT-SIZE$;
+	padding: 35px 0 23px;
+	margin: 0;
 }
 
-$CLASS$ p.footer-links a{
+$CLASS$ .footer-links a{
 	display:inline-block;
-	line-height: 1.8;
 	text-decoration: none;
-	color:  inherit;
-}
-
-$CLASS$ .footer-right{
-	float: right;
-	margin-top: 6px;
-	max-width: 180px;
-}
-
-$CLASS$ .footer-right a{
-	display: inline-block;
-	width: 35px;
-	height: 35px;
-	background-color:  #33383b;
-	border-radius: 2px;
-
-	font-size: 20px;
-	color: #ffffff;
-	text-align: center;
-	line-height: 35px;
-
-	margin-left: 3px;
+	color: inherit;
 }
 
 /* If you don't want the footer to be responsive, remove these media queries */
 
 @media (max-width: 600px) {
 
-	$CLASS$ .footer-left,
-	$CLASS$ .footer-right{
-		text-align: center;
+	$CLASS${
+		padding: 35px;
 	}
 
-	$CLASS$ .footer-right{
-		float: none;
-		margin: 0 auto 20px;
+	$CLASS$ .footer-company-motto{
+		font-size: 18px;
 	}
 
-	$CLASS$ .footer-left p.footer-links{
+	$CLASS$ .footer-company-name{
+		font-size: 12px;
+	}
+
+	$CLASS$ .footer-links{
+		font-size: 14px;
+		padding: 25px 0 20px;
+	}
+
+	$CLASS$ .footer-links a{
 		line-height: 1.8;
 	}
 }
