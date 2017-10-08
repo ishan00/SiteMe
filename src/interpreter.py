@@ -701,10 +701,20 @@ main_dict = {'html':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
 			2:{'style':{} , 'content' : ''},
 			3:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
+<<<<<<< HEAD
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			5:{'link':{'rel':'stylesheet', 'href':'css/style.css', 'content':''}},
 			6:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
 			7:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+=======
+			4:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
+			5:{'link':{'rel':'stylesheet', 'href':'css/footer_basic.css'} , 'content':''},
+			6:{'link':{'rel':'stylesheet', 'href':'css/navbar_open.css'} , 'content':''},
+			7:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
+			8:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			9:{'script':{'src':'css/navbar_open.js'} , 'content' : ''},
+			10:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+>>>>>>> 724426007a61b948f5afc676073f5cc37f20f7ae
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',

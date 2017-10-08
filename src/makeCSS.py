@@ -13,3 +13,19 @@
 		cover : { type : type2 , class : class_name , content : {img : path , title :  , description : short_description } } 
 	}
 '''
+navbarDict={'$CLASS$':'.navbar','$COLOR$':'#f96e5b','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'14px','$HOVER-COLOR$':'#ffffff','$HOVER-FONT-COLOR$':'#333333'.'$DROPDOWN-COLOR$':'none','$DROPDOWN-FONT-COLOR$':'#8B8B8B','$TOGGLE-COLOR$':'#38a6a6','$ARROW-COLOR$':'#ffffff'}
+
+def makeNavbarCSS(d):
+	CSSFile=open('../layout/navbar_'+d['type']+'.css')
+	CSSString=CSSFile.read()
+	del d['type']
+	for (key,value) in d.items():
+		navbarDict['$'+key.upper()+'$']=value
+	for (key,value) in navbarDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('../site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+makeNavbarCSS({'type':'orange','class':'.oho','font-color':'blue','color':'red'})
+
