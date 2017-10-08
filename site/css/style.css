@@ -1,106 +1,163 @@
-* {box-sizing:border-box}
-
-/* Slideshow container */
-.slideshow-container {
-  max-width: 1000px;
-  position: relative;
-  margin: auto;
-}
-
-.mySlides {
-    display: none;
-}
-
-/* Next & previous buttons */
-.prev, .next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700);
+.navbar {
+  background: #fff;
   width: auto;
-  margin-top: -22px;
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
 }
-
-/* Position the "next button" to the right */
-.next {
-  right: 0;
-  border-radius: 3px 0 0 3px;
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  display: block;
+  zoom: 1;
 }
-
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover, .next:hover {
-  background-color: rgba(0,0,0,0.8);
+.navbar ul:after {
+  content: " ";
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
-
-/* Caption text */
-.text {
-  color: #f2f2f2;
-  font-size: 15px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-}
-
-/* Number text (1/3 etc) */
-.numbertext {
-  color: #f2f2f2;
-  font-size: 12px;
-  padding: 8px 12px;
-  position: absolute;
-  top: 0;
-}
-
-/* The dots/bullets/indicators */
-.dot {
-  cursor:pointer;
-  height: 13px;
-  width: 13px;
-  margin: 0 2px;
-  background-color: #bbb;
-  border-radius: 50%;
+.navbar ul li {
   display: inline-block;
-  transition: background-color 0.6s ease;
+  padding: 0;
+  margin: 0;
 }
-
-.active, .dot:hover {
-  background-color: #717171;
+.navbar.align-right ul li {
+  float: right;
 }
-
-/* Fading animation */
-.fade {
-  -webkit-animation-name: fade;
-  -webkit-animation-duration: 1.5s;
-  animation-name: fade;
-  animation-duration: 1.5s;
-}
-
-@-webkit-keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
-}
-
-@keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
-}
-
- .polaroid {
-  width: 80%;
-  background-color: red;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  margin-bottom: 25px;
-}
-
- .container {
+.navbar.align-center ul {
   text-align: center;
-  font-size: 40px;
-  color: blue;
-  padding: 60px 20px;
+}
+.navbar ul li a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+  padding: 15px 25px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  position: relative;
+  -webkit-transition: color .25s;
+  -moz-transition: color .25s;
+  -ms-transition: color .25s;
+  -o-transition: color .25s;
+  transition: color .25s;
+}
+.navbar ul li a:hover {
+  color: red;
+}
+.navbar ul li a:hover:before {
+  width: 100%;
+}
+.navbar ul li a:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: -3px;
+  top: 19px;
+  height: 6px;
+  width: 6px;
+  background: #ffffff;
+  opacity: .5;
+}
+.navbar ul li a:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background: red;
+  -webkit-transition: width .25s;
+  -moz-transition: width .25s;
+  -ms-transition: width .25s;
+  -o-transition: width .25s;
+  transition: width .25s;
+}
+.navbar ul li.last > a:after,
+.navbar ul li:last-child > a:after {
+  display: none;
+}
+.navbar ul li.active a {
+  color: red;
+}
+.navbar ul li.active a:before {
+  width: 100%;
+}
+.navbar.align-right li.last > a:after,
+.navbar.align-right li:last-child > a:after {
+  display: block;
+}
+.navbar.align-right li:first-child a:after {
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  .navbar ul li {
+    float: none;
+    display: block;
+  }
+  .navbar ul li a {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid #fb998c;
+  }
+  .navbar ul li.last > a,
+  .navbar ul li:last-child > a {
+    border: 0;
+  }
+  .navbar ul li a:after {
+    display: none;
+  }
+  .navbar ul li a:before {
+    display: none;
+  }
+}
+.fade1 .container {
+  position: relative;
+  width: 50%;
+}
+
+.fade1 .image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fade1 .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #008CBA;
+  overflow: hidden;
+  width: 0;
+  height: 100%;
+  opacity: none;
+  transition: .5s ease;
+}
+
+.fade1 .container:hover .overlay {
+  width: 100%;
+  height:none;
+  left: none;
+  bottom: none;
+  opacity: none;
+}
+
+.fade1 .text {
+  white-space: nowrap; 
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }

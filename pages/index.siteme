@@ -2,8 +2,6 @@ title:CS 251 Course Homepage
 font-size:18pt
 background-color:rgb(159,229,224)
 
-image(height:400px,width:100%){background.jpg}
-
 (h1,text-
 align:center){Informal Course Overview}
 This (Pre){{ds (bold){ds} }}  is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to build a 
@@ -11,17 +9,21 @@ table(type:kiwano,background-color:white,width:100%){
 *1,2*Item**hello**world
 **ohmy**god**daf
 }
- web page, document your work both theory and your code, and bulk up on your programming expertise coming from CS101 and CS152 with their associated labs. Geeks are welcome.
+web page, document your work both theory and your code, and bulk up on your programming expertise coming from CS101 and CS152 with their associated labs. Geeks are welcome.
 slideshow(type:kuchbhi){Caption1:1.jpg,Caption2:2.jpg,3.jpg}
 In this course we will cover some of
 HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot
 Reading and Writing Code, (){Profiling}, Debugging, Editors, IDE, Makefiles, Compilation, Linking, Version Control, C++, Java, Python, Bash
 Basic Linux Utilities
 Glimpse of web applications: Django
+-----------
+fade(left){hello:background.jpg}
 
 (bold,color:blue){Texts}: Note the description in the text section.
 (italic){Course s (bold){ds}}: There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.
 
+parallax(type: ){background.jpg}
+---
 (code){Snippet of Code will be placed here}
 
 2+2(sup){2} = 6
@@ -29,7 +31,7 @@ C(sub){n} = Catalan Number
 (kbd){Ctrl + C} and (kbd){Ctrl + V} is what we are doing
 
 (quote){Fake it till you make it}
-
+-----
 (bold){Lab Contents}
 list(u){
 * Lab 1 :HTML, CSS

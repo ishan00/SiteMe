@@ -17,14 +17,14 @@ import copy
 navbarDict={'$CLASS$':'.navbar','$COLOR$':'#f96e5b','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'14px','$HOVER-COLOR$':'#ffffff','$HOVER-FONT-COLOR$':'#333333','$DROPDOWN-COLOR$':'none','$DROPDOWN-FONT-COLOR$':'#8B8B8B','$TOGGLE-COLOR$':'#38a6a6','$ARROW-COLOR$':'#ffffff'}
 
 def makeNavbarCSS(d):
-	CSSFile=open('../layout/navbar_'+d['type']+'.css')
+	CSSFile=open('./layout/navbar_'+d['type']+'.css')
 	CSSString=CSSFile.read()
 	del d['type']
 	for (key,value) in d.items():
 		navbarDict['$'+key.upper()+'$']=value
 	for (key,value) in navbarDict.items():
 		CSSString=CSSString.replace(key,value)
-	styleFile=open('../site/css/style.css','a')
+	styleFile=open('./site/css/style.css','a')
 	styleFile.write(CSSString)
 	styleFile.close()
 
@@ -37,7 +37,7 @@ noneDict={'$OPACITY$':'0','$HOVER-OPACITY$':'1','$WIDTH$':'100%','$HEIGHT$':'100
 typeDict={'top':topDict,'bottom':bottomDict,'right':rightDict,'left':leftDict}
 
 def makeFadeCSS(d):
-	CSSFile=open('../layout/fade.css')
+	CSSFile=open('./layout/fade.css')
 	CSSString=CSSFile.read()
 	newfadeDict=copy.deepcopy(fadeDict)
 	if(d['type']):
@@ -49,23 +49,47 @@ def makeFadeCSS(d):
 		newfadeDict['$'+key.upper()+'$']=value
 	for (key,value) in newfadeDict.items():
 		CSSString=CSSString.replace(key,value)
-	styleFile=open('../site/css/style.css','a')
+	styleFile=open('./site/css/style.css','a')
 	styleFile.write(CSSString)
 	styleFile.close()
 
 cardDict={'$CLASS$':'.card','$COLOR$':'white','$FONT-COLOR$':'black','$FONT-SIZE$':'none','$PADDING-TOP$':'10px','$PADDING-LEFT$':'20px'}
 
 def makeCardCSS(d):
-	CSSFile=open('../layout/card.css')
+	CSSFile=open('./layout/card.css')
 	CSSString=CSSFile.read()
 	newcardDict=copy.deepcopy(cardDict)
 	for (key,value) in d.items():
 		newcardDict['$'+key.upper()+'$']=value
 	for (key,value) in newcardDict.items():
 		CSSString=CSSString.replace(key,value)
-	styleFile=open('../site/css/style.css','a')
+	styleFile=open('./site/css/style.css','a')
 	styleFile.write(CSSString)
 	styleFile.close()
 
+def makeParallaxCSS(d):
+	CSSFile=open('./layout/parallax.css')
+	CSSString=CSSFile.read()
+	CSSString=CSSString.replace('$CLASS$',d['class'])
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
 
-makeCardCSS({'class':'','font-color':'blue','color':'red','font-size':'40px','padding-top':'60px'})
+footerDict={'$COLOR$':'#292c2f','$FONT-COLOR$';'#ffffff','$FONT-SIZE$':'18px','$MOTTO-FONT-COLOR$':'#8d9093','$MOTTO-FONT-SIZE$':'24px','$NAME-FONT-COLOR$':'#8f9296','$NAME-FONT-SIZE$':'14px'}
+
+def makeFooterCSS(d):
+	CSSFile=open('./layout/footer_'+d['type']+'.css')
+	CSSString=CSSFile.read()
+	del d['type']
+	for (key,value) in d.items():
+		footerDict['$'+key.upper()+'$']=value
+	for (key,value) in footerDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS}
+
+def makeCSS(d):
+	CSSDict[list(d.keys())[0]](d[list(d.keys())[0]])

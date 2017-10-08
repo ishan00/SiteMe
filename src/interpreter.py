@@ -9,6 +9,7 @@ import ply.yacc as yacc
 from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
+from makeCSS import makeCSS
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
 from pyparsing import *
@@ -145,7 +146,7 @@ CSSCount={'card':1,'fade':1}
 def cardMaker(d,s):
 	cardDict={'div':{'class':'card'+str(CSSCount['card'])},'content':{'div':{'class':'polaroid'},'content':{1:{'img':{},'content':{}},2:{'div':{'class':'container'},'content':{1:{'p':{},'content':{}}}}}}}
 	sendDict={'class':'.card'+str(CSSCount['card'])}
-	cardDict['content']['content'][1]['img']['src']=content.split(':')[1]
+	cardDict['content']['content'][1]['img']['src']= 'img/' + content.split(':')[1]
 	cardDict['content']['content'][2]['content'][1]['content']=content.split(':')[0]
 	styleDict={y[:y.find(':')]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
 	for x in ['color','font-color','font-size','padding-top','padding-left']:
@@ -159,9 +160,13 @@ def cardMaker(d,s):
 	return cardDict
 
 def fadeMaker(style,content):
-	fadeDict={'div':{'class':'fade'+str(CSSCount['fade'])},'content':{'div':{'class':'container'},'content':{1:{'img':{'class':'image'},'content':{}},2:{'div':{'class':'overlay'},'content':{1:{'div':{'class':'text'},'content':{}}}}}}}
-	fadeDict['content']['content'][2]['content'][1]['content']=content.split(':')[0]
-	fadeDict['content']['content'][1]['img']['src']=content.split(':')[1]
+	fadeDict={'div':{'class':'fade'+str(CSSCount['fade'])},'content':{ 1:{
+				'div':{'class':'container'},'content':{
+					1:{'img':{'class':'image'},'content':''},
+					2:{'div':{'class':'overlay'},'content':{
+						1:{'div':{'class':'text'},'content':''}}}}}}}
+	fadeDict['content'][1]['content'][2]['content'][1]['content'] = content.split(':')[0]
+	fadeDict['content'][1]['content'][1]['img']['src']= 'img/' + content.split(':')[1]
 	sendDict={'class':'.fade'+str(CSSCount['fade'])}
 	if(style.split(',')[0]=='top' or style.split(',')[0]=='bottom' or style.split(',')[0]=='left' or style.split(',')[0]=='right'):
 		sendDict['type']=style.split(',')[0]
@@ -172,7 +177,7 @@ def fadeMaker(style,content):
 		if x in styleDict.keys():
 			sendDict[x]=styleDict[x]
 			del styleDict[x]
-	fadeDict['content']['content'][1]['img'].update(styleDict)
+	fadeDict['content'][1]['content'][1]['img'].update(styleDict)
 	sendDict={'fade':sendDict}
 	makeCSS(sendDict)
 	CSSCount['fade']=CSSCount['fade']+1
@@ -381,8 +386,14 @@ def makeHTML(d):
 
 def makeNavbar(navbar_style,  navbar_content):
 	type_name = navbar_style[0][1]
+	css_for_navbar = {'navbar':{}}
+	css_for_navbar['navbar']['class'] = '.navbar'
+	for i in navbar_style:
+		css_for_navbar['navbar'][i[0]] = i[1]
 	if (type_name == 'orange' or type_name == 'flat' or type_name == 'indented'):
+		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_flat)
+		navbar_dict['div']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_flat['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -432,7 +443,9 @@ def makeNavbar(navbar_style,  navbar_content):
 		#print (navbar_dict)
 		return navbar_dict
 	elif type_name == 'open':
+		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_open)
+		navbar_dict['div']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_open['content'][2]['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -450,7 +463,9 @@ def makeNavbar(navbar_style,  navbar_content):
 			navbar_dict['content'][2]['content'][1]['content'][i+1] = row
 		return navbar_dict
 	elif type_name == 'breadcrumbs':
+		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_breadcrumbs)
+		navbar_dict['div']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_breadcrumbs['content'][1]['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -471,7 +486,9 @@ def makeNavbar(navbar_style,  navbar_content):
 			navbar_dict['content'][1]['content'][1]['content'][i+1] = row
 		return navbar_dict
 	elif type_name == 'toggle':
+		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_toggle)
+		navbar_dict['header']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_toggle['content'][2]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -485,9 +502,6 @@ def makeNavbar(navbar_style,  navbar_content):
 				row['content'][1]['content']  = navbar_content[i][0]
 			navbar_dict['content'][2]['content'][i+1] = row
 		return navbar_dict
-
-
-		
 
 def cleanUp(l):
 	l = [y for y in l if (y != '{' and y != '}' and y != '(' and y != ')' and y!= ',' and y != ':')]
@@ -621,12 +635,12 @@ def parseAbstractElement(c):
 
 	#PAIR_3.parseString(' Resume: { onepage : a twopage : b } ').pprint()
 
-	STYLE_1 = Word(alphas) + ':' + Word(alphas)
+	STYLE_1 = Group(Word("abcdefghijklmnopqrstuvwxyz-") + ':' + Word('abcdefghijklmnopqrstuvwxyz-#0123456789(,)'))
 	STYLE_2 = Word(alphas)
 
-	STYLE = Group(STYLE_1|STYLE_2) + ZeroOrMore(',' + Group(STYLE_1 | STYLE_2))
+	STYLE = OneOrMore(STYLE_1)
 
-	#STYLE.parseString(' type : none inverted ').pprint()
+	#STYLE.parseString(' type : orange  color:rgb(120,34,76)  font-color : #ef123c ').pprint()
 
 	CONTENT = OneOrMore(PAIR)
 
@@ -659,6 +673,7 @@ def p_body(p):
             | body newline
             | body pre
             | body fakekeyword
+            | body hrule
             |
     '''
     if(len(p)==3):
@@ -683,6 +698,10 @@ def p_newline(p):
     'newline : NEWLINE'
     p[0]="<br>"
 
+def p_hrule(p):
+	'hrule : HRULE'
+	p[0]="<hr>"
+
 def p_keyword(p):
     'keyword : KEYWORD'
     if(p[1][0:3]=="###"):
@@ -700,24 +719,23 @@ parser=yacc.yacc()
 # This Part Applies Above Grammar On The File
 ###########################################################################
 
-def main():
-	main_dict = {'html':{} , 'content':{ 
+main_dict = {'html':{} , 'content':{ 
 		1:{'head':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
 			2:{'style':{} , 'content' : ''},
 			3:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
-			4:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
-			5:{'link':{'rel':'stylesheet', 'href':'css/footer_basic.css'} , 'content':''},
-			6:{'link':{'rel':'stylesheet', 'href':'css/navbar_open.css'} , 'content':''},
-			7:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
-			8:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			9:{'script':{'src':'css/navbar_open.js'} , 'content' : ''},
-			10:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
+			5:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
+			6:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			7:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',
 			2:'',
 			3:'',}}}}
+
+def main():
+	global main_dict
 	con = open(configfile)
 	c = con.read()
 	c = parseAbstractElement(c)
@@ -752,6 +770,7 @@ def main():
 	style_content = ';\n'.join(style_content) + ';\n'
 	main_dict['content'][1]['content'][2]['content'] = style_content
 	main_dict['content'][2]['content'][2] = body_content
+	#print (main_dict)
 	print(makeHTML(main_dict))
 
 main()

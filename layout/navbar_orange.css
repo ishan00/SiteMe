@@ -71,7 +71,7 @@ $CLASS$ ul li a:before {
   bottom: 0;
   height: 3px;
   width: 0;
-  background: #333333;
+  background: $HOVER-FONT-COLOR$;
   -webkit-transition: width .25s;
   -moz-transition: width .25s;
   -ms-transition: width .25s;
@@ -83,7 +83,7 @@ $CLASS$ ul li:last-child > a:after {
   display: none;
 }
 $CLASS$ ul li.active a {
-  color: #333333;
+  color: $HOVER-FONT-COLOR$;
 }
 $CLASS$ ul li.active a:before {
   width: 100%;

@@ -1,8 +1,8 @@
-navbar ( type : open ) {
+navbar ( type : orange  color: #fff  font-color : #000 hover-font-color: red ) {
 	Home : #
-	About : http://facebook.com
+	(r){About} : http://facebook.com
 	Contact : https://google.co.in
-	Resume : resume2page.pdf
+	(r){Resume} : resume2page.pdf
 }
 
 footer ( type : basic ){
