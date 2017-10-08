@@ -140,27 +140,43 @@ TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'}}
-CSS={'card':[1,1],'fade':[2,1]}
+CSSCount={'card':1,'fade':1}
 
 def cardMaker(d,s):
-	cardDict={'div':{'class':'polaroid'+str(CSS['card'][1])},'content':{1:{},2:{'div':{'class':'polaroid-container'+str(CSS['card'][1])},'content':{1:{'p':{},'content':{}}}}}}
-	cardDict['content'][1]=d
-	cardDict['content'][2]['content'][1]['content']=s[s.find(':')+1:]
-	CSS['card'][1]=CSS['card'][1]+1
+	cardDict={'div':{'class':'card'+str(CSSCount['card'])},'content':{'div':{'class':'polaroid'},'content':{1:{'img':{},'content':{}},2:{'div':{'class':'container'},'content':{1:{'p':{},'content':{}}}}}}}
+	sendDict={'class':'.card'+str(CSSCount['card'])}
+	cardDict['content']['content'][1]['img']['src']=content.split(':')[1]
+	cardDict['content']['content'][2]['content'][1]['content']=content.split(':')[0]
+	styleDict={y[:y.find(':')]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
+	for x in ['color','font-color','font-size','padding-top','padding-left']:
+		if x in styleDict.keys():
+			sendDict[x]=styleDict[x]
+			del styleDict[x]
+	cardDict['content']['content'][1]['img'].update(styleDict)
+	sendDict={'card':sendDict}
+	makeCSS(sendDict)
+	CSSCount['card']=CSSCount['card']+1
 	return cardDict
 
-def fadeMaker(d,s):
-	fadeDict={'div':{'class':'fade-container'+str(CSS['fade'][1])},'content':{1:{},2:{'div':{'class':'fade-overlay'+str(CSS['fade'][1])},'content':{1:{'div':'fade-text'+str(CSS['fade'][1])},'content':{}}}}}
-	if 'class' in d['img'].keys():
-		d['img']['class']=d['img']['class']+' fade-image'+str(CSS['fade'][1])
+def fadeMaker(style,content):
+	fadeDict={'div':{'class':'fade'+str(CSSCount['fade'])},'content':{'div':{'class':'container'},'content':{1:{'img':{'class':'image'},'content':{}},2:{'div':{'class':'overlay'},'content':{1:{'div':{'class':'text'},'content':{}}}}}}}
+	fadeDict['content']['content'][2]['content'][1]['content']=content.split(':')[0]
+	fadeDict['content']['content'][1]['img']['src']=content.split(':')[1]
+	sendDict={'class':'.fade'+str(CSSCount['fade'])}
+	if(style.split(',')[0]=='top' or style.split(',')[0]=='bottom' or style.split(',')[0]=='left' or style.split(',')[0]=='right'):
+		sendDict['type']=style.split(',')[0]
 	else:
-		d['img']['class']='fade-image'+str(CSS['fade'][1])
-	fadeDict['content'][1]=d
-	fadeDict['content'][2]['content'][1]['content']=s[s.find(':')+1:]
-	CSS['fade'][1]=CSS['fade'][1]+1
+		sendDict['type']=None
+	styleDict={y[:y.find(':')]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
+	for x in ['color','font-color','font-size']:
+		if x in styleDict.keys():
+			sendDict[x]=styleDict[x]
+			del styleDict[x]
+	fadeDict['content']['content'][1]['img'].update(styleDict)
+	sendDict={'fade':sendDict}
+	makeCSS(sendDict)
+	CSSCount['fade']=CSSCount['fade']+1
 	return fadeDict
-
-CodeDict={'card':cardMaker,'fade':fadeMaker}
 
 def imageMaker(style,content):
 	if content:
@@ -170,11 +186,10 @@ def imageMaker(style,content):
 				styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
 			else:
 				styleDict[list(x.keys())[0]]=list(x.values())[0]
-		extraDict={y:CSS[y[:y.find(':')].split('-')[0]] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].split('-')[0] in CSS.keys()]}
 		styleDict.update({'src':"img/" + content})
 		currDict={'img':styleDict,'content':{}}
-		for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
-			currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
+		# for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
+		# 	currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
 		return currDict
 
 def linkMaker(style,content):
@@ -306,7 +321,7 @@ def parallaxMaker(s,i):
 	parallax_dict['div']['background-image'] = "url('img/" + content + "')"
 	return parallax_dict
 
-styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker, 'parallax':parallaxMaker}
+styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker, 'parallax':parallaxMaker,'fade':fadeMaker,'card':cardMaker}
 
 def styleMaker(s):
 	# styleName=re.search(r'(.*?)\(',s).group(1)

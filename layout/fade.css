@@ -1,0 +1,43 @@
+$CLASS$ .container {
+  position: relative;
+  width: 50%;
+}
+
+$CLASS$ .image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+$CLASS$ .overlay {
+  position: absolute;
+  bottom: $BOTTOM$;
+  left: $LEFT$;
+  right: 0;
+  background-color: $COLOR$;
+  overflow: hidden;
+  width: $WIDTH$;
+  height: $HEIGHT$;
+  opacity: $OPACITY$;
+  transition: .5s ease;
+}
+
+$CLASS$ .container:hover .overlay {
+  width: $HOVER-WIDTH$;
+  height:$HOVER-HEIGHT$;
+  left: $HOVER-LEFT$;
+  bottom: $HOVER-BOTTOM$;
+  opacity: $HOVER-OPACITY$;
+}
+
+$CLASS$ .text {
+  white-space: nowrap; 
+  color: $FONT-COLOR$;
+  font-size: $FONT-SIZE$;
+  position: absolute;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
