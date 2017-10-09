@@ -1,4 +1,4 @@
-set datafile separator ':'
+set datafile separator ','
 stats 'XXXXX' u 2 noout      # get STATS_sum (sum of column 2)
 
 ang(x)=x*360.0/STATS_sum        # get angle (grades)

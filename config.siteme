@@ -1,4 +1,4 @@
-navbar ( type : orange color:blue hover-color : red font-color: red hover-font-color:yellow ) {
+navbar ( type : orange font-color : black ) {
 	Home : #
 	(r){About} : http://facebook.com
 	Contact : https://google.co.in

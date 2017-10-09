@@ -30,6 +30,8 @@ fi
 #python3 ./src/interpreter.py >./site/index.html
 
 python3 ./src/interpreter.py ./pages/index.siteme ./config.siteme > ./site/index.html
-if [ -f "./tmp/*.plot" ]
-	then gnuplot ./tmp/*.plot
+if [  -f  ./tmp/*.plot ]
+	then 
+	gnuplot -p ./tmp/*.plot
 fi
+

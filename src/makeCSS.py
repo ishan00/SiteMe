@@ -89,7 +89,21 @@ def makeFooterCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS,'footer':makeFooterCSS}
+buttonDict={'$CLASS$':'button','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'15px','$PADDING-LEFT$':'32px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'none','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'none','$HOVER-FONT-COLOR$':'none','$HOVER-SHADOW$':'none'}
+
+def makeButtonCSS(d):
+	CSSFile=open('./layout/button.css')
+	CSSString=CSSFile.read()
+	newbuttonDict=copy.deepcopy(buttonDict)
+	for (key,value) in d.items():
+		newbuttonDict['$'+key.upper()+'$']=value
+	for (key,value) in newbuttonDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS,'footer':makeFooterCSS,'button':makeButtonCSS}
 
 def makeCSS(d):
 	CSSDict[list(d.keys())[0]](d[list(d.keys())[0]])

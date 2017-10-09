@@ -1,6 +1,7 @@
 import re,itertools
 import copy
 import sys
+import shutil
 sys.path.append('../layout/')
 sys.path.append('./layout/')
 sys.path.append('../src/')
@@ -140,10 +141,62 @@ TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','
 'width':'width','height':'height','data-target':'data-target','data-slide-to':'data-slide-to','align':'align','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
-'hover':{'class':'hover'}}
-CSSCount={'card':1,'fade':1}
+'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
+'hover-shadow':{'hover-shadow':'0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)'},'disabled':{'opacity':'0.6','cursor':'not-allowed'}}
+CSSCount={'card':1,'fade':1,'button':1}
 
-def cardMaker(d,s):
+def piechartMaker(style,content):
+	style=style.split(',')
+	r1 = re.compile("label.*")
+	styleLabel = list(filter(r1.match, style))[0]
+	r1 = re.compile("type.*")
+	styleType = list(filter(r1.match, style))[0]
+	r2=re.compile("(?!(label|type)).*")
+	styleStyle=list(filter(r2.match, style))
+	if ',' in content:
+		tempFile=open("./tmp/"+styleLabel.split(':')[1].strip()+".csv",'w')
+		tempFile.write(content.replace(',','\n').replace(':',','))
+		tempFile.close()
+	else:
+		shutil.copy("./pages/"+content.strip(),"./tmp/"+styleLabel.split(':')[1].strip()+".csv")
+	file=open("./layout/GNUPlot/piechart_"+styleType.strip().split(':')[1]+".plot")
+	newFile=open("./tmp/"+styleLabel.split(':')[1].strip()+".plot",'w')
+	line=file.readline()
+	templine=''
+	while(line):
+	    if("XXXXX" in line):
+	        templine=templine+line.replace("XXXXX","./tmp/"+styleLabel.split(':')[1].strip()+".csv")
+	    elif("YYYYY" in line):
+	        templine=templine+line.replace("YYYYY","./site/img/"+styleLabel.split(':')[1].strip()+".png")
+	    else:
+	        templine=templine+line
+	    line=file.readline()
+	newFile.write(templine)
+	piechartDict={'img':{'src':'img/'+styleLabel.split(':')[1].strip()+'.png'},'content':{}}
+	if(styleStyle):
+		tempDict={x[:x.find(':')]:x[x.find(':')+1] for x in styleStyle}
+		piechartDict['img'].update(tempDict)
+		return piechartDict
+	else:
+		return piechartDict
+
+def buttonMaker(style,content):
+	buttonDict={'button':{'class':'button'+str(CSSCount['button'])},'content':content}
+	sendDict={'class':'.button'+str(CSSCount['button'])}
+	tempDict={y[:y.find(':')]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
+	for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+		for (key,value) in x.items():
+			if key in tempDict.keys():
+				tempDict[key]=tempDict[key]+' '+value
+			else:
+				tempDict[key]=value
+	sendDict.update(tempDict)
+	sendDict={'button':sendDict}
+	makeCSS(sendDict)
+	CSSCount['button']=CSSCount['button']+1
+	return buttonDict
+
+def cardMaker(style,content):
 	cardDict={'div':{'class':'card'+str(CSSCount['card'])},'content':{'div':{'class':'polaroid'},'content':{1:{'img':{},'content':{}},2:{'div':{'class':'container'},'content':{1:{'p':{},'content':{}}}}}}}
 	sendDict={'class':'.card'+str(CSSCount['card'])}
 	cardDict['content']['content'][1]['img']['src']= 'img/' + content.split(':')[1]
@@ -326,7 +379,7 @@ def parallaxMaker(s,i):
 	parallax_dict['div']['background-image'] = "url('img/" + content + "')"
 	return parallax_dict
 
-styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker, 'parallax':parallaxMaker,'fade':fadeMaker,'card':cardMaker}
+styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker, 'parallax':parallaxMaker,'fade':fadeMaker,'card':cardMaker,'piechart':piechartMaker,'button':buttonMaker}
 
 def styleMaker(s):
 	# styleName=re.search(r'(.*?)\(',s).group(1)
