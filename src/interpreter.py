@@ -252,20 +252,18 @@ def imageMaker(style,content):
 
 def linkMaker(style,content):
 	if content:
-		if style:
-			styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
-			for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
-				if list(x.keys())[0] in styleDict.keys():
-					styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
-				else:
-					styleDict[list(x.keys())[0]]=list(x.values())[0]
-			styleDict.update({'href':content})
-			if(style[:style.find(',')] not in OneNonCSS.keys() and ':' not in style[:style.find(',')]):
-				return {'a':styleDict,'content':style[:style.find(',')]}
+		styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+		for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+			if list(x.keys())[0] in styleDict.keys():
+				styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
 			else:
-				return {'a':styleDict,'content':content}
+				styleDict[list(x.keys())[0]]=list(x.values())[0]
+		if ':' in content:
+			styleDict.update({'href':content[content.find(':')+1:]})
+			return {'a':styleDict,'content':content[:content.find(':')]}
 		else:
-			return {'a':{'href':content},'content':content}
+			styleDict.update({'href':content})
+			return {'a':styleDict,'content':content}
 
 def listMaker(style,content):
 	if content:
