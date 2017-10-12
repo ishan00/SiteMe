@@ -1,10 +1,11 @@
-title:CS 251 Course Homepage
+title:SiteMe
 font-size:18pt
-background-color:rgb(159,229,224)
+slideshow(type:button){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}
+(h1,text-align:center){SiteMe}
 
-(h1,text-
-align:center){Informal Course Overview}
-This (Pre){{ds (bold){ds} }}  is an intro, catch all course on the technology landscape of software from a CSE under graduate point of view. The bare minimum is that you should be able to build a 
+(bold){SiteMe} is a static site builder that convert text files into responsive websites. The program will take as input text files, images etc and convert them into a ready to publish website.
+SiteMe is our course project for CS251, Software Systems Lab though we plan on continuing to add more features and simplifying the product even when the course finishes
+
 table(type:kiwano,background-color:white,width:100%){
 *1,2*Item**hello**world
 **ohmy**god**daf
