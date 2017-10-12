@@ -1,0 +1,22 @@
+$CLASS$ {
+    background-color: $COLOR$;
+    border: $BORDER-COLOR$;
+    color: $FONT-COLOR$;
+    padding: $PADDING-TOP$ $PADDING-LEFT$;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: $FONT-SIZE$;
+    margin: 4px 2px;
+    cursor: $CURSOR$;
+    border-radius: $ROUNDED$;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    box-shadow: $SHADOW$;
+    opacity: $OPACITY$;
+}
+$CLASS$:hover {
+    background-color: $HOVER-COLOR$;
+    color: $HOVER-FONT-COLOR$;
+    box-shadow: $HOVER-SHADOW$;
+}

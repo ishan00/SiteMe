@@ -13,24 +13,28 @@ table(type:kiwano,background-color:white,width:100%){
 web page, document your work both theory and your code, and bulk up on your programming expertise coming from CS101 and CS152 with their associated labs. Geeks are welcome.
 slideshow(type:kuchbhi){Caption1:1.jpg,Caption2:2.jpg,3.jpg}
 In this course we will cover some of
+link(){Heelo:www.google.com}
 HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot
-Reading and Writing Code, (){Profiling}, Debugging, Editors, IDE, Makefiles, Compilation, Linking, Version Control, C++, Java, Python, Bash
+Reading and Writing Code, (){Profiling}, Debugging, Editors, IDE,
+link(){button(color:blue){Click Me}:www.facebook.com}
+Makefiles, Compilation, Linking, Version Control, C++, Java, Python, Bash
 Basic Linux Utilities
 Glimpse of web applications: Django
 -----------
-fade(top){hello:background.jpg}
+fade(top,font-color:red){hello:background.jpg}
 
 (bold,color:blue){Texts}: Note the description in the text section.
 (italic){Course s (bold){ds}}: There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.
 
-parallax(type: ){background.jpg}
+parallax(){}
 ---
 (code){Snippet of Code will be placed here}
-
+piechart(label:match,type:basic){temp.csv}
 2+2(sup){2} = 6
+button(color:red){HELO}
 C(sub){n} = Catalan Number
 (kbd){Ctrl + C} and (kbd){Ctrl + V} is what we are doing
-
+button(color:blue,hover-shadow,round,font-color:red,disabled){SELO}
 (quote){Fake it till you make it}
 -----
 (bold){Lab Contents}

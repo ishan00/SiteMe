@@ -3,6 +3,11 @@ navbar ( type : orange color:white hover-color : black font-color: black hover-f
 	(r){Proposal} : https://docs.google.com/document/d/1MlbYfoaCAXKGN_MdGCutiuSkSxZumnNxtfnx9ASNoBo/edit
 	(r){About} : https://ishan00.github.io/introduction/navbar
 	(r){Home} : #
+navbar ( type : orange font-color : black ) {
+	Home : #
+	(r){About} : http://facebook.com
+	Contact : https://google.co.in
+	(r){Resume} : resume2page.pdf
 }
 
 footer ( type : social ){
