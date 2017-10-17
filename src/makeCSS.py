@@ -89,7 +89,7 @@ def makeButtonCSS(d):
 	styleFile.close()
 
 def makeAccordionCSS(d):
-	CSSFile = open('./layout/accordian.css')
+	CSSFile = open('./layout/accordion.css')
 	CSSString = CSSFile.read()
 	styleFile = open('./site/css/style.css','a')
 	styleFile.write(CSSString)

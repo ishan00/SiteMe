@@ -391,7 +391,6 @@ def accordionMaker(s,i):
 	title_dict = {'button':{'class':'accordion'} , 'content':''}
 	text_dict = {'div':{'class':'panel'},'content' : {1 : {'p':{} , 'content' : ''}}}
 	CHARACTER_CLASS = ''' \nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!@#$%^&(){}[]\|'''
-	
 	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
 	CONTENT = ZeroOrMore(ELEM)
 
@@ -409,7 +408,8 @@ def accordionMaker(s,i):
 
 	css_for_accordion = {'accordion':{}}
 	makeCSS(css_for_accordion)
-	eprint (accordion_dict)
+	#eprint (accordion_dict)
+	makeJS({'accordion':{}})
 	return accordion_dict
 
 
@@ -450,7 +450,8 @@ Note: It is assumed that styles provided are valid
 standAlone=['href', 'src', 'class', 'id', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
 Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
 'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'p':True,
-'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'dt':True, 'dl':True , 'dd' :True ,'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
+'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'dt':True, 'dl':True , 'dd' :True ,'title':True, 'style':True,
+'link':False, 'html':True, 'footer':True}
 def makeHTML(d):
 	if(isinstance(d,dict)):
 		keysList=list(d.keys())
@@ -879,6 +880,20 @@ parser=yacc.yacc()
 # This Part Applies Above Grammar On The File
 ###########################################################################
 
+def makeJS(d):
+	global main_dict
+	element = list(d.keys())[0]
+	#eprint(element)
+	if ('type' in list(d[element].keys())):
+		filename = 'layout/' + element + '_' + d[element][type] + '.js'
+	else:
+		filename = 'layout/' + element + '.js'
+	f = open(filename)
+	f = f.read()
+	#eprint(f)
+	count = len(list(main_dict['content'][2]['content'].keys()))
+	main_dict['content'][2]['content'][count+1] = {'script':{} , 'content':f}
+
 main_dict = {'html':{} , 'content':{ 
 		1:{'head':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
@@ -892,7 +907,8 @@ main_dict = {'html':{} , 'content':{
 		2:{'body':{} , 'content':{
 			1:'',
 			2:'',
-			3:'',}}}}
+			3:''
+			}}}}
 
 def main():
 	global main_dict
