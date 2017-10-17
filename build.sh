@@ -5,9 +5,9 @@ else
 	if [ ! -d "./site/css" ]; then
 		mkdir ./site/img
 	fi
-	if [ ! -d "./site/pages" ]; then
-		mkdir ./site/pages
-	fi
+	#if [ ! -d "./site/pages" ]; then
+	#	mkdir ./site/pages
+	#fi
 	if [ ! -d "./site/img" ]; then
 		mkdir ./site/img
 	fi
@@ -39,8 +39,6 @@ do
 	#echo $OUTPUT_FILE
 	python3 ./src/interpreter.py $page ./config.siteme > $OUTPUT_FILE 
 done
-#python3 ./src/interpreter.py ./pages/index.siteme ./config.siteme > ./site/index.html
-#python3 ./src/interpreter.py ./pages/about.siteme ./config.siteme > ./site/about.html
 
 if [  -f  ./tmp/*.plot ]
 	then 
@@ -50,5 +48,6 @@ fi
 if [ -f ./site/index.html ]
 	then
 	xdg-open ./site/index.html
+	#subl ./site/index.html
 fi
 

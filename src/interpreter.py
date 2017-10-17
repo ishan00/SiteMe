@@ -1,3 +1,4 @@
+from __future__ import print_function
 import re,itertools
 import copy
 import sys
@@ -14,6 +15,9 @@ from makeCSS import makeCSS
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
 from pyparsing import *
+
+def eprint(*args, **kwargs):
+	print (*args, file=sys.stderr, **kwargs)
 
 
 short_syntax = {'r' : 'right' , 'l' : 'left','c':'center'}
@@ -138,7 +142,7 @@ def taggedMaker(style,content):
             return "<div style=\""+htagged+"\">"+content+"</div>"
 
 TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
-'width':'width','height':'height','data-target':'data-target','data-slide-to':'data-slide-to','align':'align','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
+'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
@@ -174,7 +178,7 @@ def piechartMaker(style,content):
 	newFile.write(templine)
 	piechartDict={'img':{'src':'img/'+styleLabel.split(':')[1].strip()+'.png'},'content':{}}
 	if(styleStyle):
-		tempDict={x[:x.find(':')]:x[x.find(':')+1] for x in styleStyle}
+		tempDict={x[:x.find(':')]:x[x.find(':')+1:] for x in styleStyle}
 		piechartDict['img'].update(tempDict)
 		return piechartDict
 	else:
@@ -289,6 +293,7 @@ def listMaker(style,content):
 				listDict={}
 				for i in range(0,len(listData)):
 					listDict.update({i+1:{'li':{},'content':listData[i]}})
+			#print (listDict)
 			return {listType+'l':styleDict,'content':listDict}
 
 #tableTypes={"avacado":"table table-bordered","durian":"table table-condensed table-hover","pitaya":"table table-striped","cherimoya":"table table-striped table-hover","kiwano":"table table-bordered table-striped table-hover table-condensed"}
@@ -350,7 +355,7 @@ def slideshowMaker(s,i):
 	#print(slideshow_carousel)
 	elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
 	extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
-	i=1
+	count=1
 	for x in content:
 		row =copy.deepcopy(elem)
 		extra_this_row = copy.deepcopy(extra)
@@ -364,10 +369,10 @@ def slideshowMaker(s,i):
 		if(i == 1):
 			row['div']['class'] = 'active ' + row['div']['class']
 			extra_this_row['li']['class'] = 'active'
-		extra_this_row['li']['data-slide-to'] = str(i-1) 
-		slideshow_dict['content'][2]['content'][i] = row
-		slideshow_dict['content'][1]['content'][i] = extra_this_row
-		i=i+1
+		extra_this_row['li']['data-slide-to'] = str(count-1) 
+		slideshow_dict['content'][2]['content'][count] = row
+		slideshow_dict['content'][1]['content'][count] = extra_this_row
+		count=count+1
 	#print(slideshow_dict)
 	return slideshow_dict
 
@@ -375,9 +380,54 @@ def parallaxMaker(s,i):
 	parallax_dict = {'div':{'class':'parallax' , 'background-image':''} , 'content':''}
 	content = i.strip()
 	parallax_dict['div']['background-image'] = "url('img/" + content + "')"
+	makeCSS({'parallax':{'class':'.parallax'}})
 	return parallax_dict
 
-styleFunctions={'image':imageMaker,'link':linkMaker,'list':listMaker,'table':tableMaker,'slideshow':slideshowMaker, 'parallax':parallaxMaker,'fade':fadeMaker,'card':cardMaker,'piechart':piechartMaker,'button':buttonMaker}
+# accordions are drop-down sections of text which are useful when you want to enter a large amount of text
+# Currently no styles are implemented for accordion
+def accordionMaker(s,i):
+	# accordion_dict is the template dictionary for the accordion
+	accordion_dict  = {'div':{},'content':{}}
+	title_dict = {'button':{'class':'accordion'} , 'content':''}
+	text_dict = {'div':{'class':'panel'},'content' : {1 : {'p':{} , 'content' : ''}}}
+	CHARACTER_CLASS = ''' \nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!@#$%^&(){}[]\|'''
+	
+	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
+	CONTENT = ZeroOrMore(ELEM)
+
+	lol = CONTENT.parseString(i).asList()
+
+	count = 1
+	for line in lol:
+		title_elem = copy.deepcopy(title_dict)
+		text_elem = copy.deepcopy(text_dict)
+		title_elem['content'] = line[0].strip()
+		text_elem['content'][1]['content'] = line[1].strip()
+		accordion_dict['content'][count] = title_elem
+		accordion_dict['content'][count+1] = text_elem
+		count = count + 2
+
+	css_for_accordion = {'accordion':{}}
+	makeCSS(css_for_accordion)
+	eprint (accordion_dict)
+	return accordion_dict
+
+
+styleFunctions = {
+	'image':imageMaker,
+	'link':linkMaker,
+	'list':listMaker,
+	'table':tableMaker,
+	'slideshow':slideshowMaker,
+	'parallax':parallaxMaker,
+	'fade':fadeMaker,
+	'card':cardMaker,
+	'piechart':piechartMaker,
+	'button':buttonMaker,
+	'accordion':accordionMaker
+	#'timeline':timelineMaker,
+	#'chatbox':chatboxMaker
+}
 
 def styleMaker(s):
 	# styleName=re.search(r'(.*?)\(',s).group(1)
@@ -397,17 +447,17 @@ def styleMaker(s):
 This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
-standAlone=['href', 'src', 'class', 'id', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target']
+standAlone=['href', 'src', 'class', 'id', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
 Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
 'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'p':True,
-'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
+'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'dt':True, 'dl':True , 'dd' :True ,'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
 def makeHTML(d):
 	if(isinstance(d,dict)):
 		keysList=list(d.keys())
 		if(1 in keysList):
 			rs=''
 			for i in range(1,len(keysList)+1):
-				rs=rs+makeHTML(d[i])
+				rs=rs + '\n'+makeHTML(d[i])
 			return rs
 		else:
 			keysList.remove('content')
@@ -423,11 +473,11 @@ def makeHTML(d):
 				if style=='':
 					rs=rs+'>'
 				else:
-					rs=rs+''' style="'''+style+'''">'''
-				if Tags[Tag]	:
+					rs=rs+''' style="'''+style+'''">\n'''
+				if Tags[Tag]:
 					if(isinstance(d['content'],dict)):
 						for i in range(0,len(list(d['content'].keys()))):
-							rs=rs+makeHTML(d['content'][i+1])
+							rs=rs+makeHTML(d['content'][i+1]) + '\n'
 					else:
 						rs=rs+d['content']
 					rs=rs+"</"+Tag+">"
@@ -748,7 +798,7 @@ def parseAbstractElement(c):
 	STYLE_1 = Group(Word("abcdefghijklmnopqrstuvwxyz-") + ':' + Word('abcdefghijklmnopqrstuvwxyz-#0123456789(,)'))
 	STYLE_2 = Word(alphas)
 
-	STYLE = OneOrMore(STYLE_1)
+	STYLE = STYLE_1 + ZeroOrMore(',' + STYLE_1)
 
 	#STYLE.parseString(' type : orange  color:rgb(120,34,76)  font-color : #ef123c ').pprint()
 
@@ -760,7 +810,7 @@ def parseAbstractElement(c):
 
 	CONFIG = OneOrMore(ABSTRACT)
 	config_parsed = CONFIG.parseString(c).asList()
-	#print (config_parsed)
+	#eprint(config_parsed)
 	return config_parsed
 
 def p_main(p):
@@ -849,9 +899,17 @@ def main():
 	con = open(configfile)
 	c = con.read()
 	c = parseAbstractElement(c)
-	index_navbar = c.index('navbar')
+	if('navbar' in c):
+		index_navbar = c.index('navbar')
+	else:
+		eprint("No rule for navigation bar in config.siteme")
+		sys.exit()
 	#print (index_navbar)
-	index_footer = c.index('footer')
+	if('footer' in c):
+		index_footer = c.index('footer')
+	else:
+		eprint("No rule for footer in config.siteme")
+		sys.exit()
 	#print (index_footer)
 	c = cleanUp(c)
 	#nav = makeNavbar(c[index_navbar+1], c[index_navbar+2])

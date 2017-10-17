@@ -1,50 +1,57 @@
 title:SiteMe
 font-size:18pt
-slideshow(type:button){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}
+
 (h1,text-align:center){SiteMe}
 
-(bold){SiteMe} is a static site builder that convert text files into responsive websites. The program will take as input text files, images etc and convert them into a ready to publish website.
-SiteMe is our course project for CS251, Software Systems Lab though we plan on continuing to add more features and simplifying the product even when the course finishes
+slideshow(type:button){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}
 
-table(type:kiwano,background-color:white,width:100%){
-*1,2*Item**hello**world
-**ohmy**god**daf
+(h2,text-align:center){Abstract}
+Aim of this project is to develop such a static site builder  that makes it easier to develop simple and useful websites. We intend to take raw text files and images as input which will be processed by following certain predefined formatting rules to generate the required website. User may select from various available templates and can add/modify features such as headers, navigation bars, footer, panels, etc. For someone who just wants a simple website/blog and isn’t much interested in the design can just choose from the available templates and connect the parts, whereas someone who cares about looks can utilize the features we provide and customize the website according to his/her needs.
+
+parallax(){background.jpg}
+
+
+accordion(type : none){
+* Heading 1 ** This is a multiline accordian, even if I dont press enter anywhere this should work
+Lets see what happens
+* Heading 2 ** This Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+* Heading 3 ** Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
 }
-web page, document your work both theory and your code, and bulk up on your programming expertise coming from CS101 and CS152 with their associated labs. Geeks are welcome.
-slideshow(type:kuchbhi){Caption1:1.jpg,Caption2:2.jpg,3.jpg}
-In this course we will cover some of
-link(){Heelo:www.google.com}
-HTML, CSS, Java Script, Drawing Software, Editors, LaTeX, gnuplot
-Reading and Writing Code, (){Profiling}, Debugging, Editors, IDE,
-link(){button(color:blue){Click Me}:www.facebook.com}
-Makefiles, Compilation, Linking, Version Control, C++, Java, Python, Bash
-Basic Linux Utilities
-Glimpse of web applications: Django
 -----------
-fade(top,font-color:red){hello:background.jpg}
 
-(bold,color:blue){Texts}: Note the description in the text section.
-(italic){Course s (bold){ds}}: There are no pre-requisites other than the fact that you are a CS major. You should have done CS 101. This course is a second year CS core course. It is not open to students from other departments. Audit students are not allowed.
+(h4,text-align:center){Introduction/Motivation}
+The main motivation for this project comes from an existing static site builder named Jekyll which is already a known and widely used product. Even though Jekyll boasts of being “easy to use, ready to deploy” it is not the case so. Even though one can use a template but then modifying those templates according to one’s need would require good knowledge of Web Dev. So through this project we aim to create an even simpler yet powerful Static Site builder that will come loaded with a lot of templates with the abstraction that user no longer has to modify the raw code of these but just specify some tags/properties at a different place and work will be done. We hope to do justice to the project.
 
-parallax(){}
----
-(code){Snippet of Code will be placed here}
-piechart(label:match,type:basic){temp.csv}
-2+2(sup){2} = 6
-button(color:red){HELO}
-C(sub){n} = Catalan Number
-(kbd){Ctrl + C} and (kbd){Ctrl + V} is what we are doing
-button(color:blue,hover-shadow,round,font-color:red,disabled){SELO}
-(quote){Fake it till you make it}
------
-(bold){Lab Contents}
+(c){link(){button(color:blue){Click Me}:http://www.facebook.com}}
+
+-----------
+
+fade(left,font-color:red,color:#ffffff){I am fading:background.jpg}
+
+-----------
+(c,bold){Tools Required}
 list(u){
-* Lab 1 :HTML, CSS
-* Lab 2 : Bash Scripting
-* Lab 3 : Sed, Awk
-* Lab 4 : Git, LaTeX
-* Lab 5 : Java
-* Lab 6 : LaTeX, Gnuplot
-* Lab 7 : Makefiles, Doxygen
-* Lab 8 : Python
+* Python
+* PLY Python Lex and Yacc
+* Makefiles
+* Bash and other UNIX tools
+* HTML, CSS and Javascript 
 }
+
+
+---------------
+
+(c){piechart(label:match,type:basic){temp.csv}}
+
+button(color:red){HELO}
+
+C(sub){n} = Catalan Number
+
+(kbd){Ctrl + C} and (kbd){Ctrl + V} is what we are doing
+
+button(color:blue,hover-shadow,round,font-color:red,disabled){SELO}
+
+(quote){Fake it till you make it}
