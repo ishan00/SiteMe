@@ -412,6 +412,21 @@ def accordionMaker(s,i):
 	makeJS({'accordion':{}})
 	return accordion_dict
 
+# No styles are yet implemented for timeline
+def timelineMaker(s,i):
+	timeline_dict = {'div':{'class':'timeline'} , 'content':{}}
+	# Just append ' left' or ' right' to elem class
+	elem = {'div':{'class':'container'} , 'content':{
+		1:{'div':{'class':'content'} , 'content':{
+			1:{'h2':{}, 'content' : ''},
+			2:{'p':{} , 'content' : ''}}}}}
+
+	CHARACTER_CLASS = ''' \nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!@#$%^&(){}[]\|'''
+	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
+	CONTENT = ZeroOrMore(ELEM)
+	lol = CONTENT.parseString(i).asList()
+
+def chatboxMaker(s,i):
 
 styleFunctions = {
 	'image':imageMaker,
@@ -425,8 +440,8 @@ styleFunctions = {
 	'piechart':piechartMaker,
 	'button':buttonMaker,
 	'accordion':accordionMaker
-	#'timeline':timelineMaker,
-	#'chatbox':chatboxMaker
+	'timeline':timelineMaker,
+	'chatbox':chatboxMaker
 }
 
 def styleMaker(s):
@@ -554,8 +569,10 @@ def makeNavbar(navbar_style,  navbar_content):
 		#print (navbar_dict)
 		return navbar_dict
 	elif navbar_type == 'open':
+		css_for_navbar['navbar']['class'] = '#navbar'
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_open)
+		navbar_dict['div']['id'] = 'navbar'
 		navbar_dict['div']['class'] = 'navbar'
 		li_element = copy.deepcopy(navbar_open['content'][2]['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
@@ -572,6 +589,7 @@ def makeNavbar(navbar_style,  navbar_content):
 			else:
 				row['content'][1]['content'] = navbar_content[i][0]
 			navbar_dict['content'][2]['content'][1]['content'][i+1] = row
+		makeJS({'navbar':{'type':'open'}})
 		return navbar_dict
 	elif navbar_type == 'breadcrumbs':
 		makeCSS(css_for_navbar)
@@ -612,6 +630,7 @@ def makeNavbar(navbar_style,  navbar_content):
 			else:
 				row['content'][1]['content']  = navbar_content[i][0]
 			navbar_dict['content'][2]['content'][i+1] = row
+		makeJS({'navbar':{'type':'toggle'}})
 		return navbar_dict
 
 def cleanUp(l):
@@ -885,7 +904,7 @@ def makeJS(d):
 	element = list(d.keys())[0]
 	#eprint(element)
 	if ('type' in list(d[element].keys())):
-		filename = 'layout/' + element + '_' + d[element][type] + '.js'
+		filename = 'layout/' + element + '_' + d[element]['type'] + '.js'
 	else:
 		filename = 'layout/' + element + '.js'
 	f = open(filename)
