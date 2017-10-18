@@ -9,7 +9,7 @@ a {
 }
 
 
-.open {
+$CLASS$ {
   position: fixed;
   top: 40px;
   right: 40px;
@@ -20,10 +20,10 @@ a {
   -webkit-transition: opacity 0.2s linear;
   transition: opacity 0.2s linear;
 }
-.open:hover {
+$CLASS$:hover {
   opacity: 0.8;
 }
-.open span {
+$CLASS$ span {
   display: block;
   float: left;
   clear: both;
@@ -38,14 +38,14 @@ a {
   -webkit-transition: all 0.4s ease;
   transition: all 0.4s ease;
 }
-.open span:nth-child(1) {
+$CLASS$ span:nth-child(1) {
   margin-top: 10px;
   z-index: 9;
 }
-.open span:nth-child(2) {
+$CLASS$ span:nth-child(2) {
   margin-top: 25px;
 }
-.open span:nth-child(3) {
+$CLASS$ span:nth-child(3) {
   margin-top: 40px;
 }
 

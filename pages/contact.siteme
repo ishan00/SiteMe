@@ -1,0 +1,65 @@
+(h1){SiteMe}
+(h2){SiteMe}
+(h3){SiteMe}
+(h4){SiteMe}
+
+(h1,text-align:center){SiteMe}
+(h1,text-align:right){SiteMe}
+
+image(){1.jpg}
+
+image(align:right){1.jpg}
+
+image(height:600px,width:100%){1.jpg}
+
+fade(top,color:#fff,font-color:#000){Text:1.jpg}
+
+fade(left,color:#000,font-color:#000){Text:1.jpg}
+
+list(u){
+* Elem 1
+* Elem 2
+* Elem 3
+}
+
+list(o){
+* Elem 1
+* Elem 2
+* Elem 3
+}
+
+list(d){
+* Elem 1 ** Definition of Elem 1
+* Elem 2 ** Definition of Elem 2
+* Elem 3 ** Definition of Elem 3
+}
+
+
+link(){Alternate Text:http://www.facebook.com}
+
+(c){link(){button(color:blue){Click Me}:http://www.facebook.com}}
+(c){link(){button(color:blue,disabled){Click Me}:http://www.facebook.com}}
+
+
+parallax(){background.jpg}
+
+slideshow(type:button){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}
+
+
+(Pre){{ image(){1.jpg} }}
+(Pre){{ parallax(){background.jpg} }}
+(Pre){{ slideshow(type:button){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg} }}
+
+
+(code){int aa;}
+(code){aa = 4;}
+(code){cout << aa;}
+(code){return 0;}
+
+
+(h1){C(sub){n} = Catalan Number}
+
+(italic){(kbd){Ctrl + C} and (kbd){Ctrl + V} is NOT what we are doing}
+
+(h1,text-align:center){(sup){n}C(sub){i-1} + (sup){n}C(sub){i}  = (sup){n+1}C(sub){i}}
+
