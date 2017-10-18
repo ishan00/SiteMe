@@ -276,8 +276,8 @@ def listMaker(style,content):
 					styleDict[list(x.keys())[0]]=list(x.values())[0]
 			listType=style.strip()[0]
 			if listType=='d':
-				listData=[y[1:].strip('* ') for y in content.split('\n')[1:-1]]
-				listData=list(itertools.chain.from_iterable([x.split('**') for x in listData]))
+				listData=[y.strip('* ') for y in content.split('\n')[1:-1]]
+				# listData=list(itertools.chain.from_iterable([x.split('**') for x in listData]))
 				listDict={}
 				for i in range(0,len(listData)):
 					if(i%2==0):
@@ -400,7 +400,7 @@ Note: It is assumed that styles provided are valid
 standAlone=['href', 'src', 'class', 'id', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target']
 Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
 'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'p':True,
-'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
+'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'dl':True, 'dt':True, 'dd':True, 'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
 def makeHTML(d):
 	if(isinstance(d,dict)):
 		keysList=list(d.keys())
