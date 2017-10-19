@@ -6,6 +6,15 @@ font-size:18pt
 slideshow(type:button){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}
 
 (h2,text-align:center){Abstract}
+
+
+grid(2,2,8){eaf
+
+dsv}{s
+
+()dsdv{ssv
+
+}
 Aim of this project is to develop such a static site builder  that makes it easier to develop simple and useful websites. We intend to take raw text files and images as input which will be processed by following certain predefined formatting rules to generate the required website. User may select from various available templates and can add/modify features such as headers, navigation bars, footer, panels, etc. For someone who just wants a simple website/blog and isn’t much interested in the design can just choose from the available templates and connect the parts, whereas someone who cares about looks can utilize the features we provide and customize the website according to his/her needs.
 
 parallax(){background.jpg}

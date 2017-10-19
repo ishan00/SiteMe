@@ -439,7 +439,7 @@ styleFunctions = {
 	'card':cardMaker,
 	'piechart':piechartMaker,
 	'button':buttonMaker,
-	'accordion':accordionMaker
+	'accordion':accordionMaker,
 	'timeline':timelineMaker,
 	'chatbox':chatboxMaker
 }
@@ -457,6 +457,26 @@ def styleMaker(s):
 		return taggedMaker(styleStyle,styleContent)
 	else:
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
+
+def gridMaker(p):
+	gridList=[x.strip('{}') for x in p.split('{')]
+	sizeList=gridList[0].split('(')[1].strip(')').split(',')
+	rs='<div class="container row" >'
+	sum=0
+	if (len(sizeList)+1==len(gridList)):
+		for i in range(0,len(sizeList)):
+			span=sizeList[i]
+			sum=sum+int(span)
+			rs=rs+'<div class="col-sm-'+span+'" >'
+			content=gridList[i+1]
+			rs=rs+content+'</div>'
+		rs=rs+'</div>'
+		if(sum==12):
+			return rs
+		else:
+			eprint("Sum of column span must be 12 in Grid")
+	else:
+		eprint("Grid arguments not proper")
 
 '''
 This function converts dictionaries to html codes.
@@ -853,6 +873,7 @@ def p_body(p):
             | body pre
             | body fakekeyword
             | body hrule
+            | body grid
             |
     '''
     if(len(p)==3):
@@ -880,6 +901,10 @@ def p_newline(p):
 def p_hrule(p):
 	'hrule : HRULE'
 	p[0]="<hr>"
+
+def p_grid(p):
+	'grid : GRID'
+	p[0]=gridMaker(p[1])
 
 def p_keyword(p):
     'keyword : KEYWORD'
