@@ -147,7 +147,7 @@ OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'d
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
 'hover-shadow':{'hover-shadow':'0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)'},'disabled':{'opacity':'0.6','cursor':'not-allowed'}}
-CSSCount={'card':1,'fade':1,'button':1}
+CSSCount={'card':1,'fade':1,'button':1,'hoverdropdown':1,'checkbox':1,'flip':1,'shake':1}
 
 def piechartMaker(style,content):
 	style=style.split(',')
@@ -200,6 +200,13 @@ def buttonMaker(style,content):
 	CSSCount['button']=CSSCount['button']+1
 	return buttonDict
 
+# def hoverdropdownMaker(style,content):
+# 	hoverdropdownDict={'div':{'class':'hoverdropdown'+str(CSSCount['hoverdropdown'])},
+# 	'content':{1:{'button':{'class'='dropbtn'},'content':{}},2:{'div':{'class':'dropdown-content'},
+# 	'content':{1:{'a':{'href':},'content':{}}}}}}
+# 	sendDict={'class':'.hoverdropdown'+str(CSSCount['hoverdropdown'])}
+
+
 def cardMaker(style,content):
 	cardDict={'div':{'class':'card'+str(CSSCount['card'])},'content':{'div':{'class':'polaroid'},'content':{1:{'img':{},'content':{}},2:{'div':{'class':'container'},'content':{1:{'p':{},'content':{}}}}}}}
 	sendDict={'class':'.card'+str(CSSCount['card'])}
@@ -241,6 +248,10 @@ def fadeMaker(style,content):
 	return fadeDict
 
 def imageMaker(style,content):
+	if('flip' in style):
+		makeCSS({'flip':{'class':'.flip'+str(CSSCount['flip'])}})
+	if('shake' in style):
+		makeCSS({'shake':{'class':'.shake'+str(CSSCount['shake'])}})
 	if content:
 		styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
 		for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
@@ -250,8 +261,15 @@ def imageMaker(style,content):
 				styleDict[list(x.keys())[0]]=list(x.values())[0]
 		styleDict.update({'src':"img/" + content})
 		currDict={'img':styleDict,'content':{}}
+		if('flip' in style):
+			currDict={'div':{'class':'flip'+str(CSSCount['flip'])},'content':{1:copy.deepcopy(currDict)}}
+			CSSCount['flip']=CSSCount['flip']+1
+		if('shake' in style):
+			currDict={'div':{'class':'shake'+str(CSSCount['shake'])},'content':{1:copy.deepcopy(currDict)}}
+			CSSCount['shake']=CSSCount['shake']+1
 		# for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
 		# 	currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
+		print(currDict)
 		return currDict
 
 def linkMaker(style,content):
@@ -426,23 +444,36 @@ def timelineMaker(s,i):
 	CONTENT = ZeroOrMore(ELEM)
 	lol = CONTENT.parseString(i).asList()
 
-def chatboxMaker(s,i):
+def checkboxMaker(style,content):
+	checkboxDict = {'label':{'class':'checkbox'+str(CSSCount['checkbox'])},'content':{1:'',2:{'input':{'type':'checkbox'},'content':''},3:{'span':{'class':'checkmark'},'content':''}}}
+	sendDict={'checkbox':{'class':'.checkbox'+str(CSSCount['checkbox'])}}
+	checkboxDict['content'][1]=content
+	if('checked' in style):
+		checkboxDict['content'][2]['input']['checked']='checked'
+		style.replace('checked','') 
+	makeCSS(sendDict)
+	CSSCount['checkbox']=CSSCount['checkbox']+1
+	#print(checkboxDict)
+	return checkboxDict
 
-styleFunctions = {
-	'image':imageMaker,
-	'link':linkMaker,
-	'list':listMaker,
-	'table':tableMaker,
-	'slideshow':slideshowMaker,
-	'parallax':parallaxMaker,
-	'fade':fadeMaker,
-	'card':cardMaker,
-	'piechart':piechartMaker,
-	'button':buttonMaker,
-	'accordion':accordionMaker,
-	'timeline':timelineMaker,
-	'chatbox':chatboxMaker
-}
+def chatboxMaker(s,i):
+	return ""
+
+styleFunctions={
+'image':imageMaker,
+'link':linkMaker,
+'list':listMaker,
+'table':tableMaker,
+'slideshow':slideshowMaker,
+'parallax':parallaxMaker,
+'fade':fadeMaker,
+'card':cardMaker,
+'piechart':piechartMaker,
+'button':buttonMaker,
+'accordion':accordionMaker,
+'timeline':timelineMaker,
+'chatbox':chatboxMaker,
+'checkbox':checkboxMaker}
 
 def styleMaker(s):
 	# styleName=re.search(r'(.*?)\(',s).group(1)
@@ -459,16 +490,22 @@ def styleMaker(s):
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 def gridMaker(p):
-	gridList=[x.strip('{}') for x in p.split('{')]
-	sizeList=gridList[0].split('(')[1].strip(')').split(',')
-	rs='<div class="container row" >'
-	sum=0
-	if (len(sizeList)+1==len(gridList)):
+	r=re.compile(r'\{[^\{\}]*[\n ]*([^\{\}]*[\n ]*\{[^\{\}]*[\n ]*\}[^\{\}]*[\n ]*)*[^\{\}]*[\n ]*\}')
+	i=p[p.index('{'):]
+	gridList=[]
+	while(i):
+		a=r.match(i).group()
+		gridList.append(a[1:-1])
+		i=i.replace(a,"",1)
+	sizeList=p.split('(')[1].split(')')[0].split(',')
+	rs='<div class="container-fluid row" >'
+	sum=0		
+	if (len(sizeList)==len(gridList)):
 		for i in range(0,len(sizeList)):
 			span=sizeList[i]
 			sum=sum+int(span)
 			rs=rs+'<div class="col-sm-'+span+'" >'
-			content=gridList[i+1]
+			content=gridList[i]
 			rs=rs+content+'</div>'
 		rs=rs+'</div>'
 		if(sum==12):
@@ -476,14 +513,15 @@ def gridMaker(p):
 		else:
 			eprint("Sum of column span must be 12 in Grid")
 	else:
+		eprint(p)
 		eprint("Grid arguments not proper")
 
 '''
 This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
-standAlone=['href', 'src', 'class', 'id', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
-Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
+standAlone=['href', 'src', 'class', 'id','type', 'checked', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
+Tags={'img':False,'input':False,'label':True,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
 'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'p':True,
 'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'dl':True, 'dt':True, 'dd':True, 'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
 def makeHTML(d):

@@ -95,7 +95,31 @@ def makeAccordionCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS,'footer':makeFooterCSS,'button':makeButtonCSS,'accordion':makeAccordionCSS}
+def makeCheckBoxCSS(d):
+	CSSFile = open('./layout/checkbox.css')
+	CSSString = CSSFile.read()
+	CSSString = CSSString.replace('$CLASS$',d['class'])
+	styleFile = open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+def makeImageFlipCSS(d):
+	CSSFile = open('./layout/flip.css')
+	CSSString = CSSFile.read()
+	CSSString = CSSString.replace('$CLASS$',d['class'])
+	styleFile = open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+def makeImageShakeCSS(d):
+	CSSFile = open('./layout/shake.css')
+	CSSString = CSSFile.read()
+	CSSString = CSSString.replace('$CLASS$',d['class'])
+	styleFile = open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS,'footer':makeFooterCSS,'button':makeButtonCSS,'accordion':makeAccordionCSS,'checkbox':makeCheckBoxCSS,'flip':makeImageFlipCSS,'shake':makeImageShakeCSS}
 
 def makeCSS(d):
 	CSSDict[list(d.keys())[0]](d[list(d.keys())[0]])

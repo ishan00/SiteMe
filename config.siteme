@@ -1,9 +1,4 @@
-navbar ( type : orange color:white hover-color : black font-color: black hover-font-color:black ) {
-	SiteMe : #
-	(r){Proposal} : https://docs.google.com/document/d/1MlbYfoaCAXKGN_MdGCutiuSkSxZumnNxtfnx9ASNoBo/edit
-	(r){About} : https://ishan00.github.io/introduction/navbar
-	(r){Home} : #
-navbar ( type : orange font-color : black ) {
+navbar ( type:orange ){
 	Home : #
 	(r){About} : http://facebook.com
 	Contact : https://google.co.in
@@ -14,8 +9,6 @@ footer ( type : social ){
 	github : ggigigg
 	linkedin : asdsa
 	twitter :sads
-        facebook:sdv
-        gplus:svsd
-        home : ssfdv
-        phone : sdgv
+    facebook:sdv
+    gplus:svsd
 }

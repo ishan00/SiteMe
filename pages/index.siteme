@@ -3,21 +3,17 @@ font-size:18pt
 
 (h1,text-align:center){SiteMe}
 
-slideshow(type:button){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}
+grid(6,6){parallax(){background.jpg}}{slideshow(type:){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}}
 
 (h2,text-align:center){Abstract}
 
 
-grid(2,2,8){eaf
-
-dsv}{s
-
-()dsdv{ssv
-
-}
-Aim of this project is to develop such a static site builder  that makes it easier to develop simple and useful websites. We intend to take raw text files and images as input which will be processed by following certain predefined formatting rules to generate the required website. User may select from various available templates and can add/modify features such as headers, navigation bars, footer, panels, etc. For someone who just wants a simple website/blog and isn’t much interested in the design can just choose from the available templates and connect the parts, whereas someone who cares about looks can utilize the features we provide and customize the website according to his/her needs.
-
 parallax(){background.jpg}
+
+grid(2,2,8){}{}{ (background-color:red){csdv
+				esvnlsvsdnv
+					sen} asdv }
+Aim of this project is to develop such a static site builder  that makes it easier to develop simple and useful websites. We intend to take raw text files and images as input which will be processed by following certain predefined formatting rules to generate the required website. User may select from various available templates and can add/modify features such as headers, navigation bars, footer, panels, etc. For someone who just wants a simple website/blog and isn’t much interested in the design can just choose from the available templates and connect the parts, whereas someone who cares about looks can utilize the features we provide and customize the website according to his/her needs.
 
 -----------
 
@@ -52,7 +48,9 @@ C(sub){n} = Catalan Number
 (kbd){Ctrl + C} and (kbd){Ctrl + V} is what we are doing
 
 button(color:blue,hover-shadow,round,font-color:red,disabled){SELO}
+image(shake,flip){background.jpg}
 
+checkbox(checked){(h3,color:red){One}}
 (quote){Fake it till you make it}
 -----
 (bold){Lab Contents}
