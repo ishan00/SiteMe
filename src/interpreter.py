@@ -151,11 +151,11 @@ CSSCount={'card':1,'fade':1,'button':1}
 
 def piechartMaker(style,content):
 	style=style.split(',')
-	r1 = re.compile("label.*")
+	r1 = re.compile("\s*label.*")
 	styleLabel = list(filter(r1.match, style))[0]
-	r1 = re.compile("type.*")
+	r1 = re.compile("\s*type.*")
 	styleType = list(filter(r1.match, style))[0]
-	r2=re.compile("(?!(label|type)).*")
+	r2=re.compile("(?!(\s*label|\s*type)).*")
 	styleStyle=list(filter(r2.match, style))
 	if ',' in content:
 		tempFile=open("./tmp/"+styleLabel.split(':')[1].strip()+".csv",'w')
@@ -178,7 +178,7 @@ def piechartMaker(style,content):
 	newFile.write(templine)
 	piechartDict={'img':{'src':'img/'+styleLabel.split(':')[1].strip()+'.png'},'content':{}}
 	if(styleStyle):
-		tempDict={x[:x.find(':')]:x[x.find(':')+1:] for x in styleStyle}
+		tempDict={x[:x.find(':')].strip():x[x.find(':')+1:].strip() for x in styleStyle}
 		piechartDict['img'].update(tempDict)
 		return piechartDict
 	else:
@@ -242,13 +242,13 @@ def fadeMaker(style,content):
 
 def imageMaker(style,content):
 	if content:
-		styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
-		for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+		styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
+		for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
 			if list(x.keys())[0] in styleDict.keys():
 				styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
 			else:
 				styleDict[list(x.keys())[0]]=list(x.values())[0]
-		styleDict.update({'src':"img/" + content})
+		styleDict.update({'src':"img/" + content.strip()})
 		currDict={'img':styleDict,'content':{}}
 		# for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
 		# 	currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
@@ -256,24 +256,24 @@ def imageMaker(style,content):
 
 def linkMaker(style,content):
 	if content:
-		styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
-		for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+		styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
+		for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
 			if list(x.keys())[0] in styleDict.keys():
 				styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
 			else:
 				styleDict[list(x.keys())[0]]=list(x.values())[0]
 		if ':' in content:
-			styleDict.update({'href':content[content.find(':')+1:]})
-			return {'a':styleDict,'content':content[:content.find(':')]}
+			styleDict.update({'href':content[content.find(':')+1:].strip()})
+			return {'a':styleDict,'content':content[:content.find(':')].strip()}
 		else:
-			styleDict.update({'href':content})
-			return {'a':styleDict,'content':content}
+			styleDict.update({'href':content.strip()})
+			return {'a':styleDict,'content':content.strip()}
 
 def listMaker(style,content):
 	if content:
 		if style:
-			styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys() and not(x[x.find(':')+1]=='<')]}
-			for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+			styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys() and not(x[x.find(':')+1].strip()=='<')]}
+			for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
 				if list(x.keys())[0] in styleDict.keys():
 					styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
 				else:
