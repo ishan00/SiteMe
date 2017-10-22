@@ -119,7 +119,49 @@ def makeImageShakeCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS,'footer':makeFooterCSS,'button':makeButtonCSS,'accordion':makeAccordionCSS,'checkbox':makeCheckBoxCSS,'flip':makeImageFlipCSS,'shake':makeImageShakeCSS}
+alertDict = {'$CLASS$':'', '$COLOR$':'red' , '$TEXT-COLOR':'white'}
+
+def makeAlertCSS(d):
+	CSSFile = open('./layout/alert.css')
+	CSSString = CSSFile.read()
+	newalertDict =copy.deepcopy(alertDict)
+	for (key,value) in d.items():
+		newalertDict['$'+key.upper()+'$']=value
+	for (key,value) in newalertDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+wallpaper_type1Dict = {'$CLASS$':'' , '$COLOR$':'#1abc9c' , '$TEXT-COLOR$':'#ffffff'}
+
+def makeWallpaperCSS(d):
+	CSSFile = open('./layout/wallpaper_' + d['type'] + '.css')
+	CSSString = CSSFile.read()
+	newWallpaperDict =copy.deepcopy(wallpaper_type1Dict)
+	for (key,value) in d.items():
+		newWallpaperDict['$'+key.upper()+'$']=value
+	for (key,value) in newWallpaperDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+CSSDict={
+	'card':makeCardCSS,
+	'fade':makeFadeCSS,
+	'navbar':makeNavbarCSS,
+	'parallax':makeParallaxCSS,
+	'footer':makeFooterCSS,
+	'button':makeButtonCSS,
+	'accordion':makeAccordionCSS,
+	'checkbox':makeCheckBoxCSS,
+	'flip':makeImageFlipCSS,
+	'shake':makeImageShakeCSS,
+	'alert':makeAlertCSS,
+	'wallpaper':makeWallpaperCSS,
+}
+
 
 def makeCSS(d):
 	CSSDict[list(d.keys())[0]](d[list(d.keys())[0]])

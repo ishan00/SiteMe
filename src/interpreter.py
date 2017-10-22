@@ -11,16 +11,14 @@ import ply.yacc as yacc
 from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
+from HTML_wallpaper import *
 from makeCSS import makeCSS
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
 from pyparsing import *
-
 def eprint(*args, **kwargs):
 	print (*args, file=sys.stderr, **kwargs)
 
-
-short_syntax = {'r' : 'right' , 'l' : 'left','c':'center'}
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
 # string = 'home:url , about:url , contact:url'
@@ -147,7 +145,30 @@ OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'d
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
 'hover-shadow':{'hover-shadow':'0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)'},'disabled':{'opacity':'0.6','cursor':'not-allowed'}}
-CSSCount={'card':1,'fade':1,'button':1,'hoverdropdown':1,'checkbox':1,'flip':1,'shake':1}
+
+CSSCount = {
+	'navbar':1,
+	'footer':1,
+	'button':1,
+	'piechart':1,
+	'card':1,
+	'fade':1,
+	'image':1,
+	'link':1,
+	'hoverdropdown':1,
+	'list':1,
+	'flip':1,
+	'shake':1,
+	'table':1,
+	'slideshow':1,
+	'parallax':1,
+	'accordian':1,
+	'timeline':1,
+	'checkbox':1,
+	'alert':1,
+	'grid':1,
+	'wallpaper':1,
+}
 
 def piechartMaker(style,content):
 	style=style.split(',')
@@ -269,7 +290,7 @@ def imageMaker(style,content):
 			CSSCount['shake']=CSSCount['shake']+1
 		# for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
 		# 	currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
-		print(currDict)
+		#print(currDict)
 		return currDict
 
 def linkMaker(style,content):
@@ -456,24 +477,131 @@ def checkboxMaker(style,content):
 	#print(checkboxDict)
 	return checkboxDict
 
-def chatboxMaker(s,i):
-	return ""
+#def chatboxMaker(s,i):
+#	return ""
 
-styleFunctions={
-'image':imageMaker,
-'link':linkMaker,
-'list':listMaker,
-'table':tableMaker,
-'slideshow':slideshowMaker,
-'parallax':parallaxMaker,
-'fade':fadeMaker,
-'card':cardMaker,
-'piechart':piechartMaker,
-'button':buttonMaker,
-'accordion':accordionMaker,
-'timeline':timelineMaker,
-'chatbox':chatboxMaker,
-'checkbox':checkboxMaker}
+def alertMaker(s,i):
+	alert_dict = {'div':{'class':''} , 'content':{
+		1: {'span':{'class':'closebtn', 'onclick':'''this.parentElement.style.display="none" '''} , 'content':'&times;'},
+		2:''}}
+	alert_dict['content'][2] = i
+	alert_dict['div']['class'] = 'alert' + str(CSSCount['alert'])
+	s = [x.strip() for x in s.split(',')]
+	css_for_alert = {'alert':{'class':'.alert' + str(CSSCount['alert'])}}
+	if ('danger' in s):
+		css_for_alert['alert']['color'] = 'red'
+		s.remove('danger')
+	elif ('success' in s):
+		css_for_alert['alert']['color'] = 'green'
+		s.remove('success')
+	elif ('warning' in s):
+		css_for_alert['alert']['color'] = 'yellow'
+		s.remove('warning')
+	elif ('info' in s):
+		css_for_alert['alert']['color'] = 'blue'
+		s.remove('info')
+	for x in s:
+		if(x.find(':') != -1):
+			css_for_alert['alert'][x[:x.find(':')]] = x[x.find(':')+1:]
+	CSSCount['alert'] = CSSCount['alert'] +1
+	makeCSS(css_for_alert);
+	return alert_dict
+
+def dictOfStyles(s):
+	# This function converts string of style into dictionary with two keys, binary and unary
+	# Input -> Output
+	# type:type1 , width:300px , height:400px , fade , auto -> {unary : {fade:'' , auto:''} , binary : {type:type1 , width:300px , height : 400px}}
+	style_dict = {'unary':{} , 'binary':{}}
+	x = [x.strip() for x in s.split(',')]
+	for i in x:
+		if(i.find(':') != -1):
+			key = i[:i.find(':')].strip()
+			value = i[i.find(':')+1:].strip()
+			style_dict['binary'][key] = value
+		else:
+			style_dict['unary'][i]=''
+	return style_dict
+
+def checkImageExtension(img):
+	# The input is string
+	# The supported extensions are .jpg, .jpeg, .bmp, .png, .gif
+	img = img.strip()
+	ext = img[-img[::-1].find('.') - 1:]
+	return ((ext == '.png') or (ext == '.jpg') or (ext == '.jpeg') or (ext == '.bmp') or (ext == '.gif'))
+
+def wallpaperMaker(s,i):
+	# For type1 wallpaper allowed input for i are
+	# Name, Img, Description
+	# Img, Name, Description
+	# Img, Name
+	# Name, Img
+	# Img
+	wallpaper_type1 = {'div':{'class':'container-fluid bg text-center'} , 'content':{}}
+	NAME = {'h3':{'class':'margin'} , 'content' : ''}
+	IMG = {'img':{'src':'' , 'class':'img-responsive img-circle margin' , 'display':'inline' , 'width':'350' , 'height':'350'} , 'content':''}
+	DESCRIPTION = {'h3':{} , 'content' : ''}
+	style_dict = dictOfStyles(s)
+	css_for_wallpaper = {'wallpaper':{'class':'', 'type':'type1'}}
+	wallpaper_type1['div']['id'] = 'wallpaper' + str(CSSCount['wallpaper'])
+	css_for_wallpaper['wallpaper']['class'] = '#' + wallpaper_type1['div']['id']
+	CSSCount['wallpaper'] = CSSCount['wallpaper']+1
+	for key,value in style_dict['binary'].items():
+		css_for_wallpaper['wallpaper'][key] = value
+	#eprint(css_for_wallpaper)
+	makeCSS(css_for_wallpaper)
+	if i.find(',') == -1:
+		eprint("Content of wallpaper must have atleast one argument")
+	else:
+		content = i.split(',',2)
+		content = [c.strip() for c in content]
+		#eprint(content)
+	if checkImageExtension(content[0]):
+		arg = len(content)
+		IMG['img']['src'] = 'img/' + content[0]
+		if arg == 2:
+			NAME['content'] = content[1]
+			wallpaper_type1['content'][2] = NAME
+		if arg == 3:
+			NAME['content'] = content[1]
+			wallpaper_type1['content'][2] = NAME
+			DESCRIPTION['content'] = content[2]
+			wallpaper_type1['content'][3] = DESCRIPTION
+		wallpaper_type1['content'][1] = IMG
+	else:
+		NAME['content'] = content[0]
+		wallpaper_type1['content'][1] = NAME
+		if checkImageExtension(content[1]):
+			arg = len(content)
+			IMG['img']['src'] = 'img/' +content[1]
+			wallpaper_type1['content'][2] = IMG
+			if arg == 3:
+				DESCRIPTION['content'] = content[2]
+				wallpaper_type1['content'][3] = DESCRIPTION
+		else:
+			DESCRIPTION['content'] = content[1]
+			wallpaper_type1['content'][2] = DESCRIPTION
+			IMG['img']['src'] = 'img/' + content[2]
+			wallpaper_type1['content'][3] = IMG
+	return wallpaper_type1
+
+styleFunctions = {
+	'image':imageMaker,
+	'link':linkMaker,
+	'list':listMaker,
+	'table':tableMaker,
+	'slideshow':slideshowMaker,
+	'parallax':parallaxMaker,
+	'fade':fadeMaker,
+	'card':cardMaker,
+	'piechart':piechartMaker,
+	'button':buttonMaker,
+	'accordion':accordionMaker,
+	'timeline':timelineMaker,
+	#'chatbox':chatboxMaker,
+	#'checkbox':checkboxMaker,
+	'alert':alertMaker,
+	'wallpaper':wallpaperMaker,
+}
 
 def styleMaker(s):
 	# styleName=re.search(r'(.*?)\(',s).group(1)
@@ -786,82 +914,6 @@ def makeFooter(footer_style,footer_content):
 		footer_dict = copy.deepcopy(footer_distributed_phone_address)
 		print (footer_dict)
 
-'''
-FOOTERS
-
-TYPE:basic
-
-footer(type:basic){
-	MOTTO:
-	Home:
-	Blog:
-	Pricing:
-	About:
-	FAQ:
-	LAST:
-}
-
-TYPE:distributed
-
-footer(type:distributed){
-	Home:
-	Blog:
-	Pricing:
-	About:
-	Contact:
-	NAME:
-	FACEBOOK:
-	TWITTER:
-	GITHUB:
-	GOOGLE+:
-}
-
-TYPE:distributed_phone_address
-
-footer(type:distributed_phone_address){
-	Home:
-	Contact:
-	Blog:
-	Pricing:
-	ADDRESS:
-	PHONE:
-	EMAIL:
-	FACEBOOK:
-	GITHUB:
-	LINKEDIN:
-}
-
-TYPE:distributed_search
-
-footer(){
-	Home:
-	Blog:
-	Pricing:
-	Faq:
-}
-
-
-TYPE:distributed_contact{
-	Home:
-	Contact:
-	Blog:
-	Faq:
-	FACEBOOK:
-	LINKEDIN:
-	TWITTER:
-	GITHUB:
-}
-
-TYPE:social
-
-footer(social){
-	FACEBOOK:
-	LINKEDIN:
-	GITHUB:
-	TWITTER:
-}
-'''
-
 def parseAbstractElement(c):
 	PAIR_1 = Word(alphas) + ':' + Word(printables)
 	PAIR_2 = Group('(' + Word(alphas , max= 1) + ')' + '{' + Word(alphas) + '}') +':' + Word(printables)
@@ -961,20 +1013,6 @@ parser=yacc.yacc()
 # This Part Applies Above Grammar On The File
 ###########################################################################
 
-def makeJS(d):
-	global main_dict
-	element = list(d.keys())[0]
-	#eprint(element)
-	if ('type' in list(d[element].keys())):
-		filename = 'layout/' + element + '_' + d[element]['type'] + '.js'
-	else:
-		filename = 'layout/' + element + '.js'
-	f = open(filename)
-	f = f.read()
-	#eprint(f)
-	count = len(list(main_dict['content'][2]['content'].keys()))
-	main_dict['content'][2]['content'][count+1] = {'script':{} , 'content':f}
-
 main_dict = {'html':{} , 'content':{ 
 		1:{'head':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
@@ -989,7 +1027,21 @@ main_dict = {'html':{} , 'content':{
 			1:'',
 			2:'',
 			3:''
-			}}}}
+}}}}
+
+def makeJS(d):
+	global main_dict
+	element = list(d.keys())[0]
+	#eprint(element)
+	if ('type' in list(d[element].keys())):
+		filename = 'layout/' + element + '_' + d[element]['type'] + '.js'
+	else:
+		filename = 'layout/' + element + '.js'
+	f = open(filename)
+	f = f.read()
+	#eprint(f)
+	count = len(list(main_dict['content'][2]['content'].keys()))
+	main_dict['content'][2]['content'][count+1] = {'script':{} , 'content':f}
 
 def main():
 	global main_dict
