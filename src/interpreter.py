@@ -162,6 +162,7 @@ CSSCount = {
 	'alert':1,
 	'grid':1,
 	'wallpaper':1,
+	'skillbar':1,
 }
 
 def piechartMaker(style,content):
@@ -480,6 +481,31 @@ def timelineMaker(s,i):
 		count = count + 1
 	return timeline_dict
 
+def skillbarMaker(s,i):
+	skillbar_dict = {'div':{'id':''} , 'content':{}}
+	skillbar_dict['div']['id'] = 'skillbar' + str(CSSCount['skillbar'])
+	CSSCount['skillbar'] = CSSCount['skillbar'] + 1
+	bar = {'div':{'class':'container'}, 'content':{1 :{'div':{'class':'skills'} , 'content':''}}}
+	css_for_skillbar = {'skillbar':{'class':'' , }}
+	css_for_skillbar['skillbar']['class'] = '#' + skillbar_dict['div']['id']
+	i = i.split(',')
+	count = 1
+	for pair in i:
+		pair = pair.split(':')
+		title = pair[0].strip()
+		skillbar_dict['content'][count] = {'p':{} , 'content':title}
+		count = count + 1
+		bar_copy = copy.deepcopy(bar)
+		bar_copy['content'][1]['content'] = pair[1].strip()
+		bar_copy['content'][1]['div']['class'] = bar_copy['content'][1]['div']['class'] + ' bar' + str(int(count/2))
+		css_for_skillbar['skillbar']['.bar' +str(int(count/2))] = pair[1].strip()
+		skillbar_dict['content'][count] = bar_copy
+		count = count + 1
+	makeCSS(css_for_skillbar)
+	#eprint(skillbar_dict)
+	#eprint(css_for_skillbar)
+	return skillbar_dict
+
 def checkboxMaker(style,content):
 	checkboxDict = {'label':{'class':'checkbox'+str(CSSCount['checkbox'])},'content':{1:'',2:{'input':{'type':'checkbox'},'content':''},3:{'span':{'class':'checkmark'},'content':''}}}
 	sendDict={'checkbox':{'class':'.checkbox'+str(CSSCount['checkbox'])}}
@@ -616,6 +642,7 @@ styleFunctions = {
 	#'checkbox':checkboxMaker,
 	'alert':alertMaker,
 	'wallpaper':wallpaperMaker,
+	'skillbar':skillbarMaker,
 }
 
 def styleMaker(s):
@@ -1001,7 +1028,7 @@ def p_style(p):
 
 def p_newline(p):
     'newline : NEWLINE'
-    p[0]="<br>"
+    p[0]=""
 
 def p_hrule(p):
 	'hrule : HRULE'

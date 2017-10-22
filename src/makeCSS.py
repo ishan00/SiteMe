@@ -1,4 +1,5 @@
 import copy
+from itertools import cycle
 navbarDict={'$CLASS$':'.navbar','$COLOR$':'#f96e5b','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'14px','$HOVER-COLOR$':'#ffffff','$HOVER-FONT-COLOR$':'#333333','$DROPDOWN-COLOR$':'none','$DROPDOWN-FONT-COLOR$':'#8B8B8B','$TOGGLE-COLOR$':'#38a6a6','$ARROW-COLOR$':'#ffffff'}
 
 def makeNavbarCSS(d):
@@ -155,6 +156,22 @@ def makeTimelineCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
+COLORS = ['#4CAF50' , '#2196F3','#e10d0d' , '#fed044' , '#00c992' , '#7e1dfb']
+
+gen_color = cycle(COLORS)
+
+def makeSkillbarCSS(d):
+	CSSFile = open('./layout/skillbar.css')
+	CSSString = CSSFile.read()
+	CLASSNAME = d['class']
+	CSSString = CSSString.replace('$CLASS$', CLASSNAME)
+	del d['class']
+	for u,v in d.items():
+		CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + next(gen_color) + ';}'
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
 CSSDict={
 	'card':makeCardCSS,
 	'fade':makeFadeCSS,
@@ -169,6 +186,7 @@ CSSDict={
 	'alert':makeAlertCSS,
 	'wallpaper':makeWallpaperCSS,
 	'timeline':makeTimelineCSS,
+	'skillbar':makeSkillbarCSS,
 }
 
 

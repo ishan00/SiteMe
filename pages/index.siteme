@@ -1,5 +1,7 @@
 title:SiteMe
 
+skillbar(){HTML:60% , CSS:80% , JavaScript:30%, php : 50%, C++ : 100%, Python : 23%}
+
 wallpaper(type:type1, color : #eeeeee , text-color : red ){SiteMe, I am awesome ? Ain't I , bird.jpg}
 
 alert(warning){This is the warning text}
