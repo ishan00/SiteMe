@@ -1,23 +1,21 @@
 title:SiteMe
-font-size:18pt
 
 wallpaper(type:type1, color : #eeeeee , text-color : red ){SiteMe, I am awesome ? Ain't I , bird.jpg}
 
 alert(warning){This is the warning text}
 alert(info){This is the information text}
 alert(danger){It's getting dangerous now}
-alert(sucess){Successful Build}
+alert(success){Successful Build}
 alert(color:#fff){This should be white}
 grid(6,6){parallax(){background.jpg}}{slideshow(type:){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}}
 
 (h2,text-align:center){Abstract}
 
+timeline(){
+* 12:50 ** This is the first entry in the timeline
+* 11:30 ** This is the second entry in the timeline
+}
 
-parallax(){background.jpg}
-
-grid(2,2,8){}{}{ (background-color:red){csdv
-				esvnlsvsdnv
-					sen} asdv }
 Aim of this project is to develop such a static site builder  that makes it easier to develop simple and useful websites. We intend to take raw text files and images as input which will be processed by following certain predefined formatting rules to generate the required website. User may select from various available templates and can add/modify features such as headers, navigation bars, footer, panels, etc. For someone who just wants a simple website/blog and isn’t much interested in the design can just choose from the available templates and connect the parts, whereas someone who cares about looks can utilize the features we provide and customize the website according to his/her needs.
 
 -----------

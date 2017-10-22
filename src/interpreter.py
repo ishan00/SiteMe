@@ -11,7 +11,6 @@ import ply.yacc as yacc
 from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
-from HTML_wallpaper import *
 from makeCSS import makeCSS
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
@@ -94,11 +93,6 @@ def ContainerElement(d,newline):
 		else:
 			result = ''.join((('<%s%s>'%(container_name[0] , attributeString(d[container_name[0]]))) , d['content'] ,('</%s>'%container_name[0])))
 		return result
-
-'''
-Checks whether type matches any of the predefined type and the processes the content corresponding to it
-If type is none then user can user other button, drop-down etc of bootstrap
-'''
 
 # POWERFUL FUNCTION
 def recursiveBuild(dictionary):
@@ -453,7 +447,13 @@ def accordionMaker(s,i):
 
 # No styles are yet implemented for timeline
 def timelineMaker(s,i):
-	timeline_dict = {'div':{'class':'timeline'} , 'content':{}}
+	css_for_timeline = {'timeline':{'class':''}}
+	timeline_dict = {'div':{'id':''} , 'content':{}}
+	timeline_dict['div']['id'] = 'timeline' + str(CSSCount['timeline'])
+	CSSCount['timeline'] = CSSCount['timeline'] + 1
+	css_for_timeline['timeline']['class'] = '#' + timeline_dict['div']['id']
+	#eprint(css_for_timeline)
+	makeCSS(css_for_timeline)
 	# Just append ' left' or ' right' to elem class
 	elem = {'div':{'class':'container'} , 'content':{
 		1:{'div':{'class':'content'} , 'content':{
@@ -464,6 +464,21 @@ def timelineMaker(s,i):
 	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
 	CONTENT = ZeroOrMore(ELEM)
 	lol = CONTENT.parseString(i).asList()
+	#eprint(lol)
+	Left = True;
+	count = 1;
+	for [u,v] in lol:
+		row = copy.deepcopy(elem)
+		row['content'][1]['content'][1]['content'] = u
+		row['content'][1]['content'][2]['content'] = v
+		if (Left):
+			row['div']['class'] = row['div']['class'] + ' left'
+		else :
+			row['div']['class'] = row['div']['class'] + ' right'
+		Left = not(Left)
+		timeline_dict['content'][count] = row
+		count = count + 1
+	return timeline_dict
 
 def checkboxMaker(style,content):
 	checkboxDict = {'label':{'class':'checkbox'+str(CSSCount['checkbox'])},'content':{1:'',2:{'input':{'type':'checkbox'},'content':''},3:{'span':{'class':'checkmark'},'content':''}}}
@@ -477,8 +492,8 @@ def checkboxMaker(style,content):
 	#print(checkboxDict)
 	return checkboxDict
 
-#def chatboxMaker(s,i):
-#	return ""
+def chatboxMaker(s,i):
+	return ""
 
 def alertMaker(s,i):
 	alert_dict = {'div':{'class':''} , 'content':{
@@ -597,7 +612,7 @@ styleFunctions = {
 	'button':buttonMaker,
 	'accordion':accordionMaker,
 	'timeline':timelineMaker,
-	#'chatbox':chatboxMaker,
+	'chatbox':chatboxMaker,
 	#'checkbox':checkboxMaker,
 	'alert':alertMaker,
 	'wallpaper':wallpaperMaker,

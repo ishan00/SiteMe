@@ -147,6 +147,14 @@ def makeWallpaperCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
+def makeTimelineCSS(d):
+	CSSFile = open('./layout/timeline.css')
+	CSSString = CSSFile.read()
+	CSSString = CSSString.replace('$CLASS$',d['class'])
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
 CSSDict={
 	'card':makeCardCSS,
 	'fade':makeFadeCSS,
@@ -160,6 +168,7 @@ CSSDict={
 	'shake':makeImageShakeCSS,
 	'alert':makeAlertCSS,
 	'wallpaper':makeWallpaperCSS,
+	'timeline':makeTimelineCSS,
 }
 
 
