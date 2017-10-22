@@ -11,6 +11,7 @@ import ply.yacc as yacc
 from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
+from HTML_wallpaper import *
 from makeCSS import makeCSS
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
