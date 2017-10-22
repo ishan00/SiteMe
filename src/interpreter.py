@@ -43,28 +43,10 @@ def listoftupleMaker(s):
 #---------------------------------------------------------------------------------------
 
 
-'''
-Boolean function which returns true if the keyword given goes inside style=""
-
-TODO Add an exhaustive list of keywords
-'''
 def isContained(s):
 	keywords = {'id':False , 'href':False , 'class':False , 'width':True , 'height':True , 'background-color':True , 'font-size':True , 'float':True}
 	return keywords[s]
 
-'''
-Input
-> dictionary of attributes
-
-Example
-{class:"a" , width:10px , height:30px , href:url ..} -> 'class = "a" style = "width:10px;height:30px;" href=url'
-
-Types of keywords
-href, class -> Standalone
-width, height, font-size, background-color ->Contained Inside style
-
-We may need a more generic function that this at later point of time. !!
-'''
 def attributeString(d):
 	keywords = list(d.keys())
 	standalone_str = ""
@@ -105,7 +87,8 @@ def recursiveBuild(dictionary):
 		return ContainerElement(dictionary,True);
 
 DirectChangeStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","underline":"u" ,"center":"center","code":'code', "sup":'sup' , "sub":'sub' , "kbd":'kbd' , 'quote':'blockquote'}
-IndirectChangeStyles={'r':'text-align:right','l':'text-align:left','c':'text-align:center'}
+IndirectChangeStyles={'r':'text-align:right','l':'text-align:left','c':'text-align:center', 'danger':'background-color: #ffdddd;border-left: 6px solid #f44336; margin-bottom:15px;padding:10px 12px',
+'info':'background-color: #e7f3fe;border-left: 6px solid #2196F3;margin-bottom:15px;padding:10px 12px','success':'background-color: #ddffdd;border-left: 6px solid #4CAF50;margin-bottom:15px;padding:10px 12px' , 'warning':'background-color: #ffffcc;border-left: 6px solid #ffeb3b;margin-bottom:15px;padding:10px 12px'}
 
 def taggedMaker(style,content):
     if(not style):
@@ -124,14 +107,14 @@ def taggedMaker(style,content):
             htagged=';'.join(htagged)+';'
             ltaggedStart=''.join(['<'+DirectChangeStyles[x]+'>' for x in ltagged])
             ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
-            return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>"
+            return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
         elif(ltagged):
             ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
             ltaggedEnd=''.join(['</'+str(DirectChangeStyles[x])+'>' for x in ltagged[::-1]])
             return ltaggedStart+content+ltaggedEnd
         elif(htagged):
             htagged=';'.join(htagged)+';'
-            return "<div style=\""+htagged+"\">"+content+"</div>"
+            return "<div style=\""+htagged+"\">"+content+"</div>\n"
 
 TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
 'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
@@ -716,7 +699,7 @@ def makeHTML(d):
 				if style=='':
 					rs=rs+'>'
 				else:
-					rs=rs+''' style="'''+style+'''">\n'''
+					rs=rs+''' style="'''+style+'''">'''
 				if Tags[Tag]:
 					if(isinstance(d['content'],dict)):
 						for i in range(0,len(list(d['content'].keys()))):
