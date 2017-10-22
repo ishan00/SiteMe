@@ -1,0 +1,9 @@
+$CLASS$ .margin {margin-bottom: 20px;margin-top: 20px;}
+.bg { 
+      background-color: $COLOR$;
+      color: $TEXT-COLOR$;
+}
+$CLASS$ .container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}

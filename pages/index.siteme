@@ -1,8 +1,14 @@
 title:SiteMe
 font-size:18pt
 
-(h1,text-align:center){SiteMe}
+wallpaper(type:type1, color : #eeeeee , text-color : red ){SiteMe, I am awesome ? Ain't I , bird.jpg}
 
+
+alert(warning){This is the warning text}
+alert(info){This is the information text}
+alert(danger){It's getting dangerous now}
+alert(sucess){Successful Build}
+alert(color:#fff){This should be white}
 grid(6,6){parallax(){background.jpg}}{slideshow(type:){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}}
 
 (h2,text-align:center){Abstract}
@@ -50,7 +56,6 @@ C(sub){n} = Catalan Number
 button(color:blue,hover-shadow,round,font-color:red,disabled){SELO}
 image(shake,flip){background.jpg}
 
-checkbox(checked){(h3,color:red){One}}
 (quote){Fake it till you make it}
 -----
 (bold){Lab Contents}
