@@ -383,7 +383,7 @@ def slideshowMaker(s,i):
 			del row['content'][2]
 			row['content'][1]['img']['src'] = 'img/' + x.strip()
 		
-		if(i == 1):
+		if(count == 1):
 			row['div']['class'] = 'active ' + row['div']['class']
 			extra_this_row['li']['class'] = 'active'
 		extra_this_row['li']['data-slide-to'] = str(count-1) 
@@ -986,6 +986,7 @@ def p_body(p):
             | body REST
             | body newline
             | body pre
+            | body code
             | body fakekeyword
             | body hrule
             | body grid
@@ -1005,13 +1006,22 @@ def p_pre(p):
     else:
         p[0]=''
 
+def p_code(p):
+	'''code : CODE
+		   |
+	'''
+	if(len(p)==2):
+		p[0]="<code>"+p[1][:-2][8:].replace('\n','@@@@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</code>"
+	else:
+		p[0]=''
+
 def p_style(p):
     'style : STYLE'
     p[0]=styleMaker(p[1])
 
 def p_newline(p):
     'newline : NEWLINE'
-    p[0]=""
+    p[0]="\n"
 
 def p_hrule(p):
 	'hrule : HRULE'
@@ -1097,7 +1107,7 @@ def main():
 	    b=parser.parse(b.strip())
 	b=b.split("<br>")
 	b="<br>\n".join(b)
-	b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}')
+	b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}').replace('@@@@','<br>')
 	#print (b)
 	body_content = ""
 	style_content = []

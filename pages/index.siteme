@@ -5,16 +5,27 @@ title:SiteMe
 (warning){The deadline is approaching}
 (info){Error checking is important}
 
+(code){{
+	int a ;
+	int b;
+	int cvector<int> a(0);
+	a.push_back;
+}}
+
+(pre){{
+	image(){background.jpg}
+}}
+
 skillbar(){HTML:60% , CSS:80% , JavaScript:30%, php : 50%, C++ : 100%, Python : 23%}
 
-wallpaper(type:type1, color : #eeeeee , text-color : red ){SiteMe, I am awesome ? Ain't I , bird.jpg}
+wallpaper(type:type1, color : #eeeeee , text-color : red ){SiteMe, I am awesome ? Ain't I, bird.jpg}
 
 alert(warning){This is the warning text}
 alert(info){This is the information text}
 alert(danger){It's getting dangerous now}
 alert(success){Successful Build}
 alert(color:#fff){This should be white}
-grid(6,6){parallax(){background.jpg}}{slideshow(type:){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}}
+grid(6,6){parallax(){background.jpg}}{slideshow(type:abc){1.jpg,2.jpg,3.jpg}}
 
 (h2,text-align:center){Abstract}
 
