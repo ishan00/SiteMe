@@ -16,6 +16,15 @@ tooltip(font-color:red, color:#000){afv:sdb}
 	image(){background.jpg}
 }}
 
+
+chatbox(avatar1.png, avatar2.jpg){
+* 1,left,11:00 ** Hi, whatsapp?
+* 0,left,12:00 ** Sorry I was busy, couldn't reply
+* 1,13:00 ** No Problem Chill
+* 1,14:00 ** Btw have you heard of this new project called siteme?
+* right,16:00 ** No. Tell me more about it
+}
+
 skillbar(){HTML:60% , CSS:80% , JavaScript:30%, php : 50%, C++ : 100%, Python : 23%}
 
 wallpaper(type:type1, color : #eeeeee , text-color : red ){SiteMe, I am awesome ? Ain't I, bird.jpg}

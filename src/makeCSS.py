@@ -185,6 +185,13 @@ def makeTooltipCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
+def makeChatboxCSS(d):
+	CSSFile = open('./layout/chatbox.css')
+	CSSString = CSSFile.read()
+	CSSString = CSSString.replace('$CLASS$',d['class'])
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
 
 CSSDict={
 	'card':makeCardCSS,
@@ -201,7 +208,8 @@ CSSDict={
 	'wallpaper':makeWallpaperCSS,
 	'timeline':makeTimelineCSS,
 	'skillbar':makeSkillbarCSS,
-	'tooltip':makeTooltipCSS
+	'tooltip':makeTooltipCSS,
+	'chatbox':makeChatboxCSS
 }
 
 

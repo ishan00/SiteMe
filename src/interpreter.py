@@ -146,7 +146,8 @@ CSSCount = {
 	'grid':1,
 	'wallpaper':1,
 	'skillbar':1,
-	'tooltip':1
+	'tooltip':1,
+	'chatbox':1,
 }
 
 def piechartMaker(style,content):
@@ -514,38 +515,68 @@ def tooltipMaker(style,content):
 	return tooltipDict
 
 def chatboxMaker(s,i):
-	css_for_timeline = {'chatbox':{'class':''}}
-	timeline_dict = {'div':{'id':''} , 'content':{}}
-	timeline_dict['div']['id'] = 'timeline' + str(CSSCount['timeline'])
-	CSSCount['timeline'] = CSSCount['timeline'] + 1
-	css_for_timeline['timeline']['class'] = '#' + timeline_dict['div']['id']
-	#eprint(css_for_timeline)
-	makeCSS(css_for_timeline)
-	# Just append ' left' or ' right' to elem class
+	#eprint(i)
+	css_for_chatbox = {'chatbox':{'class':''}}
+	chatbox_dict = {'div':{'id':''} , 'content':{}}
+	chatbox_dict['div']['id'] = 'chatbox' + str(CSSCount['chatbox'])
+	CSSCount['chatbox'] = CSSCount['chatbox'] + 1
+	css_for_chatbox['chatbox']['class'] = '#' + chatbox_dict['div']['id'] 
+	#eprint(css_for_chatbox)
+	makeCSS(css_for_chatbox)
+	# Just append ' darker' for other color, 'time-right' and 'time-left' class time display
 	elem = {'div':{'class':'container'} , 'content':{
-		1:{'div':{'class':'content'} , 'content':{
-			1:{'h2':{}, 'content' : ''},
-			2:{'p':{} , 'content' : ''}}}}}
+		1:{'img':{'src':''} , 'content':''},
+		2:{'p':{}, 'content' : ''},
+		3:{'span':{'class':''} , 'content' : ''}}}
 
-	CHARACTER_CLASS = ''' \nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!@#$%^&(){}[]\|'''
+	CHARACTER_CLASS = ''' \t\nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!?@#$%^&(){}[]\|'''
 	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
 	CONTENT = ZeroOrMore(ELEM)
-	lol = CONTENT.parseString(i).asList()
+	#eprint(ELEM.parseString(i).asList())
+	lol = CONTENT.parseString(i.strip('\n')).asList()
 	#eprint(lol)
-	Left = True;
+	last_state = ['left',0]
 	count = 1;
+	[img1,img2] = ['img/' + i.strip() for i in s.split(',')]
 	for [u,v] in lol:
 		row = copy.deepcopy(elem)
-		row['content'][1]['content'][1]['content'] = u
-		row['content'][1]['content'][2]['content'] = v
-		if (Left):
-			row['div']['class'] = row['div']['class'] + ' left'
-		else :
-			row['div']['class'] = row['div']['class'] + ' right'
-		Left = not(Left)
-		timeline_dict['content'][count] = row
+		u = u.split(',')
+		eprint(u)
+		if ('1' in u):
+			last_state[1] = 1
+			u.remove('1')
+		elif ('0' in u):
+			last_state[1] = 0
+			u.remove('0')
+		else:
+			last_state[1] = 1 - last_state[1]
+		if ('left' in u):
+			last_state[0] = 'left'
+			u.remove('left')
+		elif ('right' in u):
+			last_state[0] = 'right'
+			u.remove('right')
+		elif (last_state[0] == 'left'):
+			last_state[0] = 'right'
+		else:
+			last_state[0] = 'left'
+		if (last_state[0] == 'right'):
+			row['div']['class'] = row['div']['class'] + ' darker'
+		if(last_state[0] == 'right'):
+			row['content'][1]['img']['class'] = ' right'
+		if (last_state[1] == 0):
+			row['content'][1]['img']['src'] = img1
+		else:
+			row['content'][1]['img']['src'] = img2
+		if(last_state[0] == 'left'):
+			row['content'][3]['span']['class'] = 'time-right'
+		else:
+			row['content'][3]['span']['class'] = 'time-left'
+		row['content'][3]['content'] = u[0]
+		row['content'][2]['content'] = v
+		chatbox_dict['content'][count] = row
 		count = count + 1
-	return timeline_dict
+	return chatbox_dict
 
 def alertMaker(s,i):
 	alert_dict = {'div':{'class':''} , 'content':{
