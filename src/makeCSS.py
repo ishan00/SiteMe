@@ -21,6 +21,7 @@ leftDict={'$HEIGHT$':'100%','$HOVER-WIDTH$':'100%'}
 rightDict={'$LEFT$':'100%','$HEIGHT$':'100%','$HOVER-WIDTH$':'100%','$HOVER-LEFT$':'0'}
 noneDict={'$OPACITY$':'0','$HOVER-OPACITY$':'1','$WIDTH$':'100%','$HEIGHT$':'100%'}
 typeDict={'top':topDict,'bottom':bottomDict,'right':rightDict,'left':leftDict}
+tooltipDict={'$COLOR':'#555','$FONT-COLOR$':'#fff','$CLASS$':'.tooltip'}
 
 def makeFadeCSS(d):
 	CSSFile=open('./layout/fade.css')
@@ -196,6 +197,26 @@ def makeSkillbarCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
+def makeTooltipCSS(d):
+	CSSFile=open('./layout/tooltip.css')
+	CSSString=CSSFile.read()
+	newtooltipDict=copy.deepcopy(tooltipDict)
+	for (key,value) in d.items():
+		newtooltipDict['$'+key.upper()+'$']=value
+	for (key,value) in newtooltipDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+def makeChatboxCSS(d):
+	CSSFile = open('./layout/chatbox.css')
+	CSSString = CSSFile.read()
+	CSSString = CSSString.replace('$CLASS$',d['class'])
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
 CSSDict={
 	'card':makeCardCSS,
 	'fade':makeFadeCSS,
@@ -213,6 +234,8 @@ CSSDict={
 	'wallpaper':makeWallpaperCSS,
 	'timeline':makeTimelineCSS,
 	'skillbar':makeSkillbarCSS,
+	'tooltip':makeTooltipCSS,
+	'chatbox':makeChatboxCSS
 }
 
 

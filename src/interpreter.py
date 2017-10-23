@@ -117,7 +117,7 @@ def taggedMaker(style,content):
             return "<div style=\""+htagged+"\">"+content+"</div>\n"
 
 TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
-'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
+'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
@@ -148,6 +148,8 @@ CSSCount = {
 	'grid':1,
 	'wallpaper':1,
 	'skillbar':1,
+	'tooltip':1,
+	'chatbox':1,
 }
 
 def piechartMaker(style,content):
@@ -530,8 +532,80 @@ def checkboxMaker(style,content):
 	#print(checkboxDict)
 	return checkboxDict
 
+def tooltipMaker(style,content):
+	tooltipDict={'div':{'class':'tooltip'+str(CSSCount['tooltip'])},'content':{1:'',2:{'span':{'class':'tooltiptext'},'content':''}}}
+	sendDict={'tooltip':{'class':'.tooltip'+str(CSSCount['tooltip'])}}
+	styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	sendDict['tooltip'].update(styleDict)
+	makeCSS(sendDict)
+	content=content.split(':')
+	tooltipDict['content'][1]=content[0]
+	tooltipDict['content'][2]['content']=content[1]
+	return tooltipDict
+
 def chatboxMaker(s,i):
-	return ""
+	#eprint(i)
+	css_for_chatbox = {'chatbox':{'class':''}}
+	chatbox_dict = {'div':{'id':''} , 'content':{}}
+	chatbox_dict['div']['id'] = 'chatbox' + str(CSSCount['chatbox'])
+	CSSCount['chatbox'] = CSSCount['chatbox'] + 1
+	css_for_chatbox['chatbox']['class'] = '#' + chatbox_dict['div']['id'] 
+	#eprint(css_for_chatbox)
+	makeCSS(css_for_chatbox)
+	# Just append ' darker' for other color, 'time-right' and 'time-left' class time display
+	elem = {'div':{'class':'container'} , 'content':{
+		1:{'img':{'src':''} , 'content':''},
+		2:{'p':{}, 'content' : ''},
+		3:{'span':{'class':''} , 'content' : ''}}}
+
+	CHARACTER_CLASS = ''' \t\nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!?@#$%^&(){}[]\|'''
+	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
+	CONTENT = ZeroOrMore(ELEM)
+	#eprint(ELEM.parseString(i).asList())
+	lol = CONTENT.parseString(i.strip('\n')).asList()
+	#eprint(lol)
+	last_state = ['left',0]
+	count = 1;
+	[img1,img2] = ['img/' + i.strip() for i in s.split(',')]
+	for [u,v] in lol:
+		row = copy.deepcopy(elem)
+		u = u.split(',')
+		eprint(u)
+		if ('1' in u):
+			last_state[1] = 1
+			u.remove('1')
+		elif ('0' in u):
+			last_state[1] = 0
+			u.remove('0')
+		else:
+			last_state[1] = 1 - last_state[1]
+		if ('left' in u):
+			last_state[0] = 'left'
+			u.remove('left')
+		elif ('right' in u):
+			last_state[0] = 'right'
+			u.remove('right')
+		elif (last_state[0] == 'left'):
+			last_state[0] = 'right'
+		else:
+			last_state[0] = 'left'
+		if (last_state[0] == 'right'):
+			row['div']['class'] = row['div']['class'] + ' darker'
+		if(last_state[0] == 'right'):
+			row['content'][1]['img']['class'] = ' right'
+		if (last_state[1] == 0):
+			row['content'][1]['img']['src'] = img1
+		else:
+			row['content'][1]['img']['src'] = img2
+		if(last_state[0] == 'left'):
+			row['content'][3]['span']['class'] = 'time-right'
+		else:
+			row['content'][3]['span']['class'] = 'time-left'
+		row['content'][3]['content'] = u[0]
+		row['content'][2]['content'] = v
+		chatbox_dict['content'][count] = row
+		count = count + 1
+	return chatbox_dict
 
 def alertMaker(s,i):
 	alert_dict = {'div':{'class':''} , 'content':{
@@ -655,6 +729,7 @@ styleFunctions = {
 	'alert':alertMaker,
 	'wallpaper':wallpaperMaker,
 	'skillbar':skillbarMaker,
+	'tooltip':tooltipMaker 
 }
 
 def styleMaker(s):
@@ -747,7 +822,7 @@ def makeNavbar(navbar_style,  navbar_content):
 	css_for_navbar = {'navbar':{}}
 	#print (navbar_type)
 	css_for_navbar['navbar']['type'] = navbar_type
-	css_for_navbar['navbar']['class'] = '.navbar'
+	css_for_navbar['navbar']['class'] = '#navbar'
 	#print (navbar_style)
 	#print (css_for_navbar)
 	for i in navbar_style:
@@ -758,7 +833,7 @@ def makeNavbar(navbar_style,  navbar_content):
 		makeCSS(css_for_navbar)
 		#print (css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_flat)
-		navbar_dict['div']['class'] = 'navbar'
+		navbar_dict['div']['id'] = 'navbar'
 		li_element = copy.deepcopy(navbar_flat['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -808,7 +883,7 @@ def makeNavbar(navbar_style,  navbar_content):
 		#print (navbar_dict)
 		return navbar_dict
 	elif navbar_type == 'open':
-		css_for_navbar['navbar']['class'] = '#navbar'
+		css_for_navbar['navbar']['id'] = 'navbar'
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_open)
 		navbar_dict['div']['id'] = 'navbar'
@@ -833,7 +908,7 @@ def makeNavbar(navbar_style,  navbar_content):
 	elif navbar_type == 'breadcrumbs':
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_breadcrumbs)
-		navbar_dict['div']['class'] = 'navbar'
+		navbar_dict['div']['id'] = 'navbar'
 		li_element = copy.deepcopy(navbar_breadcrumbs['content'][1]['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -856,7 +931,7 @@ def makeNavbar(navbar_style,  navbar_content):
 	elif navbar_type == 'toggle':
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_toggle)
-		navbar_dict['header']['class'] = 'navbar'
+		navbar_dict['header']['id'] = 'navbar'
 		li_element = copy.deepcopy(navbar_toggle['content'][2]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -886,20 +961,36 @@ def findCorrespondingPair( lol , val):
 		else:
 			return False
 
-social_icons = ['facebook', 'gplus' , 'reddit' , 'email' , 'github' , 'home' , 'phone' , 'linkedin', 'twitter']
+social_icons = {'facebook':'facebook',
+				'fb':'facebook',
+				'google':'google',
+				'google-plus':'google-plus',
+				'reddit':'reddit',
+				'email':'envelope',
+				'mail':'envelope',
+				'github':'github',
+				'pinterest':'pinterest',
+				'quora':'quora',
+				'skype':'skype',
+				'youtube':'youtube',
+				'instagram':'instagram',
+				'slack':'slack',
+				'stackoverflow':'stack-overflow',
+				'stack-overflow':'stack-overflow',
+				'home':'home',
+				'phone':'phone',
+				'linkedin':'linkedin',
+				'twitter':'twitter'}
 
 def makeFooter(footer_style,footer_content):
 	footer_type = findCorrespondingPair(footer_style, 'type')[1]
 	del footer_style[findCorrespondingPair(footer_style,'type')[0]]
-	css_for_footer = {'footer':{'class':'.footer' , 'type':footer_type}}
+	css_for_footer = {'footer':{'class':'#footer' , 'type':footer_type}}
 	for i in footer_style:
 		css_for_footer['footer'][i[0]] = i[1]
-	#print(css_for_footer)
 	makeCSS(css_for_footer)
-	#print (footer_content)
 	if footer_type == 'basic':
 		footer_dict = copy.deepcopy(footer_basic)
-		#print (footer_content)
 		footer_dict['footer']['class'] = 'footer'
 		sample_li = copy.deepcopy(footer_basic['content'][2]['content'][1])
 		company_name = findCorrespondingPair(footer_content,'NAME')
@@ -921,11 +1012,11 @@ def makeFooter(footer_style,footer_content):
 		return footer_dict
 	elif footer_type == 'social':
 		footer_dict = copy.deepcopy(footer_social)
-		footer_dict['footer']['class'] = 'footer'
+		footer_dict['footer']['id'] = 'footer'
 		elem = copy.deepcopy(footer_social['content'][1]['content'][1])
 		for i in range(len(footer_content)):
 			row = copy.deepcopy(elem)
-			row['content'][1]['img']['src'] = 'img/icons/' + footer_content[i][0].strip() +'.png'
+			row['content'][1]['i']['class'] = "fa fa-" + social_icons[footer_content[i][0].strip()]
 			row['a']['href'] = footer_content[i][1].strip()
 			footer_dict['content'][1]['content'][i+1] = row
 		return footer_dict
@@ -1082,10 +1173,11 @@ main_dict = {'html':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
 			2:{'style':{} , 'content' : ''},
 			5:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
+			6:{'link':{'rel':"stylesheet" ,'href':"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"}, 'content':''},
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
-			6:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			7:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			8:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',

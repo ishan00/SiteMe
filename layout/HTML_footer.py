@@ -1,13 +1,13 @@
 #type:social
 footer_social = \
-{'footer':{'class':''} , 'content':{ 
+{'footer':{'id':''} , 'content':{ 
 	1:{'div':{'class':'footer-social'} , 'content': { 
 		1:{ 'a':{'href':''} , 'content': { 
-			1:{'img':{'src':'', 'height':'60px' , 'width':'60px'} , 'content':''}}}}}}}
+			1:{'i':{'class':'', 'font-size':'60px'} ,'content':''}}}}}}}
 
 #type:basic
 footer_basic = \
-{'footer':{'class':''},'content':{
+{'footer':{'id':''},'content':{
 	1:{'p':{'class':'footer-company-motto'},'content':''},
 	2:{'p':{'class':'footer-links'}, 'content':{
 		1:{'a':{'href':''} , 'content':''}}} ,
@@ -15,7 +15,7 @@ footer_basic = \
 
 #type:distributed
 footer_distributed= \
-{'footer':{'class':''},'content':{
+{'footer':{'id':''},'content':{
 	1:{'div':{'class':'footer-right'},'content': {
 		1:{ 'a':{'href':''} , 'content': {
 			1:{'img':{'src':'' , 'height':'48px' , 'width':'48px'} , 'content':''}}}}} , 
@@ -24,7 +24,7 @@ footer_distributed= \
 			1:{'a':{'href':''} , 'content':'' }}}}}}}
 #type:distributed_phone_address
 footer_distributed_phone_address = \
-{'footer':{'class':'footer-distributed'} , 'content':{ 
+{'footer':{'id':'footer-distributed'} , 'content':{ 
 	1:{'div':{'class':'footer-left'} , 'content':{ 
 		1:{'h3':{} , 'content':''} , 
 		2:{'p':{'class':'footer-links'}, 'content':{
@@ -54,7 +54,7 @@ footer_distributed_phone_address = \
 
 #type:distributed_contact_form
 footer_distributed_contact = \
-{'footer':{'class':'footer-distributed'} , 'content':{ 
+{'footer':{'id':'footer-distributed'} , 'content':{ 
 	1:{'div':{'class':'footer-left'} , 'content':{ 
 		1:{'h3':{} , 'content':''} , 
 		2:{'p':{'class':'footer-links'}, 'content':{
@@ -78,7 +78,7 @@ footer_distributed_contact = \
 	
 #type:distributed_search
 footer_distributed_search = \
-{'div':{'class':'footer-distributed'} , 'content':{
+{'div':{'id':'footer-distributed'} , 'content':{
 	1:{'div':{'class':'footer-links'} , 'content':{
 		1:{'p':{'class':'footer-links'}, 'content':{
 			1:{'a':{'href':''} , 'content':''}}} , 
