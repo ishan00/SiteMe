@@ -1,4 +1,5 @@
 import copy
+from itertools import cycle
 navbarDict={'$CLASS$':'.navbar','$COLOR$':'#f96e5b','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'14px','$HOVER-COLOR$':'#ffffff','$HOVER-FONT-COLOR$':'#333333','$DROPDOWN-COLOR$':'none','$DROPDOWN-FONT-COLOR$':'#8B8B8B','$TOGGLE-COLOR$':'#38a6a6','$ARROW-COLOR$':'#ffffff'}
 
 def makeNavbarCSS(d):
@@ -119,7 +120,75 @@ def makeImageShakeCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-CSSDict={'card':makeCardCSS,'fade':makeFadeCSS,'navbar':makeNavbarCSS,'parallax':makeParallaxCSS,'footer':makeFooterCSS,'button':makeButtonCSS,'accordion':makeAccordionCSS,'checkbox':makeCheckBoxCSS,'flip':makeImageFlipCSS,'shake':makeImageShakeCSS}
+alertDict = {'$CLASS$':'', '$COLOR$':'red' , '$TEXT-COLOR':'white'}
+
+def makeAlertCSS(d):
+	CSSFile = open('./layout/alert.css')
+	CSSString = CSSFile.read()
+	newalertDict =copy.deepcopy(alertDict)
+	for (key,value) in d.items():
+		newalertDict['$'+key.upper()+'$']=value
+	for (key,value) in newalertDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+wallpaper_type1Dict = {'$CLASS$':'' , '$COLOR$':'#1abc9c' , '$TEXT-COLOR$':'#ffffff'}
+
+def makeWallpaperCSS(d):
+	CSSFile = open('./layout/wallpaper_' + d['type'] + '.css')
+	CSSString = CSSFile.read()
+	newWallpaperDict =copy.deepcopy(wallpaper_type1Dict)
+	for (key,value) in d.items():
+		newWallpaperDict['$'+key.upper()+'$']=value
+	for (key,value) in newWallpaperDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+def makeTimelineCSS(d):
+	CSSFile = open('./layout/timeline.css')
+	CSSString = CSSFile.read()
+	CSSString = CSSString.replace('$CLASS$',d['class'])
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+COLORS = ['#4CAF50' , '#2196F3','#e10d0d' , '#fed044' , '#00c992' , '#7e1dfb']
+
+gen_color = cycle(COLORS)
+
+def makeSkillbarCSS(d):
+	CSSFile = open('./layout/skillbar.css')
+	CSSString = CSSFile.read()
+	CLASSNAME = d['class']
+	CSSString = CSSString.replace('$CLASS$', CLASSNAME)
+	del d['class']
+	for u,v in d.items():
+		CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + next(gen_color) + ';}'
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+CSSDict={
+	'card':makeCardCSS,
+	'fade':makeFadeCSS,
+	'navbar':makeNavbarCSS,
+	'parallax':makeParallaxCSS,
+	'footer':makeFooterCSS,
+	'button':makeButtonCSS,
+	'accordion':makeAccordionCSS,
+	'checkbox':makeCheckBoxCSS,
+	'flip':makeImageFlipCSS,
+	'shake':makeImageShakeCSS,
+	'alert':makeAlertCSS,
+	'wallpaper':makeWallpaperCSS,
+	'timeline':makeTimelineCSS,
+	'skillbar':makeSkillbarCSS,
+}
+
 
 def makeCSS(d):
 	CSSDict[list(d.keys())[0]](d[list(d.keys())[0]])
