@@ -3,9 +3,10 @@ navbar ( type:orange ){
 	(r){About} : about.html
 	Contact : https://google.co.in
 	(r){Resume} : resume2page.pdf
+	CV : cv.html
 }
 
-footer ( type : social , icon-color : white ){
+footer ( type : social , icon-color : white ,size:30px ){
 	facebook : sdv	
 	github : ggigigg
 	linkedin : asdsa

@@ -20,11 +20,11 @@ grid(4,8){
 }{	block(){
 	(h1){Work Experience}
 	(bold,h3){Front End Developer / w3schools.com}
-	Jan 2015 - (background-color:blue){Current}
+	Jan 2015 - (background-color:blue){Current}\\
 	Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.
 	-----
 	(bold,h3){Web Developer / something.com}
-	Mar 2012 - Dec 2014
+	Mar 2012 - Dec 2014\\
 	Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.
 	-----
 	(bold,h3){Graphic Designer / designsomething.com}
@@ -37,11 +37,11 @@ grid(4,8){
 	Web Development! All I need to know in one place
 	-----
 	(bold,h3){London Business School}
-	2013 - 2015
+	2013 - 2015\\
 	Master Degree
 	-----
 	(bold,h3){School of Coding}
-	2010 - 2013
+	2010 - 2013\\
 	Bachelor Degree
 	}
 }

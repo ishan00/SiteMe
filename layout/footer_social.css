@@ -12,6 +12,7 @@ $CLASS$ a{
 }
 $CLASS$ .fa {
 	color:$ICON-COLOR$;
+	font-size:$SIZE$;
 }
 $CLASS$ .fa-facebook:hover{
 	color:#3b5998;

@@ -91,30 +91,38 @@ IndirectChangeStyles={'r':'text-align:right','l':'text-align:left','c':'text-ali
 'info':'background-color: #e7f3fe;border-left: 6px solid #2196F3;margin-bottom:15px;padding:10px 12px','success':'background-color: #ddffdd;border-left: 6px solid #4CAF50;margin-bottom:15px;padding:10px 12px' , 'warning':'background-color: #ffffcc;border-left: 6px solid #ffeb3b;margin-bottom:15px;padding:10px 12px'}
 
 def taggedMaker(style,content):
-    if(not style):
-        return content
-    else:
-        style=style.split(',')
-        style=[IndirectChangeStyles[x] if x in IndirectChangeStyles else x for x in style]
-        ltagged=[]
-        htagged=[]
-        for x in style:
-            if(':' in x):
-                htagged.append(x)
-            else:
-                ltagged.append(x)
-        if(ltagged and htagged):
-            htagged=';'.join(htagged)+';'
-            ltaggedStart=''.join(['<'+DirectChangeStyles[x]+'>' for x in ltagged])
-            ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
-            return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
-        elif(ltagged):
-            ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
-            ltaggedEnd=''.join(['</'+str(DirectChangeStyles[x])+'>' for x in ltagged[::-1]])
-            return ltaggedStart+content+ltaggedEnd
-        elif(htagged):
-            htagged=';'.join(htagged)+';'
-            return "<div style=\""+htagged+"\">"+content+"</div>\n"
+	if(not style):
+		return content
+	else:
+		style=style.split(',')
+		style=[IndirectChangeStyles[x] if x in IndirectChangeStyles else x for x in style]
+		ltagged=[]
+		htagged=[]
+		for x in style:
+			if(':' in x):
+				htagged.append(x)
+			else:
+				ltagged.append(x)
+		if(ltagged and htagged):
+			htagged=';'.join(htagged)+';'
+			ltaggedStart=''.join(['<'+DirectChangeStyles[x]+'>' for x in ltagged])
+			ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
+			for x in htagged:
+				if('align' in x):
+					return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
+					break
+			return "<span style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</span>\n"
+		elif(ltagged):
+			ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
+			ltaggedEnd=''.join(['</'+str(DirectChangeStyles[x])+'>' for x in ltagged[::-1]])
+			return ltaggedStart+content+ltaggedEnd
+		elif(htagged):
+			htagged=';'.join(htagged)+';'
+			for x in htagged:
+				if('align' in x):
+					return "<div style=\""+htagged+"\">"+content+"</div>\n"
+					break
+			return "<span style=\""+htagged+"\">"+content+"</span>\n"
 
 TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
 'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
@@ -298,6 +306,8 @@ def imageMaker(style,content):
 		if('shake' in style):
 			currDict={'div':{'class':'shake'+str(CSSCount['shake'])},'content':{1:copy.deepcopy(currDict)}}
 			CSSCount['shake']=CSSCount['shake']+1
+		if('center' in style):
+			currDict={'div':{'align':'center'},'content':{1:currDict}}
 		# for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
 		# 	currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
 		#print(currDict)
@@ -338,6 +348,7 @@ def listMaker(style,content):
 					else:
 						listDict.update({i+1:{'dd':{},'content':listData[i]}})
 			else:
+
 				listData=[y.strip('\t\n\r* ') for y in content.split('\n')[1:-1]]
 				listDict={}
 				for i in range(0,len(listData)):
@@ -1273,7 +1284,7 @@ def main():
 			body_content = body_content + i + '\n'
 	style_content = 'body {\n' + ';\n'.join(style_content) + ';\n}'
 	main_dict['content'][1]['content'][6]['content'] = style_content
-	main_dict['content'][2]['content'][2] = body_content
+	main_dict['content'][2]['content'][2] = body_content.replace('\\','<br>\n')
 	#print (main_dict)
 	print(makeHTML(main_dict))
 

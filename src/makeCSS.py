@@ -62,7 +62,7 @@ def makeParallaxCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-footerDict={'$CLASS$':'.footer','$COLOR$':'#292c2f','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'18px','$MOTTO-FONT-COLOR$':'#8d9093','$MOTTO-FONT-SIZE$':'24px','$NAME-FONT-COLOR$':'#8f9296','$NAME-FONT-SIZE$':'14px'}
+footerDict={'$CLASS$':'.footer','$COLOR$':'#292c2f','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'18px','$MOTTO-FONT-COLOR$':'#8d9093','$MOTTO-FONT-SIZE$':'24px','$NAME-FONT-COLOR$':'#8f9296','$NAME-FONT-SIZE$':'14px','$SIZE':'60px'}
 
 def makeFooterCSS(d):
 	CSSFile=open('./layout/footer_'+d['type']+'.css')

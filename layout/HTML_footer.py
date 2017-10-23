@@ -3,7 +3,7 @@ footer_social = \
 {'footer':{'id':''} , 'content':{ 
 	1:{'div':{'class':'footer-social'} , 'content': { 
 		1:{ 'a':{'href':''} , 'content': { 
-			1:{'i':{'class':'', 'font-size':'60px'} ,'content':''}}}}}}}
+			1:{'i':{'class':''} ,'content':''}}}}}}}
 
 #type:basic
 footer_basic = \
