@@ -185,7 +185,7 @@ COLORS = ['#4CAF50' , '#2196F3','#e10d0d' , '#fed044' , '#00c992' , '#7e1dfb']
 
 gen_color = cycle(COLORS)
 
-blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'12px', '$PADDING-RIGHT$':'16px', '$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px'}
+blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px', '$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
 
 def makeBlockCSS(d):
 	CSSFile = open('./layout/block.css')

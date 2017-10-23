@@ -1,6 +1,7 @@
+#nonavbar
+#nofooter
 title: SiteME
 background-color:#eeeeee
-
 grid(4,8){
 	block(){
 	image(height:300px,width:100%){john-doe.jpg}

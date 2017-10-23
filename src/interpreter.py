@@ -812,7 +812,7 @@ def makeHTML(d):
 		keysList=list(d.keys())
 		if(1 in keysList):
 			rs=''
-			for i in range(1,len(keysList)+1):
+			for i in keysList:
 				rs=rs + '\n'+makeHTML(d[i])
 			return rs
 		else:
@@ -832,8 +832,9 @@ def makeHTML(d):
 					rs=rs+''' style="'''+style+'''">'''
 				if Tags[Tag]:
 					if(isinstance(d['content'],dict)):
-						for i in range(0,len(list(d['content'].keys()))):
-							rs=rs+makeHTML(d['content'][i+1]) + '\n'
+						newKeyList = list(d['content'].keys())
+						for i in newKeyList:
+							rs=rs+makeHTML(d['content'][i]) + '\n'
 					else:
 						rs=rs+d['content']
 					rs=rs+"</"+Tag+">"
@@ -1262,6 +1263,10 @@ def main():
 		if(i.find('###') != -1):
 			if(i.find('title') != -1):
 				main_dict['content'][1]['content'][1]['content'] = i[i.find(':')+1:]
+			elif (i.find('nonavbar') != -1):
+				del main_dict['content'][2]['content'][1]
+			elif (i.find('nofooter') != -1):
+				del main_dict['content'][2]['content'][3]
 			else:
 				style_content.append(i[i.find('###') + 3:])
 		else:
