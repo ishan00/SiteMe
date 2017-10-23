@@ -4,7 +4,7 @@ title:SiteMe
 (success){Another Feature Added}
 (warning){The deadline is approaching}
 (info){Error checking is important}
-
+tooltip(font-color:red, color:#000){afv:sdb}
 (code){{
 	int a ;
 	int b;

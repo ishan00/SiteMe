@@ -117,7 +117,7 @@ def taggedMaker(style,content):
             return "<div style=\""+htagged+"\">"+content+"</div>\n"
 
 TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
-'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color'}
+'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
@@ -146,6 +146,7 @@ CSSCount = {
 	'grid':1,
 	'wallpaper':1,
 	'skillbar':1,
+	'tooltip':1
 }
 
 def piechartMaker(style,content):
@@ -501,6 +502,17 @@ def checkboxMaker(style,content):
 	#print(checkboxDict)
 	return checkboxDict
 
+def tooltipMaker(style,content):
+	tooltipDict={'div':{'class':'tooltip'+str(CSSCount['tooltip'])},'content':{1:'',2:{'span':{'class':'tooltiptext'},'content':''}}}
+	sendDict={'tooltip':{'class':'.tooltip'+str(CSSCount['tooltip'])}}
+	styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	sendDict['tooltip'].update(styleDict)
+	makeCSS(sendDict)
+	content=content.split(':')
+	tooltipDict['content'][1]=content[0]
+	tooltipDict['content'][2]['content']=content[1]
+	return tooltipDict
+
 def chatboxMaker(s,i):
 	return ""
 
@@ -626,6 +638,7 @@ styleFunctions = {
 	'alert':alertMaker,
 	'wallpaper':wallpaperMaker,
 	'skillbar':skillbarMaker,
+	'tooltip':tooltipMaker 
 }
 
 def styleMaker(s):

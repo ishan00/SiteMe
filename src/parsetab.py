@@ -5,9 +5,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'KEYWORD PRE STYLE REST NEWLINE HRULE GRIDmain : head bodyhead : head keyword\n            | head NEWLINE\n            |\n    body : body style\n            | body REST\n            | body newline\n            | body pre\n            | body fakekeyword\n            | body hrule\n            | body grid\n            |\n    pre : PRE \n           |  \n    style : STYLEnewline : NEWLINEhrule : HRULEgrid : GRIDkeyword : KEYWORDfakekeyword : KEYWORD'
+_lr_signature = 'KEYWORD PRE CODE STYLE REST NEWLINE HRULE GRIDmain : head bodyhead : head keyword\n            | head NEWLINE\n            |\n    body : body style\n            | body REST\n            | body newline\n            | body pre\n            | body code\n            | body fakekeyword\n            | body hrule\n            | body grid\n            |\n    pre : PRE \n           |  \n    code : CODE\n\t\t   |\n\tstyle : STYLEnewline : NEWLINEhrule : HRULEgrid : GRIDkeyword : KEYWORDfakekeyword : KEYWORD'
     
-_lr_action_items = {'REST':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,],[-4,-12,-2,7,-19,-3,-6,-10,-8,-20,-13,-18,-7,-11,-5,-17,-16,-9,-15,]),'$end':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,],[-4,0,-12,-2,-1,-19,-3,-6,-10,-8,-20,-13,-18,-7,-11,-5,-17,-16,-9,-15,]),'NEWLINE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,],[-4,6,-2,17,-19,-3,-6,-10,-8,-20,-13,-18,-7,-11,-5,-17,-16,-9,-15,]),'STYLE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,],[-4,-12,-2,19,-19,-3,-6,-10,-8,-20,-13,-18,-7,-11,-5,-17,-16,-9,-15,]),'KEYWORD':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,],[-4,5,-2,10,-19,-3,-6,-10,-8,-20,-13,-18,-7,-11,-5,-17,-16,-9,-15,]),'PRE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,],[-4,-12,-2,11,-19,-3,-6,-10,-8,-20,-13,-18,-7,-11,-5,-17,-16,-9,-15,]),'HRULE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,],[-4,-12,-2,16,-19,-3,-6,-10,-8,-20,-13,-18,-7,-11,-5,-17,-16,-9,-15,]),'GRID':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,],[-4,-12,-2,12,-19,-3,-6,-10,-8,-20,-13,-18,-7,-11,-5,-17,-16,-9,-15,]),}
+_lr_action_items = {'KEYWORD':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,6,-2,19,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),'NEWLINE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,5,-2,12,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),'REST':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,-13,-2,8,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),'STYLE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,-13,-2,10,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),'$end':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,0,-13,-2,-1,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),'CODE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,-13,-2,18,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),'HRULE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,-13,-2,7,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),'GRID':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,-13,-2,20,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),'PRE':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,],[-4,-13,-2,21,-3,-22,-20,-6,-12,-18,-8,-19,-9,-10,-5,-7,-11,-16,-23,-21,-14,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'main':([0,],[1,]),'hrule':([4,],[8,]),'newline':([4,],[13,]),'pre':([4,],[9,]),'grid':([4,],[14,]),'keyword':([2,],[3,]),'body':([2,],[4,]),'style':([4,],[15,]),'head':([0,],[2,]),'fakekeyword':([4,],[18,]),}
+_lr_goto_items = {'hrule':([4,],[17,]),'grid':([4,],[9,]),'head':([0,],[2,]),'keyword':([2,],[3,]),'body':([2,],[4,]),'style':([4,],[15,]),'main':([0,],[1,]),'pre':([4,],[11,]),'code':([4,],[13,]),'newline':([4,],[16,]),'fakekeyword':([4,],[14,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,24 +26,27 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> main","S'",1,None,None,None),
-  ('main -> head body','main',2,'p_main','interpreter.py',856),
-  ('head -> head keyword','head',2,'p_head','interpreter.py',860),
-  ('head -> head NEWLINE','head',2,'p_head','interpreter.py',861),
-  ('head -> <empty>','head',0,'p_head','interpreter.py',862),
-  ('body -> body style','body',2,'p_body','interpreter.py',870),
-  ('body -> body REST','body',2,'p_body','interpreter.py',871),
-  ('body -> body newline','body',2,'p_body','interpreter.py',872),
-  ('body -> body pre','body',2,'p_body','interpreter.py',873),
-  ('body -> body fakekeyword','body',2,'p_body','interpreter.py',874),
-  ('body -> body hrule','body',2,'p_body','interpreter.py',875),
-  ('body -> body grid','body',2,'p_body','interpreter.py',876),
-  ('body -> <empty>','body',0,'p_body','interpreter.py',877),
-  ('pre -> PRE','pre',1,'p_pre','interpreter.py',885),
-  ('pre -> <empty>','pre',0,'p_pre','interpreter.py',886),
-  ('style -> STYLE','style',1,'p_style','interpreter.py',894),
-  ('newline -> NEWLINE','newline',1,'p_newline','interpreter.py',898),
-  ('hrule -> HRULE','hrule',1,'p_hrule','interpreter.py',902),
-  ('grid -> GRID','grid',1,'p_grid','interpreter.py',906),
-  ('keyword -> KEYWORD','keyword',1,'p_keyword','interpreter.py',910),
-  ('fakekeyword -> KEYWORD','fakekeyword',1,'p_fakekeyword','interpreter.py',917),
+  ('main -> head body','main',2,'p_main','interpreter.py',971),
+  ('head -> head keyword','head',2,'p_head','interpreter.py',975),
+  ('head -> head NEWLINE','head',2,'p_head','interpreter.py',976),
+  ('head -> <empty>','head',0,'p_head','interpreter.py',977),
+  ('body -> body style','body',2,'p_body','interpreter.py',985),
+  ('body -> body REST','body',2,'p_body','interpreter.py',986),
+  ('body -> body newline','body',2,'p_body','interpreter.py',987),
+  ('body -> body pre','body',2,'p_body','interpreter.py',988),
+  ('body -> body code','body',2,'p_body','interpreter.py',989),
+  ('body -> body fakekeyword','body',2,'p_body','interpreter.py',990),
+  ('body -> body hrule','body',2,'p_body','interpreter.py',991),
+  ('body -> body grid','body',2,'p_body','interpreter.py',992),
+  ('body -> <empty>','body',0,'p_body','interpreter.py',993),
+  ('pre -> PRE','pre',1,'p_pre','interpreter.py',1001),
+  ('pre -> <empty>','pre',0,'p_pre','interpreter.py',1002),
+  ('code -> CODE','code',1,'p_code','interpreter.py',1010),
+  ('code -> <empty>','code',0,'p_code','interpreter.py',1011),
+  ('style -> STYLE','style',1,'p_style','interpreter.py',1019),
+  ('newline -> NEWLINE','newline',1,'p_newline','interpreter.py',1023),
+  ('hrule -> HRULE','hrule',1,'p_hrule','interpreter.py',1027),
+  ('grid -> GRID','grid',1,'p_grid','interpreter.py',1031),
+  ('keyword -> KEYWORD','keyword',1,'p_keyword','interpreter.py',1035),
+  ('fakekeyword -> KEYWORD','fakekeyword',1,'p_fakekeyword','interpreter.py',1042),
 ]
