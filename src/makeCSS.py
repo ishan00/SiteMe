@@ -75,10 +75,34 @@ def makeFooterCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-buttonDict={'$CLASS$':'button','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'15px','$PADDING-LEFT$':'32px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'none','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'none','$HOVER-FONT-COLOR$':'none','$HOVER-SHADOW$':'none'}
+buttonDict={'$CLASS$':'#button','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'15px','$PADDING-LEFT$':'32px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'none','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'none','$HOVER-FONT-COLOR$':'none','$HOVER-SHADOW$':'none','$DROPDOWN-COLOR$':'#f9f9f9','$DROPDOWN-FONT-COLOR$':'black','$DROPDOWN-FONT-SIZE$':'none','$DROPDOWN-WIDTH$':'160px','$DROPDOWN-HOVER-COLOR$':'#f1f1f1','$DROPDOWN-HOVER-FONT-COLOR$':'black'}
 
 def makeButtonCSS(d):
 	CSSFile=open('./layout/button.css')
+	CSSString=CSSFile.read()
+	newbuttonDict=copy.deepcopy(buttonDict)
+	for (key,value) in d.items():
+		newbuttonDict['$'+key.upper()+'$']=value
+	for (key,value) in newbuttonDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+def makeHoverButtonCSS(d):
+	CSSFile=open('./layout/hover-dropdown.css')
+	CSSString=CSSFile.read()
+	newbuttonDict=copy.deepcopy(buttonDict)
+	for (key,value) in d.items():
+		newbuttonDict['$'+key.upper()+'$']=value
+	for (key,value) in newbuttonDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+def makeClickButtonCSS(d):
+	CSSFile=open('./layout/click-dropdown.css')
 	CSSString=CSSFile.read()
 	newbuttonDict=copy.deepcopy(buttonDict)
 	for (key,value) in d.items():
@@ -179,6 +203,8 @@ CSSDict={
 	'parallax':makeParallaxCSS,
 	'footer':makeFooterCSS,
 	'button':makeButtonCSS,
+	'hover-button':makeHoverButtonCSS,
+	'click-button':makeClickButtonCSS,
 	'accordion':makeAccordionCSS,
 	'checkbox':makeCheckBoxCSS,
 	'flip':makeImageFlipCSS,

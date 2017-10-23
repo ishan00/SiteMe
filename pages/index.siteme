@@ -57,7 +57,7 @@ list(u){
 * HTML, CSS and Javascript 
 }
 
-
+button(hover-dropdown,color:red,font-color:white,font-size:20pt,dropdown-width:250px){123:abc.com,shivam:re.com,Okay}
 ---------------
 
 (Pre){{Hello how are you fgnfkg
@@ -74,7 +74,7 @@ C(sub){n} = Catalan Number
 
 button(color:blue,hover-shadow,round,font-color:red,disabled){SELO}
 image(shake,flip){background.jpg}
-
+button(click-dropdown,color:red,font-color:white,font-size:20pt,dropdown-width:250px){123:abc.com,shivam:re.com,Okay}
 (quote){Fake it till you make it}
 -----
 (bold){Lab Contents}

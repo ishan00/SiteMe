@@ -1,0 +1,43 @@
+.clickdropbtn {
+    background-color: $COLOR$;
+    color: $FONT-COLOR$;
+    padding: $PADDING-TOP$ $PADDING-LEFT$;
+    font-size: $FONT-SIZE$;
+    border: $BORDER-COLOR$;
+    cursor: $CURSOR$;
+    border-radius: $ROUNDED$;
+    box-shadow: $SHADOW$;
+    opacity: $OPACITY$;
+}
+
+.clickdropbtn:hover, .clickdropbtn:focus {
+    background-color: $HOVER-COLOR$;;
+}
+
+.clickdropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.clickdropdown-content {
+    display: none;
+    position: absolute;
+    background-color: $DROPDOWN-COLOR$;
+    min-width: $DROPDOWN-WIDTH$;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.clickdropdown-content a {
+    color: $DROPDOWN-FONT-COLOR$;
+    font-size:$DROPDOWN-FONT-SIZE$
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.clickdropdown a:hover {background-color: $DROPDOWN-HOVER-COLOR$;
+		   color: $DROPDOWN-HOVER-FONT-COLOR$;}
+
+.show {display:block;}

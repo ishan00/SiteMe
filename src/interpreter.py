@@ -127,6 +127,8 @@ CSSCount = {
 	'navbar':1,
 	'footer':1,
 	'button':1,
+	'hover-button':1,
+	'click-button':1,
 	'piechart':1,
 	'card':1,
 	'fade':1,
@@ -184,8 +186,7 @@ def piechartMaker(style,content):
 		return piechartDict
 
 def buttonMaker(style,content):
-	buttonDict={'button':{'class':'button'+str(CSSCount['button'])},'content':content.strip()}
-	sendDict={'class':'.button'+str(CSSCount['button'])}
+	sendDict={'class':'#button'+str(CSSCount['button'])}
 	tempDict={y[:y.find(':')].strip():y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
 	for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
 		for (key,value) in x.items():
@@ -194,7 +195,35 @@ def buttonMaker(style,content):
 			else:
 				tempDict[key]=value
 	sendDict.update(tempDict)
-	sendDict={'button':sendDict}
+	if('hover-dropdown' in style):
+		buttonDict={'div':{'id':'hover-button'+str(CSSCount['hover-button'])},'content':{1:{'button':{'class':'dropbtn'},'content':{}},2:{'div':{'class':'dropdown-content'},'content':{}}}}
+		sendDict['class']='#hover-button'+str(CSSCount['hover-button'])
+		sendDict={'hover-button':sendDict}
+		i=1
+		tmpDict={}
+		for x in content.split(','):
+			if x.find(':')==-1:
+				buttonDict['content'][1]['content']=x.strip();
+			else:
+				tmpDict.update({i:{'a':{'href':x[x.find(':')+1:].strip()},'content':x[:x.find(':')].strip()}})
+				i=i+1
+		buttonDict['content'][2]['content']=tmpDict
+	elif('click-dropdown' in style):
+		buttonDict={'div':{'class':'clickdropdown'},'content':{1:{'button':{'class':'clickdropbtn','onclick':'myFunction()'},'content':{}},2:{'div':{'class':'clickdropdown-content','id':'myDropdown'},'content':{}}}}
+		sendDict={'click-button':sendDict}
+		i=1
+		tmpDict={}
+		for x in content.split(','):
+			if x.find(':')==-1:
+				buttonDict['content'][1]['content']=x.strip();
+			else:
+				tmpDict.update({i:{'a':{'href':x[x.find(':')+1:].strip()},'content':x[:x.find(':')].strip()}})
+				i=i+1
+		buttonDict['content'][2]['content']=tmpDict
+		makeJS({'click-dropdown':{}})
+	else:
+		sendDict={'button':sendDict}
+		buttonDict={'button':{'id':'button'+str(CSSCount['button'])},'content':content.strip()}
 	makeCSS(sendDict)
 	CSSCount['button']=CSSCount['button']+1
 	return buttonDict
