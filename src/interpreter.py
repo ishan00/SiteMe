@@ -150,6 +150,7 @@ CSSCount = {
 	'skillbar':1,
 	'tooltip':1,
 	'chatbox':1,
+	'block':1,
 }
 
 def piechartMaker(style,content):
@@ -328,7 +329,7 @@ def listMaker(style,content):
 					styleDict[list(x.keys())[0]]=list(x.values())[0]
 			listType=style.strip()[0]
 			if listType=='d':
-				listData=[y.strip('* ') for y in content.split('\n')[1:-1]]
+				listData=[y.strip('\t\n\r* ') for y in content.split('\n')[1:-1]]
 				# listData=list(itertools.chain.from_iterable([x.split('**') for x in listData]))
 				listDict={}
 				for i in range(0,len(listData)):
@@ -337,7 +338,7 @@ def listMaker(style,content):
 					else:
 						listDict.update({i+1:{'dd':{},'content':listData[i]}})
 			else:
-				listData=[y.strip('* ') for y in content.split('\n')[1:-1]]
+				listData=[y.strip('\t\n\r* ') for y in content.split('\n')[1:-1]]
 				listDict={}
 				for i in range(0,len(listData)):
 					listDict.update({i+1:{'li':{},'content':listData[i]}})
@@ -495,6 +496,23 @@ def timelineMaker(s,i):
 		count = count + 1
 	return timeline_dict
 
+def blockMaker(s,i):
+	block_dict = {'div':{'id':''} , 'content':''}
+	block_dict['div']['id'] = 'block'+ str(CSSCount['block'])
+	CSSCount['block'] = CSSCount['block'] + 1
+	block_dict['content'] = i
+	#eprint(s)
+	css_for_block = {'block':{'class':''}}
+	css_for_block['block']['class'] = '#'+ block_dict['div']['id']
+	if s:
+		s = dictionaryMaker(s)
+		for u,v in s.items():
+			css_for_block['block'][u] = v;
+	makeCSS(css_for_block)
+	#eprint(block_dict)
+	#eprint(css_for_block)
+	return block_dict
+
 def skillbarMaker(s,i):
 	skillbar_dict = {'div':{'id':''} , 'content':{}}
 	skillbar_dict['div']['id'] = 'skillbar' + str(CSSCount['skillbar'])
@@ -570,7 +588,7 @@ def chatboxMaker(s,i):
 	for [u,v] in lol:
 		row = copy.deepcopy(elem)
 		u = u.split(',')
-		eprint(u)
+		#eprint(u)
 		if ('1' in u):
 			last_state[1] = 1
 			u.remove('1')
@@ -656,6 +674,8 @@ def checkImageExtension(img):
 	ext = img[-img[::-1].find('.') - 1:]
 	return ((ext == '.png') or (ext == '.jpg') or (ext == '.jpeg') or (ext == '.bmp') or (ext == '.gif'))
 
+
+
 def wallpaperMaker(s,i):
 	# For type1 wallpaper allowed input for i are
 	# Name, Img, Description
@@ -725,11 +745,12 @@ styleFunctions = {
 	'accordion':accordionMaker,
 	'timeline':timelineMaker,
 	'chatbox':chatboxMaker,
-	#'checkbox':checkboxMaker,
+	'checkbox':checkboxMaker,
 	'alert':alertMaker,
 	'wallpaper':wallpaperMaker,
 	'skillbar':skillbarMaker,
-	'tooltip':tooltipMaker 
+	'tooltip':tooltipMaker,
+	'block':blockMaker,
 }
 
 def styleMaker(s):
@@ -747,31 +768,36 @@ def styleMaker(s):
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 def gridMaker(p):
+	#eprint(p)
 	r=re.compile(r'\{[^\{\}]*[\n ]*([^\{\}]*[\n ]*\{[^\{\}]*[\n ]*\}[^\{\}]*[\n ]*)*[^\{\}]*[\n ]*\}')
-	i=p[p.index('{'):]
-	gridList=[]
-	while(i):
-		a=r.match(i).group()
-		gridList.append(a[1:-1])
-		i=i.replace(a,"",1)
-	sizeList=p.split('(')[1].split(')')[0].split(',')
-	rs='<div class="container-fluid row" >'
-	sum=0		
-	if (len(sizeList)==len(gridList)):
-		for i in range(0,len(sizeList)):
-			span=sizeList[i]
-			sum=sum+int(span)
-			rs=rs+'<div class="col-sm-'+span+'" >'
-			content=gridList[i]
-			rs=rs+content+'</div>'
-		rs=rs+'</div>'
-		if(sum==12):
-			return rs
+	if('{' in p):
+		i=p[p.index('{'):]
+
+		gridList=[]
+		while(i):
+			a=r.match(i).group()
+			gridList.append(a[1:-1])
+			i=i.replace(a,"",1)
+		sizeList=p.split('(')[1].split(')')[0].split(',')
+		rs='<div class="container-fluid row" >'
+		sum=0		
+		if (len(sizeList)==len(gridList)):
+			for i in range(0,len(sizeList)):
+				span=sizeList[i]
+				sum=sum+int(span)
+				rs=rs+'<div class="col-sm-'+span+'" >'
+				content=gridList[i]
+				rs=rs+content+'</div>'
+			rs=rs+'</div>'
+			if(sum==12):
+				return rs
+			else:
+				eprint("Sum of column span must be 12 in Grid")
 		else:
-			eprint("Sum of column span must be 12 in Grid")
+			eprint(p)
+			eprint("Grid arguments not proper")
 	else:
-		eprint(p)
-		eprint("Grid arguments not proper")
+		return p
 
 '''
 This function converts dictionaries to html codes.
@@ -1171,9 +1197,9 @@ parser=yacc.yacc()
 main_dict = {'html':{} , 'content':{ 
 		1:{'head':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
-			2:{'style':{} , 'content' : ''},
+			6:{'style':{} , 'content' : ''},
 			5:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
-			6:{'link':{'rel':"stylesheet" ,'href':"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"}, 'content':''},
+			2:{'link':{'rel':"stylesheet" ,'href':"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"}, 'content':''},
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
 			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
@@ -1240,8 +1266,8 @@ def main():
 				style_content.append(i[i.find('###') + 3:])
 		else:
 			body_content = body_content + i + '\n'
-	style_content = ';\n'.join(style_content) + ';\n'
-	main_dict['content'][1]['content'][2]['content'] = style_content
+	style_content = 'body {\n' + ';\n'.join(style_content) + ';\n}'
+	main_dict['content'][1]['content'][6]['content'] = style_content
 	main_dict['content'][2]['content'][2] = body_content
 	#print (main_dict)
 	print(makeHTML(main_dict))
