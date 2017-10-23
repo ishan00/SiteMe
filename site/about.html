@@ -1,0 +1,72 @@
+<html><head><title></title>
+<style>;
+</style>
+<link rel='stylesheet' href='css/style.css'>
+<link rel='stylesheet' href='//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'>
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+</head>
+<body><div class='navbar'><ul><li class='active'><a href='#'>Home</a>
+</li>
+<li style="float:right; ">
+<a href='http://facebook.com'>About</a>
+</li>
+<li><a href='https://google.co.in'>Contact</a>
+</li>
+<li style="float:right; ">
+<a href='resume2page.pdf'>Resume</a>
+</li>
+</ul>
+</div>
+<div><button class='accordion'>Heading 1</button>
+<div class='panel'><p>This is a multiline accordian, even if I dont press enter anywhere this should work
+Lets see what happens</p>
+</div>
+<button class='accordion'>Heading 2</button>
+<div class='panel'><p>This Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+<button class='accordion'>Heading 3</button>
+<div class='panel'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+</div>
+
+<footer class='footer'><div class='footer-social'><a href='ggigigg'><img src='img/icons/github.png' style="width:60px; height:60px; ">
+
+</a>
+<a href='asdsa'><img src='img/icons/linkedin.png' style="width:60px; height:60px; ">
+
+</a>
+<a href='sads'><img src='img/icons/twitter.png' style="width:60px; height:60px; ">
+
+</a>
+<a href='sdv'><img src='img/icons/facebook.png' style="width:60px; height:60px; ">
+
+</a>
+<a href='svsd'><img src='img/icons/gplus.png' style="width:60px; height:60px; ">
+
+</a>
+</div>
+</footer>
+<script>var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        /* Toggle between adding and removing the "active" class,
+        to highlight the button that controls the panel */
+        this.classList.toggle("active");
+
+        /* Toggle between hiding and showing the active panel */
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
+</body>
+</html>

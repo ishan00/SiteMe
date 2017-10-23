@@ -147,7 +147,7 @@ OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'d
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
 'hover-shadow':{'hover-shadow':'0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)'},'disabled':{'opacity':'0.6','cursor':'not-allowed'}}
-CSSCount={'card':1,'fade':1,'button':1}
+CSSCount={'card':1,'fade':1,'button':1,'hoverdropdown':1,'checkbox':1,'flip':1,'shake':1}
 
 def piechartMaker(style,content):
 	style=style.split(',')
@@ -163,7 +163,7 @@ def piechartMaker(style,content):
 		tempFile.close()
 	else:
 		shutil.copy("./pages/"+content.strip(),"./tmp/"+styleLabel.split(':')[1].strip()+".csv")
-	file=open("./layout/GNUPlot/piechart_"+styleType.strip().split(':')[1]+".plot")
+	file=open("./layout/GNUPlot/piechart_"+styleType.split(':')[1].strip()+".plot")
 	newFile=open("./tmp/"+styleLabel.split(':')[1].strip()+".plot",'w')
 	line=file.readline()
 	templine=''
@@ -185,10 +185,10 @@ def piechartMaker(style,content):
 		return piechartDict
 
 def buttonMaker(style,content):
-	buttonDict={'button':{'class':'button'+str(CSSCount['button'])},'content':content}
+	buttonDict={'button':{'class':'button'+str(CSSCount['button'])},'content':content.strip()}
 	sendDict={'class':'.button'+str(CSSCount['button'])}
-	tempDict={y[:y.find(':')]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
-	for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+	tempDict={y[:y.find(':')].strip():y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
+	for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
 		for (key,value) in x.items():
 			if key in tempDict.keys():
 				tempDict[key]=tempDict[key]+' '+value
@@ -200,12 +200,19 @@ def buttonMaker(style,content):
 	CSSCount['button']=CSSCount['button']+1
 	return buttonDict
 
+# def hoverdropdownMaker(style,content):
+# 	hoverdropdownDict={'div':{'class':'hoverdropdown'+str(CSSCount['hoverdropdown'])},
+# 	'content':{1:{'button':{'class'='dropbtn'},'content':{}},2:{'div':{'class':'dropdown-content'},
+# 	'content':{1:{'a':{'href':},'content':{}}}}}}
+# 	sendDict={'class':'.hoverdropdown'+str(CSSCount['hoverdropdown'])}
+
+
 def cardMaker(style,content):
 	cardDict={'div':{'class':'card'+str(CSSCount['card'])},'content':{'div':{'class':'polaroid'},'content':{1:{'img':{},'content':{}},2:{'div':{'class':'container'},'content':{1:{'p':{},'content':{}}}}}}}
 	sendDict={'class':'.card'+str(CSSCount['card'])}
-	cardDict['content']['content'][1]['img']['src']= 'img/' + content.split(':')[1]
-	cardDict['content']['content'][2]['content'][1]['content']=content.split(':')[0]
-	styleDict={y[:y.find(':')]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
+	cardDict['content']['content'][1]['img']['src']= 'img/' + content.split(':')[1].strip()
+	cardDict['content']['content'][2]['content'][1]['content']=content.split(':')[0].strip()
+	styleDict={y[:y.find(':')].strip():y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
 	for x in ['color','font-color','font-size','padding-top','padding-left']:
 		if x in styleDict.keys():
 			sendDict[x]=styleDict[x]
@@ -222,14 +229,14 @@ def fadeMaker(style,content):
 					1:{'img':{'class':'image'},'content':''},
 					2:{'div':{'class':'overlay'},'content':{
 						1:{'div':{'class':'text'},'content':''}}}}}}}
-	fadeDict['content'][1]['content'][2]['content'][1]['content'] = content.split(':')[0]
-	fadeDict['content'][1]['content'][1]['img']['src']= 'img/' + content.split(':')[1]
+	fadeDict['content'][1]['content'][2]['content'][1]['content'] = content.split(':')[0].strip()
+	fadeDict['content'][1]['content'][1]['img']['src']= 'img/' + content.split(':')[1].strip()
 	sendDict={'class':'.fade'+str(CSSCount['fade'])}
-	if(style.split(',')[0]=='top' or style.split(',')[0]=='bottom' or style.split(',')[0]=='left' or style.split(',')[0]=='right'):
-		sendDict['type']=style.split(',')[0]
+	if(style.split(',')[0].strip()=='top' or style.split(',')[0].strip()=='bottom' or style.split(',')[0].strip()=='left' or style.split(',')[0].strip()=='right'):
+		sendDict['type']=style.split(',')[0].strip()
 	else:
 		sendDict['type']=None
-	styleDict={y[:y.find(':')]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
+	styleDict={y[:y.find(':')].strip():y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
 	for x in ['color','font-color','font-size']:
 		if x in styleDict.keys():
 			sendDict[x]=styleDict[x]
@@ -241,6 +248,10 @@ def fadeMaker(style,content):
 	return fadeDict
 
 def imageMaker(style,content):
+	if('flip' in style):
+		makeCSS({'flip':{'class':'.flip'+str(CSSCount['flip'])}})
+	if('shake' in style):
+		makeCSS({'shake':{'class':'.shake'+str(CSSCount['shake'])}})
 	if content:
 		styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
 		for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
@@ -250,8 +261,15 @@ def imageMaker(style,content):
 				styleDict[list(x.keys())[0]]=list(x.values())[0]
 		styleDict.update({'src':"img/" + content.strip()})
 		currDict={'img':styleDict,'content':{}}
+		if('flip' in style):
+			currDict={'div':{'class':'flip'+str(CSSCount['flip'])},'content':{1:copy.deepcopy(currDict)}}
+			CSSCount['flip']=CSSCount['flip']+1
+		if('shake' in style):
+			currDict={'div':{'class':'shake'+str(CSSCount['shake'])},'content':{1:copy.deepcopy(currDict)}}
+			CSSCount['shake']=CSSCount['shake']+1
 		# for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
 		# 	currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
+		print(currDict)
 		return currDict
 
 def linkMaker(style,content):
@@ -289,7 +307,7 @@ def listMaker(style,content):
 					else:
 						listDict.update({i+1:{'dd':{},'content':listData[i]}})
 			else:
-				listData=[y[1:].strip() for y in content.split('\n')[1:-1]]
+				listData=[y.strip('* ') for y in content.split('\n')[1:-1]]
 				listDict={}
 				for i in range(0,len(listData)):
 					listDict.update({i+1:{'li':{},'content':listData[i]}})
@@ -309,25 +327,25 @@ def tableMaker(style,content):
 					tmp=int((i/2)+1)
 					if(l[j][i] and l[j][i].count(',')==1):
 						l[j][i]=l[j][i].split(',')
-						tmptmpDict={tmp:{'td':{'colspan':l[j][i][0],'rowspan':l[j][i][1]},'content':{}}}
+						tmptmpDict={tmp:{'td':{'colspan':l[j][i][0].strip(),'rowspan':l[j][i][1].strip()},'content':{}}}
 					elif(not l[j][i]):
 						tmptmpDict={tmp:{'td':{},'content':{}}}
 					else:
-						tmptmpDict={tmp:{'td':{'colspan':l[j][i][0]},'content':{}}}
+						tmptmpDict={tmp:{'td':{'colspan':l[j][i][0].strip()},'content':{}}}
 				else:
-					tmptmpDict[(i+1)/2]['content']=l[j][i]
+					tmptmpDict[(i+1)/2]['content']=l[j][i].strip()
 					tmpDict.update(tmptmpDict)
 					tmptmpDict={}
 			tableDict.update({j+1+t:{'tr':{},'content':tmpDict}})
 		return tableDict
 
 	if content:
-		styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+		styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
 		if 'class' in styleDict.keys():
-			styleDict['class']=styeDict['class']+' table'
+			styleDict['class']=styleDict['class']+' table'
 		else:
 			styleDict['class']='table'
-		for x in [OneNonCSS[x] for x in style.split(',') if x.find(':')==-1 and x in OneNonCSS.keys()]:
+		for x in [OneNonCSS[x.split()] for x in style.split(',') if x.find(':')==-1 and x.split() in OneNonCSS.keys()]:
 			if list(x.keys())[0] in styleDict.keys():
 				styleDict[list(x.keys())[0]]=styleDict[list(x.keys())[0]]+' '+list(x.values())[0]
 			else:
@@ -426,23 +444,36 @@ def timelineMaker(s,i):
 	CONTENT = ZeroOrMore(ELEM)
 	lol = CONTENT.parseString(i).asList()
 
-def chatboxMaker(s,i):
+def checkboxMaker(style,content):
+	checkboxDict = {'label':{'class':'checkbox'+str(CSSCount['checkbox'])},'content':{1:'',2:{'input':{'type':'checkbox'},'content':''},3:{'span':{'class':'checkmark'},'content':''}}}
+	sendDict={'checkbox':{'class':'.checkbox'+str(CSSCount['checkbox'])}}
+	checkboxDict['content'][1]=content
+	if('checked' in style):
+		checkboxDict['content'][2]['input']['checked']='checked'
+		style.replace('checked','') 
+	makeCSS(sendDict)
+	CSSCount['checkbox']=CSSCount['checkbox']+1
+	#print(checkboxDict)
+	return checkboxDict
 
-styleFunctions = {
-	'image':imageMaker,
-	'link':linkMaker,
-	'list':listMaker,
-	'table':tableMaker,
-	'slideshow':slideshowMaker,
-	'parallax':parallaxMaker,
-	'fade':fadeMaker,
-	'card':cardMaker,
-	'piechart':piechartMaker,
-	'button':buttonMaker,
-	'accordion':accordionMaker
-	'timeline':timelineMaker,
-	'chatbox':chatboxMaker
-}
+def chatboxMaker(s,i):
+	return ""
+
+styleFunctions={
+'image':imageMaker,
+'link':linkMaker,
+'list':listMaker,
+'table':tableMaker,
+'slideshow':slideshowMaker,
+'parallax':parallaxMaker,
+'fade':fadeMaker,
+'card':cardMaker,
+'piechart':piechartMaker,
+'button':buttonMaker,
+'accordion':accordionMaker,
+'timeline':timelineMaker,
+'chatbox':chatboxMaker,
+'checkbox':checkboxMaker}
 
 def styleMaker(s):
 	# styleName=re.search(r'(.*?)\(',s).group(1)
@@ -458,12 +489,39 @@ def styleMaker(s):
 	else:
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
+def gridMaker(p):
+	r=re.compile(r'\{[^\{\}]*[\n ]*([^\{\}]*[\n ]*\{[^\{\}]*[\n ]*\}[^\{\}]*[\n ]*)*[^\{\}]*[\n ]*\}')
+	i=p[p.index('{'):]
+	gridList=[]
+	while(i):
+		a=r.match(i).group()
+		gridList.append(a[1:-1])
+		i=i.replace(a,"",1)
+	sizeList=p.split('(')[1].split(')')[0].split(',')
+	rs='<div class="container-fluid row" >'
+	sum=0		
+	if (len(sizeList)==len(gridList)):
+		for i in range(0,len(sizeList)):
+			span=sizeList[i]
+			sum=sum+int(span)
+			rs=rs+'<div class="col-sm-'+span+'" >'
+			content=gridList[i]
+			rs=rs+content+'</div>'
+		rs=rs+'</div>'
+		if(sum==12):
+			return rs
+		else:
+			eprint("Sum of column span must be 12 in Grid")
+	else:
+		eprint(p)
+		eprint("Grid arguments not proper")
+
 '''
 This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
-standAlone=['href', 'src', 'class', 'id', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
-Tags={'img':False,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
+standAlone=['href', 'src', 'class', 'id','type', 'checked', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
+Tags={'img':False,'input':False,'label':True,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
 'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'p':True,
 'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'dl':True, 'dt':True, 'dd':True, 'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
 def makeHTML(d):
@@ -853,6 +911,7 @@ def p_body(p):
             | body pre
             | body fakekeyword
             | body hrule
+            | body grid
             |
     '''
     if(len(p)==3):
@@ -880,6 +939,10 @@ def p_newline(p):
 def p_hrule(p):
 	'hrule : HRULE'
 	p[0]="<hr>"
+
+def p_grid(p):
+	'grid : GRID'
+	p[0]=gridMaker(p[1])
 
 def p_keyword(p):
     'keyword : KEYWORD'
