@@ -514,7 +514,38 @@ def tooltipMaker(style,content):
 	return tooltipDict
 
 def chatboxMaker(s,i):
-	return ""
+	css_for_timeline = {'chatbox':{'class':''}}
+	timeline_dict = {'div':{'id':''} , 'content':{}}
+	timeline_dict['div']['id'] = 'timeline' + str(CSSCount['timeline'])
+	CSSCount['timeline'] = CSSCount['timeline'] + 1
+	css_for_timeline['timeline']['class'] = '#' + timeline_dict['div']['id']
+	#eprint(css_for_timeline)
+	makeCSS(css_for_timeline)
+	# Just append ' left' or ' right' to elem class
+	elem = {'div':{'class':'container'} , 'content':{
+		1:{'div':{'class':'content'} , 'content':{
+			1:{'h2':{}, 'content' : ''},
+			2:{'p':{} , 'content' : ''}}}}}
+
+	CHARACTER_CLASS = ''' \nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!@#$%^&(){}[]\|'''
+	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
+	CONTENT = ZeroOrMore(ELEM)
+	lol = CONTENT.parseString(i).asList()
+	#eprint(lol)
+	Left = True;
+	count = 1;
+	for [u,v] in lol:
+		row = copy.deepcopy(elem)
+		row['content'][1]['content'][1]['content'] = u
+		row['content'][1]['content'][2]['content'] = v
+		if (Left):
+			row['div']['class'] = row['div']['class'] + ' left'
+		else :
+			row['div']['class'] = row['div']['class'] + ' right'
+		Left = not(Left)
+		timeline_dict['content'][count] = row
+		count = count + 1
+	return timeline_dict
 
 def alertMaker(s,i):
 	alert_dict = {'div':{'class':''} , 'content':{
@@ -731,7 +762,7 @@ def makeNavbar(navbar_style,  navbar_content):
 	css_for_navbar = {'navbar':{}}
 	#print (navbar_type)
 	css_for_navbar['navbar']['type'] = navbar_type
-	css_for_navbar['navbar']['class'] = '.navbar'
+	css_for_navbar['navbar']['class'] = '#navbar'
 	#print (navbar_style)
 	#print (css_for_navbar)
 	for i in navbar_style:
@@ -742,7 +773,7 @@ def makeNavbar(navbar_style,  navbar_content):
 		makeCSS(css_for_navbar)
 		#print (css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_flat)
-		navbar_dict['div']['class'] = 'navbar'
+		navbar_dict['div']['id'] = 'navbar'
 		li_element = copy.deepcopy(navbar_flat['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -792,7 +823,7 @@ def makeNavbar(navbar_style,  navbar_content):
 		#print (navbar_dict)
 		return navbar_dict
 	elif navbar_type == 'open':
-		css_for_navbar['navbar']['class'] = '#navbar'
+		css_for_navbar['navbar']['id'] = 'navbar'
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_open)
 		navbar_dict['div']['id'] = 'navbar'
@@ -817,7 +848,7 @@ def makeNavbar(navbar_style,  navbar_content):
 	elif navbar_type == 'breadcrumbs':
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_breadcrumbs)
-		navbar_dict['div']['class'] = 'navbar'
+		navbar_dict['div']['id'] = 'navbar'
 		li_element = copy.deepcopy(navbar_breadcrumbs['content'][1]['content'][1]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
@@ -840,7 +871,7 @@ def makeNavbar(navbar_style,  navbar_content):
 	elif navbar_type == 'toggle':
 		makeCSS(css_for_navbar)
 		navbar_dict = copy.deepcopy(navbar_toggle)
-		navbar_dict['header']['class'] = 'navbar'
+		navbar_dict['header']['id'] = 'navbar'
 		li_element = copy.deepcopy(navbar_toggle['content'][2]['content'][1])
 		for i in range(len(navbar_content)):
 			row = copy.deepcopy(li_element)
