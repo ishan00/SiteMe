@@ -109,8 +109,8 @@ def taggedMaker(style,content):
             ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
             for x in htagged:
             	if('align' in x):
-            		return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
-            		break
+        			return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
+					break
             return "<span style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</span>\n"
         elif(ltagged):
             ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
