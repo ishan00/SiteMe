@@ -339,11 +339,7 @@ def listMaker(style,content):
 					styleDict[list(x.keys())[0]]=list(x.values())[0]
 			listType=style.strip()[0]
 			if listType=='d':
-<<<<<<< HEAD
-				listData=[y.strip('* \t\n\r') for y in content.split('\n')[1:-1]]
-=======
 				listData=[y.strip('\t\n\r* ') for y in content.split('\n')[1:-1]]
->>>>>>> 4d2d18b74625e673fd954795e4aefa6500a9e088
 				# listData=list(itertools.chain.from_iterable([x.split('**') for x in listData]))
 				listDict={}
 				for i in range(0,len(listData)):
@@ -352,11 +348,8 @@ def listMaker(style,content):
 					else:
 						listDict.update({i+1:{'dd':{},'content':listData[i]}})
 			else:
-<<<<<<< HEAD
-				listData=[y.strip('* \t\n\r') for y in content.split('\n')[1:-1]]
-=======
+
 				listData=[y.strip('\t\n\r* ') for y in content.split('\n')[1:-1]]
->>>>>>> 4d2d18b74625e673fd954795e4aefa6500a9e088
 				listDict={}
 				for i in range(0,len(listData)):
 					listDict.update({i+1:{'li':{},'content':listData[i]}})
