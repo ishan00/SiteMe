@@ -857,20 +857,36 @@ def findCorrespondingPair( lol , val):
 		else:
 			return False
 
-social_icons = ['facebook', 'gplus' , 'reddit' , 'email' , 'github' , 'home' , 'phone' , 'linkedin', 'twitter']
+social_icons = {'facebook':'facebook',
+				'fb':'facebook',
+				'google':'google',
+				'google-plus':'google-plus',
+				'reddit':'reddit',
+				'email':'envelope',
+				'mail':'envelope',
+				'github':'github',
+				'pinterest':'pinterest',
+				'quora':'quora',
+				'skype':'skype',
+				'youtube':'youtube',
+				'instagram':'instagram',
+				'slack':'slack',
+				'stackoverflow':'stack-overflow',
+				'stack-overflow':'stack-overflow',
+				'home':'home',
+				'phone':'phone',
+				'linkedin':'linkedin',
+				'twitter':'twitter'}
 
 def makeFooter(footer_style,footer_content):
 	footer_type = findCorrespondingPair(footer_style, 'type')[1]
 	del footer_style[findCorrespondingPair(footer_style,'type')[0]]
-	css_for_footer = {'footer':{'class':'.footer' , 'type':footer_type}}
+	css_for_footer = {'footer':{'class':'#footer' , 'type':footer_type}}
 	for i in footer_style:
 		css_for_footer['footer'][i[0]] = i[1]
-	#print(css_for_footer)
 	makeCSS(css_for_footer)
-	#print (footer_content)
 	if footer_type == 'basic':
 		footer_dict = copy.deepcopy(footer_basic)
-		#print (footer_content)
 		footer_dict['footer']['class'] = 'footer'
 		sample_li = copy.deepcopy(footer_basic['content'][2]['content'][1])
 		company_name = findCorrespondingPair(footer_content,'NAME')
@@ -892,11 +908,11 @@ def makeFooter(footer_style,footer_content):
 		return footer_dict
 	elif footer_type == 'social':
 		footer_dict = copy.deepcopy(footer_social)
-		footer_dict['footer']['class'] = 'footer'
+		footer_dict['footer']['id'] = 'footer'
 		elem = copy.deepcopy(footer_social['content'][1]['content'][1])
 		for i in range(len(footer_content)):
 			row = copy.deepcopy(elem)
-			row['content'][1]['img']['src'] = 'img/icons/' + footer_content[i][0].strip() +'.png'
+			row['content'][1]['i']['class'] = "fa fa-" + social_icons[footer_content[i][0].strip()]
 			row['a']['href'] = footer_content[i][1].strip()
 			footer_dict['content'][1]['content'][i+1] = row
 		return footer_dict
@@ -1053,10 +1069,11 @@ main_dict = {'html':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
 			2:{'style':{} , 'content' : ''},
 			5:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
+			6:{'link':{'rel':"stylesheet" ,'href':"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"}, 'content':''},
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
-			6:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			7:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
+			8:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',

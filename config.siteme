@@ -1,14 +1,27 @@
 navbar ( type:orange ){
 	Home : #
-	(r){About} : http://facebook.com
+	(r){About} : about.html
 	Contact : https://google.co.in
 	(r){Resume} : resume2page.pdf
 }
 
-footer ( type : social ){
+footer ( type : social , icon-color : white ){
+	facebook : sdv	
 	github : ggigigg
 	linkedin : asdsa
-	twitter :sads
-    facebook:sdv
-    gplus:svsd
+	twitter : sads
+    	google : svsd
+	reddit : as
+	email: sia2
+	skype: as
+	phone : +911212
+	fb:das
+	pinterest:asda
+	quora:asdsa
+	slack:sadas
+	stackoverflow:asd
+	home:dsa
+	youtube:sda
+	instagram:asd
+	home:dsa
 }
