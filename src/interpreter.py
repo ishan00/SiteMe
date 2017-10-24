@@ -158,14 +158,11 @@ CSSCount = {
 	'skillbar':1,
 	'tooltip':1,
 	'chatbox':1,
-<<<<<<< HEAD
 	'textfield':1,
 	'passwordfield':1,
 	'select':1,
-	'submit':1
-=======
-	'block':1,
->>>>>>> 4075c80579fcc18bc72052c2bc51b93accb9d34e
+	'submit':1,
+	'block':1
 }
 
 def piechartMaker(style,content):
