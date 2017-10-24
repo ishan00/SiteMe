@@ -11,6 +11,10 @@ tooltip(font-color:red, color:#000){afv:sdb}
 	int cvector<int> a(0);
 	a.push_back;
 }}
+textfield(){Name:   your name}
+passwordfield(width:25%){Passwd:  you oasw}
+select(width:30%){country:aus,pak,  ind,  bang}
+submit(color:red,shadow){heeeeelo}
 
 (pre){{
 	image(){background.jpg}
@@ -82,7 +86,7 @@ C(sub){n} = Catalan Number
 (kbd){Ctrl + C} and (kbd){Ctrl + V} is what we are doing
 
 button(color:blue,hover-shadow,round,font-color:red,disabled){SELO}
-image(shake,flip){background.jpg}
+image(shake,height:50%,width:50%){background.jpg}
 button(click-dropdown,color:red,font-color:white,font-size:20pt,dropdown-width:250px){123:abc.com,shivam:re.com,Okay}
 (quote){Fake it till you make it}
 -----

@@ -11,7 +11,8 @@
 }
 
 .clickdropbtn:hover, .clickdropbtn:focus {
-    background-color: $HOVER-COLOR$;;
+    background-color: $HOVER-COLOR$;
+    color: $HOVER-FONT-COLOR$
 }
 
 .clickdropdown {

@@ -150,6 +150,10 @@ CSSCount = {
 	'skillbar':1,
 	'tooltip':1,
 	'chatbox':1,
+	'textfield':1,
+	'passwordfield':1,
+	'select':1,
+	'submit':1
 }
 
 def piechartMaker(style,content):
@@ -535,7 +539,7 @@ def checkboxMaker(style,content):
 def tooltipMaker(style,content):
 	tooltipDict={'div':{'class':'tooltip'+str(CSSCount['tooltip'])},'content':{1:'',2:{'span':{'class':'tooltiptext'},'content':''}}}
 	sendDict={'tooltip':{'class':'.tooltip'+str(CSSCount['tooltip'])}}
-	styleDict={TwoNonCSS[y[:y.find(':')]]:y[y.find(':')+1:] for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
 	sendDict['tooltip'].update(styleDict)
 	makeCSS(sendDict)
 	content=content.split(':')
@@ -711,6 +715,66 @@ def wallpaperMaker(s,i):
 			wallpaper_type1['content'][3] = IMG
 	return wallpaper_type1
 
+def textfieldMaker(style,content):
+	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	textfieldDict={1:{'label':{'for':'textfield'+str(CSSCount['textfield'])},'content':{}},2:{'input':{'id':'textfield'+str(CSSCount['textfield']),'type':'text'},'content':''}}
+	if(':' in content):
+		textfieldDict[1]['content']=content[:content.find(':')].strip()
+		textfieldDict[2]['input']['placeholder']=content[content.find(':')+1:].strip()
+	else:
+		textfieldDict[1]['content']=content[:content.find(':')].strip()
+	sendDict['class']='#textfield'+str(CSSCount['textfield'])
+	sendDict={'textfield':sendDict}
+	makeCSS(sendDict)
+	CSSCount['textfield']=CSSCount['textfield']+1
+	return textfieldDict
+
+def passwordfieldMaker(style,content):
+	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	passwordfieldDict={1:{'label':{'for':'passwordfield'+str(CSSCount['passwordfield'])},'content':{}},2:{'input':{'id':'passwordfield'+str(CSSCount['passwordfield']),'type':'password'},'content':''}}
+	if(':' in content):
+		passwordfieldDict[1]['content']=content[:content.find(':')].strip()
+		passwordfieldDict[2]['input']['placeholder']=content[content.find(':')+1:].strip()
+	else:
+		passwordfieldDict[1]['content']=content[:content.find(':')].strip()
+	sendDict['class']='#passwordfield'+str(CSSCount['passwordfield'])
+	sendDict={'passwordfield':sendDict}
+	makeCSS(sendDict)
+	CSSCount['passwordfield']=CSSCount['passwordfield']+1
+	return passwordfieldDict
+
+def selectMaker(style,content):
+	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	selectDict={1:{'label':{'for':'select'+str(CSSCount['select'])},'content':{}},2:{'select':{'id':'select'+str(CSSCount['select'])},'content':{}}}
+	selectDict[1]['content']=content[:content.find(':')].strip()
+	i=1
+	tmpDict={}
+	for x in content[content.find(':')+1:].split(','):
+		tmpDict.update({i:{'option':{'value':x.strip().lower()},'content':x.strip()}})
+		i=i+1
+	selectDict[2]['content']=tmpDict
+	sendDict['class']='#select'+str(CSSCount['select'])
+	sendDict={'select':sendDict}
+	makeCSS(sendDict)
+	CSSCount['select']=CSSCount['select']+1
+	return selectDict
+
+def submitMaker(style,content):
+	sendDict={'class':'#submit'+str(CSSCount['submit'])}
+	tempDict={y[:y.find(':')].strip():y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
+	for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
+		for (key,value) in x.items():
+			if key in tempDict.keys():
+				tempDict[key]=tempDict[key]+' '+value
+			else:
+				tempDict[key]=value
+	sendDict.update(tempDict)
+	submitDict={'input':{'type':'submit','value':content.strip(),'id':'submit'+str(CSSCount['submit'])},'content':{}}
+	sendDict={'submit':sendDict}
+	makeCSS(sendDict)
+	CSSCount['submit']=CSSCount['submit']+1
+	return submitDict
+
 styleFunctions = {
 	'image':imageMaker,
 	'link':linkMaker,
@@ -725,11 +789,15 @@ styleFunctions = {
 	'accordion':accordionMaker,
 	'timeline':timelineMaker,
 	'chatbox':chatboxMaker,
-	#'checkbox':checkboxMaker,
+	'checkbox':checkboxMaker,
 	'alert':alertMaker,
 	'wallpaper':wallpaperMaker,
 	'skillbar':skillbarMaker,
-	'tooltip':tooltipMaker 
+	'tooltip':tooltipMaker,
+	'textfield':textfieldMaker,
+	'passwordfield':passwordfieldMaker,
+	'select':selectMaker,
+	'submit':submitMaker 
 }
 
 def styleMaker(s):
@@ -777,8 +845,8 @@ def gridMaker(p):
 This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
-standAlone=['href', 'src', 'class', 'id','type', 'checked', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
-Tags={'img':False,'input':False,'label':True,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
+standAlone=['href', 'src', 'class', 'id', 'for', 'value', 'type', 'checked', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
+Tags={'img':False,'input':False,'label':True,'select':True,'option':True,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
 'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'p':True,
 'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'dl':True, 'dt':True, 'dd':True, 'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
 def makeHTML(d):

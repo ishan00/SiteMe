@@ -217,6 +217,62 @@ def makeChatboxCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
+textfieldDict={'$CLASS$':'.textfield','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
+
+def makeTextfieldCSS(d):
+	CSSFile = open('./layout/formfield.css')
+	CSSString = CSSFile.read()
+	newtextfieldDict=copy.deepcopy(textfieldDict)
+	for (key,value) in d.items():
+		newtextfieldDict['$'+key.upper()+'$']=value
+	for (key,value) in newtextfieldDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+passwordfieldDict={'$CLASS$':'.passwordfield','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
+
+def makePasswordfieldCSS(d):
+	CSSFile = open('./layout/formfield.css')
+	CSSString = CSSFile.read()
+	newpasswordfieldDict=copy.deepcopy(passwordfieldDict)
+	for (key,value) in d.items():
+		newpasswordfieldDict['$'+key.upper()+'$']=value
+	for (key,value) in newpasswordfieldDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()	
+
+selectDict={'$CLASS$':'.select','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
+
+def makeSelectCSS(d):
+	CSSFile = open('./layout/formfield.css')
+	CSSString = CSSFile.read()
+	newselectDict=copy.deepcopy(selectDict)
+	for (key,value) in d.items():
+		newselectDict['$'+key.upper()+'$']=value
+	for (key,value) in newselectDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+submitDict={'$CLASS$':'.submit','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'12px','$PADDING-LEFT$':'20px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'4px','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'#45a049','$HOVER-FONT-COLOR$':'none'}
+
+def makeSubmitCSS(d):
+	CSSFile = open('./layout/submit.css')
+	CSSString = CSSFile.read()
+	newsubmitDict=copy.deepcopy(submitDict)
+	for (key,value) in d.items():
+		newsubmitDict['$'+key.upper()+'$']=value
+	for (key,value) in newsubmitDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
 CSSDict={
 	'card':makeCardCSS,
 	'fade':makeFadeCSS,
@@ -235,7 +291,11 @@ CSSDict={
 	'timeline':makeTimelineCSS,
 	'skillbar':makeSkillbarCSS,
 	'tooltip':makeTooltipCSS,
-	'chatbox':makeChatboxCSS
+	'chatbox':makeChatboxCSS,
+	'textfield':makeTextfieldCSS,
+	'passwordfield':makePasswordfieldCSS,
+	'select':makeSelectCSS,
+	'submit':makeSubmitCSS
 }
 
 

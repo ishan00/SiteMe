@@ -1,0 +1,17 @@
+$CLASS$ {
+    background-color: $COLOR$;
+    color: $FONT-COLOR$;
+    padding: $PADDING-TOP$ $PADDING-LEFT$;
+    font-size: $FONT-SIZE$;
+    border: $BORDER-COLOR$;
+    cursor: $CURSOR$;
+    border-radius: $ROUNDED$;
+    box-shadow: $SHADOW$;
+    opacity: $OPACITY$;
+}
+
+$CLASS$:hover {
+    background-color: $HOVER-COLOR$;
+    color: $HOVER-FONT-COLOR$;
+}
+
