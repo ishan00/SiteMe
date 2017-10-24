@@ -30,13 +30,13 @@ fi
 pages=$(find pages/*.siteme)
 for page in $pages
 do
-	#echo $page
 	FULL_PATH=$(echo $page | cut -d'.' -f1)
-	#echo $FULL_PATH
 	NAME=$(echo $FULL_PATH | cut -d'/' -f2)
-	#echo $NAME
+	if [ $NAME == 'blog' ]
+		then
+		python3 ./src/renderblog.py './pages/blog.siteme'
+	fi
 	OUTPUT_FILE="./site/$NAME.html"
-	#echo $OUTPUT_FILE
 	python3 ./src/interpreter.py $page ./config.siteme > $OUTPUT_FILE 
 done
 

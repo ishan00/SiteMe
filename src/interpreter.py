@@ -779,7 +779,7 @@ def styleMaker(s):
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 def gridMaker(p):
-	#eprint(p)
+	eprint(p)
 	r=re.compile(r'\{[^\{\}]*[\n ]*([^\{\}]*[\n ]*\{[^\{\}]*[\n ]*\}[^\{\}]*[\n ]*)*[^\{\}]*[\n ]*\}')
 	if('{' in p):
 		i=p[p.index('{'):]
@@ -805,7 +805,7 @@ def gridMaker(p):
 			else:
 				eprint("Sum of column span must be 12 in Grid")
 		else:
-			eprint(p)
+			#eprint(p)
 			eprint("Grid arguments not proper")
 	else:
 		return p

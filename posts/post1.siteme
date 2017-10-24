@@ -1,0 +1,20 @@
+title: First Blog Post
+date: 21-10-17
+author: Ishan Tarunesh
+tags: web , siteme
+---------------------------------
+Hello friends, this is my first blog post. I'll be writing more of these in the next few minuted. I hope to add a lot of features to this page and also make an archive page.
+
+We’ve covered a lot of ground in this guide, but a lot can still be done with our archive page. We could widgetize the whole thing and erase all of the custom code elements. We could add more visual blocks for things like the latest content, and so on.
+The possibilities are truly endless. So, what would you like to see as an interesting addition to this template? Feel free to share.
+
+image(width:100%){background.jpg}
+
+list(u){
+* List 1
+* List 2
+* List 3
+* List 4
+}
+
+Bye there
