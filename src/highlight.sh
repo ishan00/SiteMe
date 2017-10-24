@@ -8,9 +8,9 @@ if [ ! -d "~/.vim/syntax/" ]
         mkdir ~/.vim/syntax
 fi
 
-if [ ! -f "~/.vim/syntax/siteme.vim" ]
+if [ ! -f "~/.vim/syntax/sm.vim" ]
         then
-        cp siteme.vim ~/.vim/syntax/
+        cp sm.vim ~/.vim/syntax/
 fi
 
 if [ ! -d "~/.vim/ftdetect/" ]
@@ -18,9 +18,9 @@ if [ ! -d "~/.vim/ftdetect/" ]
         mkdir ~/.vim/ftdetect
 fi
 
-if [ ! -f "~/.vim/ftdetect/siteme.vim" ]
+if [ ! -f "~/.vim/ftdetect/sm.vim" ]
         then
-        touch ~/.vim/ftdetect/siteme.vim
-        echo "au BufRead,BufNewFile *.siteme set filetype=siteme" >~/.vim/ftdetect/siteme.vim
+        touch ~/.vim/ftdetect/sm.vim
+        echo "au BufRead,BufNewFile *.sm set filetype=sm" >~/.vim/ftdetect/sm.vim
 fi
 

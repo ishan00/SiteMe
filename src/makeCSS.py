@@ -62,7 +62,7 @@ def makeParallaxCSS(d):
 	styleFile.write(CSSString)
 	styleFile.close()
 
-footerDict={'$CLASS$':'.footer','$COLOR$':'#292c2f','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'18px','$MOTTO-FONT-COLOR$':'#8d9093','$MOTTO-FONT-SIZE$':'24px','$NAME-FONT-COLOR$':'#8f9296','$NAME-FONT-SIZE$':'14px'}
+footerDict={'$CLASS$':'.footer','$COLOR$':'#292c2f','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'18px','$MOTTO-FONT-COLOR$':'#8d9093','$MOTTO-FONT-SIZE$':'24px','$NAME-FONT-COLOR$':'#8f9296','$NAME-FONT-SIZE$':'14px','$SIZE':'60px'}
 
 def makeFooterCSS(d):
 	CSSFile=open('./layout/footer_'+d['type']+'.css')
@@ -185,6 +185,21 @@ COLORS = ['#4CAF50' , '#2196F3','#e10d0d' , '#fed044' , '#00c992' , '#7e1dfb']
 
 gen_color = cycle(COLORS)
 
+blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px', '$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
+
+def makeBlockCSS(d):
+	CSSFile = open('./layout/block.css')
+	CSSString = CSSFile.read()
+	newBlockDict =copy.deepcopy(blockDict)
+	for (key,value) in d.items():
+		newBlockDict['$'+key.upper()+'$']=value
+	for (key,value) in newBlockDict.items():
+		CSSString=CSSString.replace(key,value)
+	styleFile=open('./site/css/style.css','a')
+	styleFile.write(CSSString)
+	styleFile.close()
+
+
 def makeSkillbarCSS(d):
 	CSSFile = open('./layout/skillbar.css')
 	CSSString = CSSFile.read()
@@ -192,7 +207,7 @@ def makeSkillbarCSS(d):
 	CSSString = CSSString.replace('$CLASS$', CLASSNAME)
 	del d['class']
 	for u,v in d.items():
-		CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + next(gen_color) + ';}'
+		CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + next(gen_color) + ';}\n'
 	styleFile=open('./site/css/style.css','a')
 	styleFile.write(CSSString)
 	styleFile.close()
@@ -295,7 +310,8 @@ CSSDict={
 	'textfield':makeTextfieldCSS,
 	'passwordfield':makePasswordfieldCSS,
 	'select':makeSelectCSS,
-	'submit':makeSubmitCSS
+	'submit':makeSubmitCSS,
+	'block':makeBlockCSS
 }
 
 

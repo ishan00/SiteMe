@@ -1,0 +1,10 @@
+title:SiteMe
+
+(latex){{
+\frac{1}{2}
+\mathbb{P}(X) = \sum_{i = 0}^{N} a_{i}
+}}
+
+(pre){{
+image(){as.jpg}
+}}

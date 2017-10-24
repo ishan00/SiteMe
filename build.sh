@@ -27,17 +27,17 @@ if [ ! -d './tmp' ]
 fi
 
 ### This function makes a list of page specified in pages directory and calls interpreter for each such page with the config file
-pages=$(find pages/*.siteme)
+pages=$(find pages/*.sm)
 for page in $pages
 do
-	#echo $page
 	FULL_PATH=$(echo $page | cut -d'.' -f1)
-	#echo $FULL_PATH
 	NAME=$(echo $FULL_PATH | cut -d'/' -f2)
-	#echo $NAME
+	if [ $NAME == 'blog' ]
+		then
+		python3 ./src/renderblog.py './pages/blog.sm'
+	fi
 	OUTPUT_FILE="./site/$NAME.html"
-	#echo $OUTPUT_FILE
-	python3 ./src/interpreter.py $page ./config.siteme > $OUTPUT_FILE 
+	python3 ./src/interpreter.py $page ./config.sm > $OUTPUT_FILE 
 done
 
 if [  -f  ./tmp/*.plot ]

@@ -87,34 +87,42 @@ def recursiveBuild(dictionary):
 		return ContainerElement(dictionary,True);
 
 DirectChangeStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","underline":"u" ,"center":"center","code":'code', "sup":'sup' , "sub":'sub' , "kbd":'kbd' , 'quote':'blockquote'}
-IndirectChangeStyles={'r':'text-align:right','l':'text-align:left','c':'text-align:center', 'danger':'background-color: #ffdddd;border-left: 6px solid #f44336; margin-bottom:15px;padding:10px 12px',
+IndirectChangeStyles={'latex':'lang:"latex"' ,'r':'text-align:right','l':'text-align:left','c':'text-align:center', 'danger':'background-color: #ffdddd;border-left: 6px solid #f44336; margin-bottom:15px;padding:10px 12px',
 'info':'background-color: #e7f3fe;border-left: 6px solid #2196F3;margin-bottom:15px;padding:10px 12px','success':'background-color: #ddffdd;border-left: 6px solid #4CAF50;margin-bottom:15px;padding:10px 12px' , 'warning':'background-color: #ffffcc;border-left: 6px solid #ffeb3b;margin-bottom:15px;padding:10px 12px'}
 
 def taggedMaker(style,content):
-    if(not style):
-        return content
-    else:
-        style=style.split(',')
-        style=[IndirectChangeStyles[x] if x in IndirectChangeStyles else x for x in style]
-        ltagged=[]
-        htagged=[]
-        for x in style:
-            if(':' in x):
-                htagged.append(x)
-            else:
-                ltagged.append(x)
-        if(ltagged and htagged):
-            htagged=';'.join(htagged)+';'
-            ltaggedStart=''.join(['<'+DirectChangeStyles[x]+'>' for x in ltagged])
-            ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
-            return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
-        elif(ltagged):
-            ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
-            ltaggedEnd=''.join(['</'+str(DirectChangeStyles[x])+'>' for x in ltagged[::-1]])
-            return ltaggedStart+content+ltaggedEnd
-        elif(htagged):
-            htagged=';'.join(htagged)+';'
-            return "<div style=\""+htagged+"\">"+content+"</div>\n"
+	if(not style):
+		return content
+	else:
+		style=style.split(',')
+		style=[IndirectChangeStyles[x] if x in IndirectChangeStyles else x for x in style]
+		ltagged=[]
+		htagged=[]
+		for x in style:
+			if(':' in x):
+				htagged.append(x)
+			else:
+				ltagged.append(x)
+		if(ltagged and htagged):
+			htagged=';'.join(htagged)+';'
+			ltaggedStart=''.join(['<'+DirectChangeStyles[x]+'>' for x in ltagged])
+			ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
+			for x in htagged:
+				if('align' in x):
+					return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
+					break
+			return "<span style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</span>\n"
+		elif(ltagged):
+			ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
+			ltaggedEnd=''.join(['</'+str(DirectChangeStyles[x])+'>' for x in ltagged[::-1]])
+			return ltaggedStart+content+ltaggedEnd
+		elif(htagged):
+			htagged=';'.join(htagged)+';'
+			for x in htagged:
+				if('align' in x):
+					return "<div style=\""+htagged+"\">"+content+"</div>\n"
+					break
+			return "<span style=\""+htagged+"\">"+content+"</span>\n"
 
 TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
 'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
@@ -150,10 +158,14 @@ CSSCount = {
 	'skillbar':1,
 	'tooltip':1,
 	'chatbox':1,
+<<<<<<< HEAD
 	'textfield':1,
 	'passwordfield':1,
 	'select':1,
 	'submit':1
+=======
+	'block':1,
+>>>>>>> 4075c80579fcc18bc72052c2bc51b93accb9d34e
 }
 
 def piechartMaker(style,content):
@@ -301,6 +313,8 @@ def imageMaker(style,content):
 		if('shake' in style):
 			currDict={'div':{'class':'shake'+str(CSSCount['shake'])},'content':{1:copy.deepcopy(currDict)}}
 			CSSCount['shake']=CSSCount['shake']+1
+		if('center' in style):
+			currDict={'div':{'align':'center'},'content':{1:currDict}}
 		# for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
 		# 	currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
 		#print(currDict)
@@ -332,7 +346,7 @@ def listMaker(style,content):
 					styleDict[list(x.keys())[0]]=list(x.values())[0]
 			listType=style.strip()[0]
 			if listType=='d':
-				listData=[y.strip('* ') for y in content.split('\n')[1:-1]]
+				listData=[y.strip('\t\n\r* ') for y in content.split('\n')[1:-1]]
 				# listData=list(itertools.chain.from_iterable([x.split('**') for x in listData]))
 				listDict={}
 				for i in range(0,len(listData)):
@@ -341,7 +355,8 @@ def listMaker(style,content):
 					else:
 						listDict.update({i+1:{'dd':{},'content':listData[i]}})
 			else:
-				listData=[y.strip('* ') for y in content.split('\n')[1:-1]]
+
+				listData=[y.strip('\t\n\r* ') for y in content.split('\n')[1:-1]]
 				listDict={}
 				for i in range(0,len(listData)):
 					listDict.update({i+1:{'li':{},'content':listData[i]}})
@@ -499,6 +514,23 @@ def timelineMaker(s,i):
 		count = count + 1
 	return timeline_dict
 
+def blockMaker(s,i):
+	block_dict = {'div':{'id':''} , 'content':''}
+	block_dict['div']['id'] = 'block'+ str(CSSCount['block'])
+	CSSCount['block'] = CSSCount['block'] + 1
+	block_dict['content'] = i
+	#eprint(s)
+	css_for_block = {'block':{'class':''}}
+	css_for_block['block']['class'] = '#'+ block_dict['div']['id']
+	if s:
+		s = dictionaryMaker(s)
+		for u,v in s.items():
+			css_for_block['block'][u] = v;
+	makeCSS(css_for_block)
+	#eprint(block_dict)
+	#eprint(css_for_block)
+	return block_dict
+
 def skillbarMaker(s,i):
 	skillbar_dict = {'div':{'id':''} , 'content':{}}
 	skillbar_dict['div']['id'] = 'skillbar' + str(CSSCount['skillbar'])
@@ -574,7 +606,7 @@ def chatboxMaker(s,i):
 	for [u,v] in lol:
 		row = copy.deepcopy(elem)
 		u = u.split(',')
-		eprint(u)
+		#eprint(u)
 		if ('1' in u):
 			last_state[1] = 1
 			u.remove('1')
@@ -659,6 +691,8 @@ def checkImageExtension(img):
 	img = img.strip()
 	ext = img[-img[::-1].find('.') - 1:]
 	return ((ext == '.png') or (ext == '.jpg') or (ext == '.jpeg') or (ext == '.bmp') or (ext == '.gif'))
+
+
 
 def wallpaperMaker(s,i):
 	# For type1 wallpaper allowed input for i are
@@ -797,7 +831,8 @@ styleFunctions = {
 	'textfield':textfieldMaker,
 	'passwordfield':passwordfieldMaker,
 	'select':selectMaker,
-	'submit':submitMaker 
+	'submit':submitMaker, 
+	'block':blockMaker
 }
 
 def styleMaker(s):
@@ -815,31 +850,37 @@ def styleMaker(s):
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 def gridMaker(p):
-	r=re.compile(r'\{[^\{\}]*[\n ]*([^\{\}]*[\n ]*\{[^\{\}]*[\n ]*\}[^\{\}]*[\n ]*)*[^\{\}]*[\n ]*\}')
-	i=p[p.index('{'):]
-	gridList=[]
-	while(i):
-		a=r.match(i).group()
-		gridList.append(a[1:-1])
-		i=i.replace(a,"",1)
-	sizeList=p.split('(')[1].split(')')[0].split(',')
-	rs='<div class="container-fluid row" >'
-	sum=0		
-	if (len(sizeList)==len(gridList)):
-		for i in range(0,len(sizeList)):
-			span=sizeList[i]
-			sum=sum+int(span)
-			rs=rs+'<div class="col-sm-'+span+'" >'
-			content=gridList[i]
-			rs=rs+content+'</div>'
-		rs=rs+'</div>'
-		if(sum==12):
-			return rs
+	#eprint(p)
+	r=re.compile(r'[\n ]*\{[^\{\}]*?\}')
+	if('{' in p):
+		i=p[p.index('{'):].strip()
+
+		gridList=[]
+		while(i):
+			a=r.match(i).group()
+			gridList.append(a.strip()[1:-1])
+			i=i.replace(a,"",1)
+		sizeList=p.split('(')[1].split(')')[0].split(',')
+		rs='<div class="container-fluid row" >'
+		sum=0		
+		if (len(sizeList)==len(gridList)):
+			for i in range(0,len(sizeList)):
+				span=sizeList[i]
+				sum=sum+int(span)
+				rs=rs+'<div class="col-sm-'+span+'" >'
+				content=gridList[i]
+				rs=rs+content+'</div>'
+			rs=rs+'</div>'
+			if(sum==12):
+				return rs
+			else:
+				eprint("Sum of column span must be 12 in Grid")
 		else:
-			eprint("Sum of column span must be 12 in Grid")
+			#eprint(p)
+			#eprint("Grid arguments not proper")
+			return p
 	else:
-		eprint(p)
-		eprint("Grid arguments not proper")
+		return p
 
 '''
 This function converts dictionaries to html codes.
@@ -854,7 +895,7 @@ def makeHTML(d):
 		keysList=list(d.keys())
 		if(1 in keysList):
 			rs=''
-			for i in range(1,len(keysList)+1):
+			for i in keysList:
 				rs=rs + '\n'+makeHTML(d[i])
 			return rs
 		else:
@@ -874,8 +915,9 @@ def makeHTML(d):
 					rs=rs+''' style="'''+style+'''">'''
 				if Tags[Tag]:
 					if(isinstance(d['content'],dict)):
-						for i in range(0,len(list(d['content'].keys()))):
-							rs=rs+makeHTML(d['content'][i+1]) + '\n'
+						newKeyList = list(d['content'].keys())
+						for i in newKeyList:
+							rs=rs+makeHTML(d['content'][i]) + '\n'
 					else:
 						rs=rs+d['content']
 					rs=rs+"</"+Tag+">"
@@ -1186,13 +1228,16 @@ def p_body(p):
         p[0]=''
 
 def p_pre(p):
-    '''pre : PRE 
-           |  
-    '''
-    if(len(p)==2):
-        p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
-    else:
-        p[0]=''
+	'''pre : PRE 
+		   |  
+	'''
+	if(len(p)==2):
+		if (p[1][1:6] == 'latex'):
+			p[0]="<div lang='latex'>\n"+p[1][:-2][9:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"\n</div>"
+		else:
+			p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
+	else:
+		p[0]=''
 
 def p_code(p):
 	'''code : CODE
@@ -1239,13 +1284,14 @@ parser=yacc.yacc()
 main_dict = {'html':{} , 'content':{ 
 		1:{'head':{} , 'content':{
 			1:{'title':{} , 'content' : ''},
-			2:{'style':{} , 'content' : ''},
+			6:{'style':{} , 'content' : ''},
 			5:{'link':{'rel':'stylesheet', 'href':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'} , 'content':''},
-			6:{'link':{'rel':"stylesheet" ,'href':"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"}, 'content':''},
+			2:{'link':{'rel':"stylesheet" ,'href':"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"}, 'content':''},
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
 			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			8:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+			8:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''},
+			9:{'script':{'src':'http://latex.codecogs.com/latexit.js' , 'type':'text/javascript'} , 'content':''},
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',
@@ -1283,13 +1329,9 @@ def main():
 	else:
 		eprint("No rule for footer in config.siteme")
 		sys.exit()
-	#print (index_footer)
 	c = cleanUp(c)
-	#nav = makeNavbar(c[index_navbar+1], c[index_navbar+2])
 	main_dict['content'][2]['content'][1] =  makeNavbar(c[index_navbar+1],c[index_navbar+2])
 	main_dict['content'][2]['content'][3] = makeFooter(c[index_footer+1],c[index_footer+2])
-	#print (main_dict)
-
 	page=open(pagefile)
 	b=page.read()
 	while(re.search(r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}',b)):
@@ -1304,13 +1346,17 @@ def main():
 		if(i.find('###') != -1):
 			if(i.find('title') != -1):
 				main_dict['content'][1]['content'][1]['content'] = i[i.find(':')+1:]
+			elif (i.find('nonavbar') != -1):
+				del main_dict['content'][2]['content'][1]
+			elif (i.find('nofooter') != -1):
+				del main_dict['content'][2]['content'][3]
 			else:
 				style_content.append(i[i.find('###') + 3:])
 		else:
 			body_content = body_content + i + '\n'
-	style_content = ';\n'.join(style_content) + ';\n'
-	main_dict['content'][1]['content'][2]['content'] = style_content
-	main_dict['content'][2]['content'][2] = body_content
+	style_content = 'body {\n' + ';\n'.join(style_content) + ';\n}'
+	main_dict['content'][1]['content'][6]['content'] = style_content
+	main_dict['content'][2]['content'][2] = body_content.replace('||','<br>\n')
 	#print (main_dict)
 	print(makeHTML(main_dict))
 
