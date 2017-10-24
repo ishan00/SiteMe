@@ -87,7 +87,7 @@ def recursiveBuild(dictionary):
 		return ContainerElement(dictionary,True);
 
 DirectChangeStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","underline":"u" ,"center":"center","code":'code', "sup":'sup' , "sub":'sub' , "kbd":'kbd' , 'quote':'blockquote'}
-IndirectChangeStyles={'r':'text-align:right','l':'text-align:left','c':'text-align:center', 'danger':'background-color: #ffdddd;border-left: 6px solid #f44336; margin-bottom:15px;padding:10px 12px',
+IndirectChangeStyles={'latex':'lang:"latex"' ,'r':'text-align:right','l':'text-align:left','c':'text-align:center', 'danger':'background-color: #ffdddd;border-left: 6px solid #f44336; margin-bottom:15px;padding:10px 12px',
 'info':'background-color: #e7f3fe;border-left: 6px solid #2196F3;margin-bottom:15px;padding:10px 12px','success':'background-color: #ddffdd;border-left: 6px solid #4CAF50;margin-bottom:15px;padding:10px 12px' , 'warning':'background-color: #ffffcc;border-left: 6px solid #ffeb3b;margin-bottom:15px;padding:10px 12px'}
 
 def taggedMaker(style,content):
@@ -779,15 +779,15 @@ def styleMaker(s):
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 def gridMaker(p):
-	eprint(p)
-	r=re.compile(r'\{[^\{\}]*[\n ]*([^\{\}]*[\n ]*\{[^\{\}]*[\n ]*\}[^\{\}]*[\n ]*)*[^\{\}]*[\n ]*\}')
+	#eprint(p)
+	r=re.compile(r'[\n ]*\{[^\{\}]*?\}')
 	if('{' in p):
-		i=p[p.index('{'):]
+		i=p[p.index('{'):].strip()
 
 		gridList=[]
 		while(i):
 			a=r.match(i).group()
-			gridList.append(a[1:-1])
+			gridList.append(a.strip()[1:-1])
 			i=i.replace(a,"",1)
 		sizeList=p.split('(')[1].split(')')[0].split(',')
 		rs='<div class="container-fluid row" >'
@@ -806,7 +806,8 @@ def gridMaker(p):
 				eprint("Sum of column span must be 12 in Grid")
 		else:
 			#eprint(p)
-			eprint("Grid arguments not proper")
+			#eprint("Grid arguments not proper")
+			return p
 	else:
 		return p
 
@@ -1156,13 +1157,16 @@ def p_body(p):
         p[0]=''
 
 def p_pre(p):
-    '''pre : PRE 
-           |  
-    '''
-    if(len(p)==2):
-        p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
-    else:
-        p[0]=''
+	'''pre : PRE 
+		   |  
+	'''
+	if(len(p)==2):
+		if (p[1][1:6] == 'latex'):
+			p[0]="<div lang='latex'>\n"+p[1][:-2][9:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"\n</div>"
+		else:
+			p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
+	else:
+		p[0]=''
 
 def p_code(p):
 	'''code : CODE
@@ -1215,7 +1219,8 @@ main_dict = {'html':{} , 'content':{
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
 			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			8:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''}
+			8:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''},
+			9:{'script':{'src':'http://latex.codecogs.com/latexit.js' , 'type':'text/javascript'} , 'content':''},
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',
@@ -1253,13 +1258,9 @@ def main():
 	else:
 		eprint("No rule for footer in config.siteme")
 		sys.exit()
-	#print (index_footer)
 	c = cleanUp(c)
-	#nav = makeNavbar(c[index_navbar+1], c[index_navbar+2])
 	main_dict['content'][2]['content'][1] =  makeNavbar(c[index_navbar+1],c[index_navbar+2])
 	main_dict['content'][2]['content'][3] = makeFooter(c[index_footer+1],c[index_footer+2])
-	#print (main_dict)
-
 	page=open(pagefile)
 	b=page.read()
 	while(re.search(r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}',b)):
@@ -1284,7 +1285,7 @@ def main():
 			body_content = body_content + i + '\n'
 	style_content = 'body {\n' + ';\n'.join(style_content) + ';\n}'
 	main_dict['content'][1]['content'][6]['content'] = style_content
-	main_dict['content'][2]['content'][2] = body_content.replace('\\','<br>\n')
+	main_dict['content'][2]['content'][2] = body_content.replace('||','<br>\n')
 	#print (main_dict)
 	print(makeHTML(main_dict))
 

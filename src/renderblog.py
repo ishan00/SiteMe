@@ -11,7 +11,8 @@ def eprint(*args, **kwargs):
 tags = {}
 archive = {}
 
-blog_page = '''
+blog_page = '''#nonavbar
+#nofooter
 grid(2,8,2){}{
 	$FULLCONTENT$	
 }
@@ -19,15 +20,18 @@ grid(2,8,2){}{
 '''
 post_content = '''
 (center,h1){$TITLE$}
-(h3,font-color:#eeeeee){$AUTHOR$}
-(font-color:#eeeeee){$DATE$}
+(h3,color:#eeeeee,center){$AUTHOR$}
+(color:#eeeeee){$DATE$}
 $CONTENT$
 -------'''
 
 CONTENT = ''
 
-for post in os.listdir(directory):
-	f = open(os.fsdecode(directory) + os.fsdecode(post))
+file_list = [os.fsdecode(post) for post in os.listdir(directory)]
+file_list.sort()
+#eprint(file_list)
+for post in file_list:
+	f = open(os.fsdecode(directory) + post)
 	f = f.readlines()
 	new_post = copy.deepcopy(post_content)
 	body_content = ''
@@ -47,13 +51,13 @@ for post in os.listdir(directory):
 			body_content = body_content + line
 
 	new_post = new_post.replace('$CONTENT$',body_content)
-	eprint(new_post)
-	CONTENT = CONTENT  + new_post + '<br>'
+	#eprint(new_post)
+	CONTENT = CONTENT  + new_post + '||'
 blog_page = blog_page.replace('$FULLCONTENT$',CONTENT)
 
 final_file = open(blogfile, 'r+')
 final_file.write(blog_page)
-eprint(blog_page)
+#eprint(blog_page)
 '''
 This file should take as input a blog post, ie posts/*.siteme and convert it into HTML and paste it at pages/blog.siteme
 '''

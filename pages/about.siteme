@@ -1,2 +1,93 @@
+(danger){Oh My God}
+(success){Another Feature Added}
+(warning){The deadline is approaching}
+(info){Error checking is important}
+tooltip(font-color:red, color:#000){afv:sdb}
+(code){{
+	int a ;
+	int b;
+	int cvector<int> a(0);
+	a.push_back;
+}}
 
-slideshow(type:abc){1.jpg,2.jpg,3.jpg}
+(pre){{
+	image(){background.jpg}
+}}
+
+
+chatbox(avatar1.png, avatar2.jpg){
+* 1,left,11:00 ** Hi, whatsapp?
+* 0,left,12:00 ** Sorry I was busy, couldn't reply
+* 1,13:00 ** No Problem Chill
+* 1,14:00 ** Btw have you heard of this new project called siteme?
+* right,16:00 ** No. Tell me more about it
+}
+
+skillbar(){HTML:60% , CSS:80% , JavaScript:30%, php : 50%, C++ : 100%, Python : 23%}
+
+wallpaper(type:type1, color : #eeeeee , text-color : red ){SiteMe, I am awesome ? Ain't I, bird.jpg}
+
+alert(warning){This is the warning text}
+alert(info){This is the information text}
+alert(danger){It's getting dangerous now}
+alert(success){Successful Build}
+alert(color:#fff){This should be white}
+grid(6,6){parallax(){background.jpg}}{slideshow(type:abc){1.jpg,2.jpg,3.jpg}}
+
+(h2,text-align:center){Abstract}
+
+timeline(){
+* 12:50 ** This is the first entry in the timeline
+* 11:30 ** This is the second entry in the timeline
+}
+
+Aim of this project is to develop such a static site builder  that makes it easier to develop simple and useful websites. We intend to take raw text files and images as input which will be processed by following certain predefined formatting rules to generate the required website. User may select from various available templates and can add/modify features such as headers, navigation bars, footer, panels, etc. For someone who just wants a simple website/blog and isn’t much interested in the design can just choose from the available templates and connect the parts, whereas someone who cares about looks can utilize the features we provide and customize the website according to his/her needs.
+
+-----------
+
+(h4,text-align:center){Introduction/Motivation}
+The main motivation for this project comes from an existing static site builder named Jekyll which is already a known and widely used product. Even though Jekyll boasts of being “easy to use, ready to deploy” it is not the case so. Even though one can use a template but then modifying those templates according to one’s need would require good knowledge of Web Dev. So through this project we aim to create an even simpler yet powerful Static Site builder that will come loaded with a lot of templates with the abstraction that user no longer has to modify the raw code of these but just specify some tags/properties at a different place and work will be done. We hope to do justice to the project.
+
+(c){link(){button(color:blue){Click Me}:http://www.facebook.com}}
+
+-----------
+
+fade(left,font-color:red,color:#ffffff){I am fading:background.jpg}
+
+-----------
+(c,bold){Tools Required}
+list(u){
+* Python
+* PLY Python Lex and Yacc
+* Makefiles
+* Bash and other UNIX tools
+* HTML, CSS and Javascript 
+}
+
+button(hover-dropdown,color:red,font-color:white,font-size:20pt,dropdown-width:250px){123:abc.com,shivam:re.com,Okay}
+---------------
+
+(Pre){{Hello how are you fgnfkg
+dgerimage(sjhd){sssdkf}gergfdfgdfgf
+fgdfdfgarhba}}
+
+(c){piechart(  label  :  match ,  type:basic){temp.csv   }}
+
+button(color:red){HELO}
+
+C(sub){n} = Catalan Number
+
+(kbd){Ctrl + C} and (kbd){Ctrl + V} is what we are doing
+
+button(color:blue,hover-shadow,round,font-color:red,disabled){SELO}
+image(shake,flip){background.jpg}
+button(click-dropdown,color:red,font-color:white,font-size:20pt,dropdown-width:250px){123:abc.com,shivam:re.com,Okay}
+(quote){Fake it till you make it}
+-----
+(bold){Lab Contents}
+list(d){
+* vefvegvegv
+**fvdvffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff<br>fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+*ffgegr
+**hbrtgbergvergerg
+}
