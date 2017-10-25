@@ -57,7 +57,7 @@ def makeSkillbarCSS(d):
 cardDict={'$CLASS$':'.card','$COLOR$':'white','$FONT-COLOR$':'black','$FONT-SIZE$':'none','$PADDING-TOP$':'10px','$PADDING-LEFT$':'20px'}
 parallaxDict={'$CLASS$':'.parallax'}
 accordionDict={}
-buttonDict={'$CLASS$':'#button','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'15px','$PADDING-LEFT$':'32px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'none','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'none','$HOVER-FONT-COLOR$':'none','$HOVER-SHADOW$':'none','$DROPDOWN-COLOR$':'#f9f9f9','$DROPDOWN-FONT-COLOR$':'black','$DROPDOWN-FONT-SIZE$':'none','$DROPDOWN-WIDTH$':'160px','$DROPDOWN-HOVER-COLOR$':'#f1f1f1','$DROPDOWN-HOVER-FONT-COLOR$':'black'}
+buttonDict={'$CLASS$':'#button','$COLOR$':'#4CAF50','$BORDER$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'15px','$PADDING-LEFT$':'32px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'none','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'none','$HOVER-FONT-COLOR$':'none','$HOVER-SHADOW$':'none','$DROPDOWN-COLOR$':'#f9f9f9','$DROPDOWN-FONT-COLOR$':'black','$DROPDOWN-FONT-SIZE$':'none','$DROPDOWN-WIDTH$':'160px','$DROPDOWN-HOVER-COLOR$':'#f1f1f1','$DROPDOWN-HOVER-FONT-COLOR$':'black','$HOVER-BORDER$':'none'}
 checkboxDict={'$CLASS$':'.chatbox'}
 flipDict={'$CLASS$':'.chatbox'}
 shakeDict={'$CLASS$':'.chatbox'}

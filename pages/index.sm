@@ -12,7 +12,7 @@ image(align:right){1.jpg}
 grid(6,6){block(margin-right:0px){image(width:100%){1.jpg}||d}} {block(margin-right:-10px){image(width:100%){1.jpg}|| ||  }}
 gallery(4){caption:1.jpg,1.jpg,as:1.jpg,caption:1.jpg,:1.jpg,caption:1.jpg}
 fade(top,color:#fff,font-color:#000){Text:1.jpg}
-
+link(text:fb){https://facebook.com}
 fade(left,color:#000,font-color:#000){Text:1.jpg}
 
 list(u){
@@ -39,8 +39,8 @@ list(d){
 
 link(){Alternate Text:http://www.facebook.com}
 
-(c){link(){button(color:blue){Click Me}:http://www.facebook.com}}
-(c){link(){button(color:blue,disabled){Click Me}:http://www.facebook.com}}
+(c){link(text:button(color:blue){Click Me}){http://www.facebook.com}}
+(c){link(text:button(color:blue,disabled){Click Me}){http://www.facebook.com}}
 
 
 parallax(advanced,speed:2){background.jpg}
