@@ -111,24 +111,22 @@ def taggedMaker(style,content):
 			htagged=';'.join(htagged)+';'
 			ltaggedStart=''.join(['<'+DirectChangeStyles[x]+'>' for x in ltagged])
 			ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
-			for x in htagged:
-				if('align' in x):
-					return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
-					break
-			return "<span style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</span>\n"
+			if('align' in htagged or 'text-align' in htagged):
+				return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
+			else:
+				return "<span style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</span>\n"
 		elif(ltagged):
 			ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
 			ltaggedEnd=''.join(['</'+str(DirectChangeStyles[x])+'>' for x in ltagged[::-1]])
 			return ltaggedStart+content+ltaggedEnd
 		elif(htagged):
 			htagged=';'.join(htagged)+';'
-			for x in htagged:
-				if('align' in x):
-					return "<div style=\""+htagged+"\">"+content+"</div>\n"
-					break
-			return "<span style=\""+htagged+"\">"+content+"</span>\n"
+			if('align' in htagged or 'text-align' in htagged):
+				return "<div style=\""+htagged+"\">"+content+"</div>\n"
+			else:
+				return "<span style=\""+htagged+"\">"+content+"</span>\n"
 
-TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
+TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor','margin':'margin','padding':'padding',
 'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
@@ -824,8 +822,32 @@ styleFunctions = {
 }
 
 allowedStyles={
-	'height':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm)$)',
-	'width':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm)$)'
+	'height':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm|mm|pt)$)',
+	'width':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm|mm|pt)$)',
+	'font-size':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'align':r'(center$)|(left$)|(right$)',
+	'text-align':r'(center$)|(left$)|(right$)',
+	'float':r'(center$)|(left$)|(right$)',
+	'fade':r'(bottom$)|(left$)|(right$)|(top$)',
+	'opacity':r'([01](\.[\d]*)?$)',
+	'speed':r'([\d]*(\.[\d]*)?$)',
+	'padding':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'padding-top':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'padding-bottom':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'padding-left':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'padding-right':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'margin':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'margin-left':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'margin-right':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'border':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'font-color':r'(\#[a-fA-F0-9]{6}$)|(#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'color':r'(\#[a-fA-F0-9]{6}$)|(\#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'background-color':r'(#[a-fA-F0-9]{6}$)|(#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'dropdown-color':r'(#[a-fA-F0-9]{6}$)|(#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',	
+	'hover-font-color':r'(\#[a-fA-F0-9]{6}$)|(\#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'hover-color':r'(\#[a-fA-F0-9]{6}$)|(\#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'dropdown-font-color':r'(\#[a-fA-F0-9]{6}$)|(\#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'symbol':r'(i)|(I)|(A)|(a)|(1)|(square)|(circle)|(disc)|<img[\s\S]*>'
 }
 
 def styleMaker(s):
