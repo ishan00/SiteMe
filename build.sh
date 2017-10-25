@@ -37,17 +37,13 @@ do
 		python3 ./src/renderblog.py './pages/blog.sm'
 	fi
 	OUTPUT_FILE="./site/$NAME.html"
-	python3 ./src/interpreter.py $page ./config.sm > $OUTPUT_FILE 
+	touch $OUTPUT_FILE
 done
+
+python3 ./src/interpreter.py
 
 if [  -f  ./tmp/*.plot ]
 	then 
 	gnuplot -p ./tmp/*.plot
-fi
-
-if [ -f ./site/index.html ]
-	then
-	xdg-open ./site/index.html
-	#subl ./site/index.html
 fi
 

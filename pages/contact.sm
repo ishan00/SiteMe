@@ -10,7 +10,6 @@ image(){1.jpg}
 
 image(align:right){1.jpg}
 
-image(height:600 pm,width:100%){1.jpg}
 
 fade(top,color:#fff,font-color:#000){Text:1.jpg}
 

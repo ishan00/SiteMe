@@ -2,11 +2,11 @@ from __future__ import print_function
 import re,itertools
 import copy
 import sys
+import os
 import shutil
 sys.path.append('../layout/')
 sys.path.append('./layout/')
 sys.path.append('../src/')
-from sys import argv
 import ply.yacc as yacc
 from HTML_slideshow import *
 from HTML_navbar import *
@@ -14,13 +14,11 @@ from HTML_footer import *
 from makeCSS import makeCSS
 from globalThings import CSSCount
 from lexer import tokens,styles,keywords
-script , pagefile , configfile = argv
 from pyparsing import *
 def eprint(*args, **kwargs):
 	print (*args, file=sys.stderr, **kwargs)
 
 LineNumber=1
-eprint(str(CSSCount['hover-button']))
 
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
@@ -111,24 +109,22 @@ def taggedMaker(style,content):
 			htagged=';'.join(htagged)+';'
 			ltaggedStart=''.join(['<'+DirectChangeStyles[x]+'>' for x in ltagged])
 			ltaggedEnd=''.join(['</'+DirectChangeStyles[x]+'>' for x in ltagged[::-1]])
-			for x in htagged:
-				if('align' in x):
-					return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
-					break
-			return "<span style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</span>\n"
+			if('align' in htagged or 'text-align' in htagged):
+				return "<div style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</div>\n"
+			else:
+				return "<span style=\""+htagged+"\">"+ltaggedStart+content+ltaggedEnd+"</span>\n"
 		elif(ltagged):
 			ltaggedStart=''.join(['<'+str(DirectChangeStyles[x])+'>' for x in ltagged])
 			ltaggedEnd=''.join(['</'+str(DirectChangeStyles[x])+'>' for x in ltagged[::-1]])
 			return ltaggedStart+content+ltaggedEnd
 		elif(htagged):
 			htagged=';'.join(htagged)+';'
-			for x in htagged:
-				if('align' in x):
-					return "<div style=\""+htagged+"\">"+content+"</div>\n"
-					break
-			return "<span style=\""+htagged+"\">"+content+"</span>\n"
+			if('align' in htagged or 'text-align' in htagged):
+				return "<div style=\""+htagged+"\">"+content+"</div>\n"
+			else:
+				return "<span style=\""+htagged+"\">"+content+"</span>\n"
 
-TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor',
+TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor','margin':'margin','padding':'padding',
 'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
@@ -193,7 +189,7 @@ def buttonMaker(style,content):
 				tmpDict.update({i:{'a':{'href':x[x.find(':')+1:].strip()},'content':x[:x.find(':')].strip()}})
 				i=i+1
 		buttonDict['content'][2]['content']=tmpDict
-		eprint("EH")
+		#eprint("EH")
 		CSSCount['hover-button']=CSSCount['hover-button']+1
 	elif('click-dropdown' in style):
 		buttonDict={'div':{'class':'clickdropdown'},'content':{1:{'button':{'class':'clickdropbtn','onclick':'myFunction()'},'content':{}},2:{'div':{'class':'clickdropdown-content','id':'myDropdown'},'content':{}}}}
@@ -216,8 +212,8 @@ def buttonMaker(style,content):
 	return buttonDict
 
 def cardMaker(style,content):
-	cardDict={'div':{'class':'card'+str(CSSCount['card'])},'content':{'div':{'class':'polaroid'},'content':{1:{'img':{},'content':{}},2:{'div':{'class':'container'},'content':{1:{'p':{},'content':{}}}}}}}
-	sendDict={'class':'.card'+str(CSSCount['card'])}
+	cardDict={'div':{'id':'card'+str(CSSCount['card'])},'content':{'div':{'class':'polaroid'},'content':{1:{'img':{},'content':{}},2:{'div':{'class':'container'},'content':{1:{'p':{},'content':{}}}}}}}
+	sendDict={'class':'#card'+str(CSSCount['card'])}
 	cardDict['content']['content'][1]['img']['src']= 'img/' + content.split(':')[1].strip()
 	cardDict['content']['content'][2]['content'][1]['content']=content.split(':')[0].strip()
 	styleDict={y[:y.find(':')].strip():y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
@@ -232,14 +228,14 @@ def cardMaker(style,content):
 	return cardDict
 
 def fadeMaker(style,content):
-	fadeDict={'div':{'class':'fade'+str(CSSCount['fade'])},'content':{ 1:{
+	fadeDict={'div':{'id':'fade'+str(CSSCount['fade'])},'content':{ 1:{
 				'div':{'class':'container'},'content':{
 					1:{'img':{'class':'image'},'content':''},
 					2:{'div':{'class':'overlay'},'content':{
 						1:{'div':{'class':'text'},'content':''}}}}}}}
 	fadeDict['content'][1]['content'][2]['content'][1]['content'] = content.split(':')[0].strip()
 	fadeDict['content'][1]['content'][1]['img']['src']= 'img/' + content.split(':')[1].strip()
-	sendDict={'class':'.fade'+str(CSSCount['fade'])}
+	sendDict={'class':'#fade'+str(CSSCount['fade'])}
 	if(style.split(',')[0].strip()=='top' or style.split(',')[0].strip()=='bottom' or style.split(',')[0].strip()=='left' or style.split(',')[0].strip()=='right'):
 		sendDict['type']=style.split(',')[0].strip()
 	else:
@@ -257,9 +253,9 @@ def fadeMaker(style,content):
 
 def imageMaker(style,content):
 	if('flip' in style):
-		makeCSS({'flip':{'class':'.flip'+str(CSSCount['flip'])}})
+		makeCSS({'flip':{'class':'#flip'+str(CSSCount['flip'])}})
 	if('shake' in style):
-		makeCSS({'shake':{'class':'.shake'+str(CSSCount['shake'])}})
+		makeCSS({'shake':{'class':'#shake'+str(CSSCount['shake'])}})
 	if content:
 		styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
 		for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
@@ -401,7 +397,7 @@ def slideshowMaker(s,i):
 
 def parallaxMaker(s,i):
 	if('advanced' in s):
-		parallax_dict={'div':{'class':'aparallax'+str(CSSCount['aparallax']),'height':{},'data-stellar-background-ratio':{}},'content':''}
+		parallax_dict={'div':{'id':'aparallax'+str(CSSCount['aparallax']),'height':{},'data-stellar-background-ratio':{}},'content':''}
 		content=i.strip()
 		parallax_dict['div']['background-image']="url('img/"+content+"')"
 		for x in s.split(','):
@@ -418,17 +414,19 @@ def parallaxMaker(s,i):
 		makeJS({'advanced-parallax':{}})
 		return parallax_dict
 	else:
-		parallax_dict = {'div':{'class':'parallax' , 'background-image':''} , 'content':''}
+		parallax_dict = {'div':{'id':'parallax' + str(CSSCount['parallax']) , 'background-image':''} , 'content':''}
 		content = i.strip()
 		parallax_dict['div']['background-image'] = "url('img/" + content + "')"
-		makeCSS({'parallax':{'class':'.parallax'}})
+		CSSCount['parallax'] = CSSCount['parallax']+1
+		makeCSS({'parallax':{'class':'#' + parallax_dict['div']['id']}})
 		return parallax_dict
 
 # accordions are drop-down sections of text which are useful when you want to enter a large amount of text
 # Currently no styles are implemented for accordion
 def accordionMaker(s,i):
 	# accordion_dict is the template dictionary for the accordion
-	accordion_dict  = {'div':{},'content':{}}
+	accordion_dict  = {'div':{'id':'accordion'+CSSCount['accordion']},'content':{}}
+	CSSCount['accordion'] = CSSCount['accordion']+1
 	title_dict = {'button':{'class':'accordion'} , 'content':''}
 	text_dict = {'div':{'class':'panel'},'content' : {1 : {'p':{} , 'content' : ''}}}
 	CHARACTER_CLASS = ''' \nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!@#$%^&(){}[]\|'''
@@ -523,8 +521,8 @@ def skillbarMaker(s,i):
 	return skillbar_dict
 
 def checkboxMaker(style,content):
-	checkboxDict = {'label':{'class':'checkbox'+str(CSSCount['checkbox'])},'content':{1:'',2:{'input':{'type':'checkbox'},'content':''},3:{'span':{'class':'checkmark'},'content':''}}}
-	sendDict={'checkbox':{'class':'.checkbox'+str(CSSCount['checkbox'])}}
+	checkboxDict = {'label':{'id':'checkbox'+str(CSSCount['checkbox'])},'content':{1:'',2:{'input':{'type':'checkbox'},'content':''},3:{'span':{'class':'checkmark'},'content':''}}}
+	sendDict={'checkbox':{'class':'#checkbox'+str(CSSCount['checkbox'])}}
 	checkboxDict['content'][1]=content
 	if('checked' in style):
 		checkboxDict['content'][2]['input']['checked']='checked'
@@ -535,14 +533,15 @@ def checkboxMaker(style,content):
 	return checkboxDict
 
 def tooltipMaker(style,content):
-	tooltipDict={'div':{'class':'tooltip'+str(CSSCount['tooltip'])},'content':{1:'',2:{'span':{'class':'tooltiptext'},'content':''}}}
-	sendDict={'tooltip':{'class':'.tooltip'+str(CSSCount['tooltip'])}}
+	tooltipDict={'div':{'id':'tooltip'+str(CSSCount['tooltip'])},'content':{1:'',2:{'span':{'class':'tooltiptext'},'content':''}}}
+	sendDict={'tooltip':{'class':'#tooltip'+str(CSSCount['tooltip'])}}
 	styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
 	sendDict['tooltip'].update(styleDict)
 	makeCSS(sendDict)
 	content=content.split(':')
 	tooltipDict['content'][1]=content[0]
 	tooltipDict['content'][2]['content']=content[1]
+	CSSCount['tooltip'] = CSSCount['tooltip']+1
 	return tooltipDict
 
 def chatboxMaker(s,i):
@@ -606,13 +605,13 @@ def chatboxMaker(s,i):
 	return chatbox_dict
 
 def alertMaker(s,i):
-	alert_dict = {'div':{'class':''} , 'content':{
+	alert_dict = {'div':{'id':''} , 'content':{
 		1: {'span':{'class':'closebtn', 'onclick':'''this.parentElement.style.display="none" '''} , 'content':'&times;'},
 		2:''}}
 	alert_dict['content'][2] = i
-	alert_dict['div']['class'] = 'alert' + str(CSSCount['alert'])
+	alert_dict['div']['id'] = 'alert' + str(CSSCount['alert'])
 	s = [x.strip() for x in s.split(',')]
-	css_for_alert = {'alert':{'class':'.alert' + str(CSSCount['alert'])}}
+	css_for_alert = {'alert':{'class':'#alert' + str(CSSCount['alert'])}}
 	if ('danger' in s):
 		css_for_alert['alert']['color'] = 'red'
 		s.remove('danger')
@@ -653,8 +652,6 @@ def checkImageExtension(img):
 	img = img.strip()
 	ext = img[-img[::-1].find('.') - 1:]
 	return ((ext == '.png') or (ext == '.jpg') or (ext == '.jpeg') or (ext == '.bmp') or (ext == '.gif'))
-
-
 
 def wallpaperMaker(s,i):
 	# For type1 wallpaper allowed input for i are
@@ -792,12 +789,36 @@ styleFunctions = {
 	'passwordfield':passwordfieldMaker,
 	'select':selectMaker,
 	'submit':submitMaker, 
-	'block':blockMaker
+	'block':blockMaker,
 }
 
 allowedStyles={
-	'height':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm)$)',
-	'width':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm)$)'
+	'height':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm|mm|pt)$)',
+	'width':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm|mm|pt)$)',
+	'font-size':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'align':r'(center$)|(left$)|(right$)',
+	'text-align':r'(center$)|(left$)|(right$)',
+	'float':r'(center$)|(left$)|(right$)',
+	'fade':r'(bottom$)|(left$)|(right$)|(top$)',
+	'opacity':r'([01](\.[\d]*)?$)',
+	'speed':r'([\d]*(\.[\d]*)?$)',
+	'padding':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'padding-top':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'padding-bottom':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'padding-left':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'padding-right':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'margin':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'margin-left':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'margin-right':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'border':r'([\d]+[\s]*(px|cm|mm|pt)$)',
+	'font-color':r'(\#[a-fA-F0-9]{6}$)|(#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'color':r'(\#[a-fA-F0-9]{6}$)|(\#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'background-color':r'(#[a-fA-F0-9]{6}$)|(#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'dropdown-color':r'(#[a-fA-F0-9]{6}$)|(#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',	
+	'hover-font-color':r'(\#[a-fA-F0-9]{6}$)|(\#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'hover-color':r'(\#[a-fA-F0-9]{6}$)|(\#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'dropdown-font-color':r'(\#[a-fA-F0-9]{6}$)|(\#[a-fA-F0-9]{3}$)|([a-zA-Z]+$)|(rgb\([\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\,[\d]{1,3}[\s]*\)$)',
+	'symbol':r'(i)|(I)|(A)|(a)|(1)|(square)|(circle)|(disc)|<img[\s\S]*>'
 }
 
 def styleMaker(s):
@@ -809,7 +830,7 @@ def styleMaker(s):
 			if (x[:x.find(':')].strip() in TwoNonCSS.keys()):
 				if (x[:x.find(':')].strip() in allowedStyles.keys()):
 					if not (re.match(allowedStyles[x[:x.find(':')].strip()],x[x.find(':')+1:].strip())):
-						eprint("In "+pagefile+", syntax error at line number "+str(LineNumber)+": Incorrect attribute for "+x[:x.find(':')].strip()+" in "+styleName)
+						eprint("syntax error at line number "+str(LineNumber)+": Incorrect attribute for "+x[:x.find(':')].strip()+" in "+styleName)
 	if(not styleName):
 		return taggedMaker(styleStyle,styleContent)
 	else:
@@ -1265,8 +1286,11 @@ main_dict = {'html':{} , 'content':{
 			3:''
 }}}}
 
+global_navbar = {}
+global_footer = {}
+page_dict = {}
 def makeJS(d):
-	global main_dict
+	global page_dict
 	element = list(d.keys())[0]
 	if ('type' in list(d[element].keys())):
 		filename = 'layout/' + element + '_' + d[element]['type'] + '.js'
@@ -1274,55 +1298,64 @@ def makeJS(d):
 		filename = 'layout/' + element + '.js'
 	f = open(filename)
 	f = f.read()
-	count = len(list(main_dict['content'][2]['content'].keys()))
-	main_dict['content'][2]['content'][count+1] = {'script':{} , 'content':f}
+	count = len(list(page_dict['content'][2]['content'].keys()))
+	page_dict['content'][2]['content'][count+1] = {'script':{} , 'content':f}
 
 def main():
 	global main_dict
-	con = open(configfile)
+	global page_dict
+	page_list = [os.fsdecode(pages) for pages in os.listdir('pages/') if os.fsdecode(pages).endswith('.sm')]
+	page_list.sort()
+	eprint(page_list)
+	con = open(os.fsdecode('config.sm'))
 	c = con.read()
 	c = parseAbstractElement(c)
 	if('navbar' in c):
 		index_navbar = c.index('navbar')
 	else:
-		eprint("No rule for navigation bar in config.siteme")
+		eprint("No rule for navigation bar in config.sm")
 		sys.exit()
 	#print (index_navbar)
 	if('footer' in c):
 		index_footer = c.index('footer')
 	else:
-		eprint("No rule for footer in config.siteme")
+		eprint("No rule for footer in config.sm")
 		sys.exit()
 	c = cleanUp(c)
-	main_dict['content'][2]['content'][1] =  makeNavbar(c[index_navbar+1],c[index_navbar+2])
-	main_dict['content'][2]['content'][3] = makeFooter(c[index_footer+1],c[index_footer+2])
-	page=open(pagefile)
-	b=page.read()
-	while(re.search(r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}',b)):
-		b=parser.parse(b.strip())
-	b=b.split("<br>")
-	b="<br>\n".join(b)
-	b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}').replace('@@@@','<br>')
-	#print (b)
-	body_content = ""
-	style_content = []
-	for i in b.split('\n'):
-		if(i.find('###') != -1):
-			if(i.find('title') != -1):
-				main_dict['content'][1]['content'][1]['content'] = i[i.find(':')+1:]
-			elif (i.find('nonavbar') != -1):
-				del main_dict['content'][2]['content'][1]
-			elif (i.find('nofooter') != -1):
-				del main_dict['content'][2]['content'][3]
+	global_navbar = makeNavbar(c[index_navbar+1],c[index_navbar+2])
+	global_footer = makeFooter(c[index_footer+1],c[index_footer+2])
+	for page in page_list:
+		page_dict = copy.deepcopy(main_dict)
+		page_file = open(os.fsdecode('pages/') + page)
+		b=page_file.read()
+		while(re.search(r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}',b)):
+			b=parser.parse(b.strip())
+			b=b.split("<br>")
+			b="<br>\n".join(b)
+			b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}').replace('@@@@','<br>')
+		page_dict['content'][2]['content'][1] = global_navbar
+		page_dict['content'][2]['content'][3] = global_footer
+		body_content = ""
+		style_content = []
+		for i in b.split('\n'):
+			if(i.find('###') != -1):
+				if(i.find('title') != -1):
+					page_dict['content'][1]['content'][1]['content'] = i[i.find(':')+1:]
+				elif (i.find('nonavbar') != -1):
+					del page_dict['content'][2]['content'][1]
+				elif (i.find('nofooter') != -1):
+					del page_dict['content'][2]['content'][3]
+				else:
+					style_content.append(i[i.find('###') + 3:])
 			else:
-				style_content.append(i[i.find('###') + 3:])
-		else:
-			body_content = body_content + i + '\n'
-	style_content = 'body {\n' + ';\n'.join(style_content) + ';\n}'
-	main_dict['content'][1]['content'][6]['content'] = style_content
-	main_dict['content'][2]['content'][2] = body_content.replace('||','<br>\n')
-	#print (main_dict)
-	print(makeHTML(main_dict))
+				body_content = body_content + i + '\n'
+		style_content = 'body {\n' + ';\n'.join(style_content) + ';\n}'
+		page_dict['content'][1]['content'][6]['content'] = style_content
+		page_dict['content'][2]['content'][2] = body_content.replace('||','<br>\n')
+		output_file_name = page.split('.')[0]
+		output_file = open('site/' + output_file_name + '.html', 'r+')
+		output_file.write(makeHTML(page_dict))
+		output_file.close()
+		page_dict = {}
 
 main()
-#slideshowMaker('slideshow(type:a){ img1.jpg , Cat: img2.jpg , Scenery:img3.jpg}')
