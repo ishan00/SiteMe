@@ -47,9 +47,20 @@ def makeSkillbarCSS(d):
 	CSSString = CSSFile.read()
 	CLASSNAME = d['class']
 	CSSString = CSSString.replace('$CLASS$', CLASSNAME)
+	if ('width' in list(d.keys())):
+		CSSString = CSSString.replace('$WIDTH$', d['width'])
+		del d['width']
+	else:
+		CSSString = CSSString.replace('$WIDTH$','40px')
 	del d['class']
-	for u,v in d.items():
-		CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + next(gen_color) + ';}\n'
+	if  ('color' in list(d.keys())):
+		color = d['color']
+		del d['color']
+		for u,v in d.items():
+			CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + color + ';}\n'
+	else:
+		for u,v in d.items():
+			CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + next(gen_color) + ';}\n'
 	styleFile=open('./site/css/style.css','a')
 	styleFile.write(CSSString)
 	styleFile.close()
@@ -62,6 +73,7 @@ checkboxDict={'$CLASS$':'.checkbox'}
 flipDict={'$CLASS$':'.flip'}
 shakeDict={'$CLASS$':'.shake'}
 iconbarDict={'$CLASS$':'.iconbar','$HOVER-COLOR$':'#000','$COLOR$':'#555','$WIDTH$':'100%','$ICON-WIDTH$':'20%','$FLOAT$':'left','$PADDDING$':'12px','$SIZE$':'36px'}
+enlargeDict={'$CLASS$':'.enlarge','$SCALE$':'1.1','$WIDTH$':'700px'}
 alertDict = {'$CLASS$':'', '$COLOR$':'red' , '$TEXT-COLOR':'white'}
 timelineDict={'$CLASS$':'.chatbox'}
 tooltipDict={'$COLOR':'#555','$FONT-COLOR$':'#fff','$CLASS$':'.tooltip'}
@@ -96,6 +108,7 @@ genCSSDict={
 	'checkbox':['./layout/checkbox.css',checkboxDict],
 	'flip':['./layout/flip.css',flipDict],
 	'shake':['./layout/shake.css',shakeDict],
+	'enlarge':['./layout/enlarge.css',enlargeDict],
 	'alert':['./layout/alert.css',alertDict],
 	'timeline':['./layout/timeline.css',timelineDict],
 	'tooltip':['./layout/tooltip.css',tooltipDict],
