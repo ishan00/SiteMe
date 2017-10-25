@@ -14,6 +14,7 @@ CSSCount = {
 	'list':1,
 	'flip':1,
 	'shake':1,
+	'enlarge':1,
 	'table':1,
 	'slideshow':1,
 	'parallax':1,

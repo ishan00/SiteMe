@@ -125,8 +125,8 @@ def taggedMaker(style,content):
 				return "<span style=\""+htagged+"\">"+content+"</span>\n"
 
 TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor','margin':'margin','padding':'padding',
-'width':'width','height':'height','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
-OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'download':{'download':'Untitled_File'},
+'width':'width','height':'height','scale':'scale','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
+OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-circle'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
 'hover-shadow':{'hover-shadow':'0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)'},'disabled':{'opacity':'0.6','cursor':'not-allowed'}}
@@ -271,6 +271,10 @@ def imageMaker(style,content):
 		if('shake' in style):
 			currDict={'div':{'class':'shake'+str(CSSCount['shake'])},'content':{1:copy.deepcopy(currDict)}}
 			CSSCount['shake']=CSSCount['shake']+1
+		if('enlarge' in style):
+			currDict={'div':{'id':'enlarge'+str(CSSCount['enlarge'])},'content':{1:copy.deepcopy(currDict)}}
+			makeCSS({'enlarge':{'class':'#enlarge'+str(CSSCount['enlarge']),'width':styleDict['width'],'scale':styleDict['scale']}})
+			CSSCount['enlarge']=CSSCount['enlarge']+1
 		if('center' in style):
 			currDict={'div':{'align':'center'},'content':{1:currDict}}
 		return currDict
@@ -504,6 +508,10 @@ def skillbarMaker(s,i):
 	bar = {'div':{'class':'container'}, 'content':{1 :{'div':{'class':'skills'} , 'content':''}}}
 	css_for_skillbar = {'skillbar':{'class':'' , }}
 	css_for_skillbar['skillbar']['class'] = '#' + skillbar_dict['div']['id']
+	s = dictionaryMaker(s)
+	#eprint(s)
+	for u,v in s.items():
+		css_for_skillbar['skillbar'][u] = v
 	i = i.split(',')
 	count = 1
 	for pair in i:
@@ -837,7 +845,7 @@ def styleMaker(s):
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 def gridMaker(p):
-	r=re.compile(r'[\n ]*\{[^\{\}]*?\}')
+	r=re.compile(r'[\n\t ]*\{[^\{\}]*?\}')
 	if('{' in p):
 		i=p[p.index('{'):].strip()
 
@@ -1353,7 +1361,7 @@ def main():
 		page_dict['content'][1]['content'][6]['content'] = style_content
 		page_dict['content'][2]['content'][2] = body_content.replace('||','<br>\n')
 		output_file_name = page.split('.')[0]
-		output_file = open('site/' + output_file_name + '.html', 'r+')
+		output_file = open('site/' + output_file_name + '.html', 'w')
 		output_file.write(makeHTML(page_dict))
 		output_file.close()
 		page_dict = {}

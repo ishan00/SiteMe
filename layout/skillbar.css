@@ -7,7 +7,7 @@ $CLASS$ .skills {
   position: relative;
   text-align: right;
   padding-right: 20px;
-  line-height: 40px;
+  line-height: $WIDTH$;
   left:-13.3px;
   color: white;
 }
