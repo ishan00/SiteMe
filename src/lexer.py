@@ -1,7 +1,4 @@
 import ply.lex as lex
-from sys import argv
-
-#script , filename = argv
 
 tokens=['KEYWORD','PRE', 'CODE','STYLE','REST','NEWLINE','HRULE','GRID']
 keywords=['title','font-size','background-color']
@@ -14,18 +11,10 @@ t_KEYWORD=r'([#]*('+'|'.join(keywords)+'):[0-9a-zA-Z #][a-zA-Z0-9() ,#]*)|(\#[a-
 t_STYLE=r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}'
 t_PRE=r'\((latex|pre)\)\{\{[\s\S]*?\}\}'
 t_CODE=r'\(code\)\{\{[\s\S]*?\}\}'
-#t_GRID=r'grid\([\s\S]*?\)(\{[^\{\}]*[\n ]*([^\{\}]*[\n ]*\{[^\{\}]*[\n ]*\}[^\{\}]*[\n ]*)*[^\{\}]*[\n ]*\})+'
 t_GRID=r'grid\([\s\S]*?\)(\{[^\{\}]*?\}[\n ]*)*'
 t_HRULE=r'-{5,}'
 t_REST=r'(?:(?!(([#]*('+'|'.join(keywords)+'):[0-9a-zA-Z #][a-zA-Z0-9() ,#]*)|(\#[a-zA-Z]+)|('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}|grid\([\s\S]*?\)(\{[^\{\}]*?\}[\n ]*)*|\((latex|pre)\)\{\{[\s\S]*?\}\}|\(code\)\{\{[\s\S]*?\}\}|-{5,})).)+'
 t_NEWLINE=r'\n\r|\r\n|\r|\n'
-
-# precedence=(
-# 	('left', 'REST'),
-# 	('left', 'KEYWORD', 'NEWLINE'),
-# 	('left', 'STYLE'),
-# 	('left', 'PRE'),
-# 	)
 
 lexer=lex.lex()
 

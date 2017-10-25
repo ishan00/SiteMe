@@ -12,7 +12,7 @@ from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
 from makeCSS import makeCSS
-from globalThings import aCSSCount
+from globalThings import CSSCount
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
 from pyparsing import *
@@ -20,7 +20,6 @@ def eprint(*args, **kwargs):
 	print (*args, file=sys.stderr, **kwargs)
 
 LineNumber=1
-CSSCount=aCSSCount
 eprint(str(CSSCount['hover-button']))
 
 #---------------------------------------------------------------------------------------
@@ -216,13 +215,6 @@ def buttonMaker(style,content):
 	makeCSS(sendDict)
 	return buttonDict
 
-# def hoverdropdownMaker(style,content):
-# 	hoverdropdownDict={'div':{'class':'hoverdropdown'+str(CSSCount['hoverdropdown'])},
-# 	'content':{1:{'button':{'class'='dropbtn'},'content':{}},2:{'div':{'class':'dropdown-content'},
-# 	'content':{1:{'a':{'href':},'content':{}}}}}}
-# 	sendDict={'class':'.hoverdropdown'+str(CSSCount['hoverdropdown'])}
-
-
 def cardMaker(style,content):
 	cardDict={'div':{'class':'card'+str(CSSCount['card'])},'content':{'div':{'class':'polaroid'},'content':{1:{'img':{},'content':{}},2:{'div':{'class':'container'},'content':{1:{'p':{},'content':{}}}}}}}
 	sendDict={'class':'.card'+str(CSSCount['card'])}
@@ -285,9 +277,6 @@ def imageMaker(style,content):
 			CSSCount['shake']=CSSCount['shake']+1
 		if('center' in style):
 			currDict={'div':{'align':'center'},'content':{1:currDict}}
-		# for cssElem in sorted(extraDict,key=extraDict.__getitem__,reverse=True):
-		# 	currDict=CodeDict[cssElem[:cssElem.find(':')].split('-')[0]](currDict,cssElem)
-		#print(currDict)
 		return currDict
 
 def linkMaker(style,content):
@@ -330,7 +319,6 @@ def listMaker(style,content):
 				listDict={}
 				for i in range(0,len(listData)):
 					listDict.update({i+1:{'li':{},'content':listData[i]}})
-			#print (listDict)
 			return {listType+'l':styleDict,'content':listDict}
 
 #tableTypes={"avacado":"table table-bordered","durian":"table table-condensed table-hover","pitaya":"table table-striped","cherimoya":"table table-striped table-hover","kiwano":"table table-bordered table-striped table-hover table-condensed"}
@@ -389,7 +377,6 @@ def slideshowMaker(s,i):
 	content = i.split(',')
 	type = s.split(':')[1].strip()
 	slideshow_dict = copy.deepcopy(slideshow_carousel)
-	#print(slideshow_carousel)
 	elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
 	extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
 	count=1
@@ -410,7 +397,6 @@ def slideshowMaker(s,i):
 		slideshow_dict['content'][2]['content'][count] = row
 		slideshow_dict['content'][1]['content'][count] = extra_this_row
 		count=count+1
-	#print(slideshow_dict)
 	return slideshow_dict
 
 def parallaxMaker(s,i):
@@ -463,7 +449,6 @@ def accordionMaker(s,i):
 
 	css_for_accordion = {'accordion':{}}
 	makeCSS(css_for_accordion)
-	#eprint (accordion_dict)
 	makeJS({'accordion':{}})
 	return accordion_dict
 
@@ -474,7 +459,6 @@ def timelineMaker(s,i):
 	timeline_dict['div']['id'] = 'timeline' + str(CSSCount['timeline'])
 	CSSCount['timeline'] = CSSCount['timeline'] + 1
 	css_for_timeline['timeline']['class'] = '#' + timeline_dict['div']['id']
-	#eprint(css_for_timeline)
 	makeCSS(css_for_timeline)
 	# Just append ' left' or ' right' to elem class
 	elem = {'div':{'class':'container'} , 'content':{
@@ -486,7 +470,6 @@ def timelineMaker(s,i):
 	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
 	CONTENT = ZeroOrMore(ELEM)
 	lol = CONTENT.parseString(i).asList()
-	#eprint(lol)
 	Left = True;
 	count = 1;
 	for [u,v] in lol:
@@ -507,7 +490,6 @@ def blockMaker(s,i):
 	block_dict['div']['id'] = 'block'+ str(CSSCount['block'])
 	CSSCount['block'] = CSSCount['block'] + 1
 	block_dict['content'] = i
-	#eprint(s)
 	css_for_block = {'block':{'class':''}}
 	css_for_block['block']['class'] = '#'+ block_dict['div']['id']
 	if s:
@@ -515,8 +497,6 @@ def blockMaker(s,i):
 		for u,v in s.items():
 			css_for_block['block'][u] = v;
 	makeCSS(css_for_block)
-	#eprint(block_dict)
-	#eprint(css_for_block)
 	return block_dict
 
 def skillbarMaker(s,i):
@@ -540,8 +520,6 @@ def skillbarMaker(s,i):
 		skillbar_dict['content'][count] = bar_copy
 		count = count + 1
 	makeCSS(css_for_skillbar)
-	#eprint(skillbar_dict)
-	#eprint(css_for_skillbar)
 	return skillbar_dict
 
 def checkboxMaker(style,content):
@@ -574,7 +552,6 @@ def chatboxMaker(s,i):
 	chatbox_dict['div']['id'] = 'chatbox' + str(CSSCount['chatbox'])
 	CSSCount['chatbox'] = CSSCount['chatbox'] + 1
 	css_for_chatbox['chatbox']['class'] = '#' + chatbox_dict['div']['id'] 
-	#eprint(css_for_chatbox)
 	makeCSS(css_for_chatbox)
 	# Just append ' darker' for other color, 'time-right' and 'time-left' class time display
 	elem = {'div':{'class':'container'} , 'content':{
@@ -585,16 +562,13 @@ def chatboxMaker(s,i):
 	CHARACTER_CLASS = ''' \t\nABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-,.:;'"!?@#$%^&(){}[]\|'''
 	ELEM = Group(Suppress('*') + Word(CHARACTER_CLASS) + Suppress('**') + Word(CHARACTER_CLASS))
 	CONTENT = ZeroOrMore(ELEM)
-	#eprint(ELEM.parseString(i).asList())
 	lol = CONTENT.parseString(i.strip('\n')).asList()
-	#eprint(lol)
 	last_state = ['left',0]
 	count = 1;
 	[img1,img2] = ['img/' + i.strip() for i in s.split(',')]
 	for [u,v] in lol:
 		row = copy.deepcopy(elem)
 		u = u.split(',')
-		#eprint(u)
 		if ('1' in u):
 			last_state[1] = 1
 			u.remove('1')
@@ -700,14 +674,12 @@ def wallpaperMaker(s,i):
 	CSSCount['wallpaper'] = CSSCount['wallpaper']+1
 	for key,value in style_dict['binary'].items():
 		css_for_wallpaper['wallpaper'][key] = value
-	#eprint(css_for_wallpaper)
 	makeCSS(css_for_wallpaper)
 	if i.find(',') == -1:
 		eprint("Content of wallpaper must have atleast one argument")
 	else:
 		content = i.split(',',2)
 		content = [c.strip() for c in content]
-		#eprint(content)
 	if checkImageExtension(content[0]):
 		arg = len(content)
 		IMG['img']['src'] = 'img/' + content[0]
@@ -829,10 +801,6 @@ allowedStyles={
 }
 
 def styleMaker(s):
-	# styleName=re.search(r'(.*?)\(',s).group(1)
-	# styleStyle=re.search(r'\((.*?)\)',s).group(1)
-	# styleContent=re.search(r'\{(.*?)\}',s).group(1)
-	# s=s.replace('\n','')
 	styleName=s.split('(')[0]
 	styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
 	styleContent=s.split('(')[1].split(')')[1].strip('{}')
@@ -842,14 +810,12 @@ def styleMaker(s):
 				if (x[:x.find(':')].strip() in allowedStyles.keys()):
 					if not (re.match(allowedStyles[x[:x.find(':')].strip()],x[x.find(':')+1:].strip())):
 						eprint("In "+pagefile+", syntax error at line number "+str(LineNumber)+": Incorrect attribute for "+x[:x.find(':')].strip()+" in "+styleName)
-	# styleStyle=styleStyle.replace(',',';')
 	if(not styleName):
 		return taggedMaker(styleStyle,styleContent)
 	else:
 		return makeHTML(styleFunctions[styleName](styleStyle,styleContent))
 
 def gridMaker(p):
-	#eprint(p)
 	r=re.compile(r'[\n ]*\{[^\{\}]*?\}')
 	if('{' in p):
 		i=p[p.index('{'):].strip()
@@ -875,7 +841,6 @@ def gridMaker(p):
 			else:
 				eprint("Sum of column span must be 12 in Grid")
 		else:
-			#eprint(p)
 			#eprint("Grid arguments not proper")
 			return p
 	else:
@@ -1117,7 +1082,6 @@ def makeFooter(footer_style,footer_content):
 			footer_dict['content'][2]['content'][2*i+1] = row
 			if (i != len(footer_content) -1 ):
 				footer_dict['content'][2]['content'][2*i+2] = ' · '
-		#print (footer_dict)
 		return footer_dict
 	elif footer_type == 'social':
 		footer_dict = copy.deepcopy(footer_social)
@@ -1304,14 +1268,12 @@ main_dict = {'html':{} , 'content':{
 def makeJS(d):
 	global main_dict
 	element = list(d.keys())[0]
-	#eprint(element)
 	if ('type' in list(d[element].keys())):
 		filename = 'layout/' + element + '_' + d[element]['type'] + '.js'
 	else:
 		filename = 'layout/' + element + '.js'
 	f = open(filename)
 	f = f.read()
-	#eprint(f)
 	count = len(list(main_dict['content'][2]['content'].keys()))
 	main_dict['content'][2]['content'][count+1] = {'script':{} , 'content':f}
 

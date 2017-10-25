@@ -1,4 +1,5 @@
-aCSSCount = {
+global CSSCount
+CSSCount = {
 	'navbar':1,
 	'footer':1,
 	'button':1,
