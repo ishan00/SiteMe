@@ -3,14 +3,14 @@
 title:Flexible Jekyll
 margin-right:10px
 margin-top:10px
-grid(2,10){
+grid(2:f,10:s){
 	(c){image(circle,height:100px, width:100px){david-freeman.jpg}}
 	(c){
 		(h4){DAVID FREEMAN}
 		(){I am a web developer focusing on front-end development.||Always hungry to keep learning.}
 	}
 	(c){Contact Me}
-	iconbar(twitter:#,facebook:,instagram:,rss:,mail:){}
+	iconbar(color:white,icon-color:yellow,hover-color:white,padding: 7px){twitter:#,facebook:,instagram:,rss:,mail:}
 }{
 	block(padding-top: 0px,padding-left: 0px){
 		grid(4,8){image(height:200px, width:320px){i-rest.jpg}}

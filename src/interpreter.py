@@ -952,8 +952,16 @@ def gridMaker(p):
 		if (len(sizeList)==len(gridList)):
 			for i in range(0,len(sizeList)):
 				span=sizeList[i]
-				sum=sum+int(span)
-				rs=rs+'<div class="col-sm-'+span+'" >'
+				if(':' in span):
+					span=span.split(':')
+					sum=sum+int(span[0])
+					if(span[1]=='f'):
+						rs=rs+'<div class="col-sm-'+span[0]+'" style="overflow:hidden;" >'
+					elif(span[1]=='s'):
+						rs=rs+'<div class="col-sm-'+span[0]+'" style="overflow:auto;height:100%;" >'
+				else:
+					rs=rs+'<div class="col-sm-'+span+'" >'
+					sum=sum+int(span)
 				content=gridList[i]
 				rs=rs+content+'</div>'
 			rs=rs+'</div>'
