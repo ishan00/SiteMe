@@ -1,6 +1,6 @@
 $CLASS$ {
     background-color: $COLOR$;
-    border: $BORDER-COLOR$;
+    border: $BORDER$;
     color: $FONT-COLOR$;
     padding: $PADDING-TOP$ $PADDING-LEFT$;
     text-align: center;
@@ -19,4 +19,5 @@ $CLASS$:hover {
     background-color: $HOVER-COLOR$;
     color: $HOVER-FONT-COLOR$;
     box-shadow: $HOVER-SHADOW$;
+    border: $HOVER-BORDER$;
 }
