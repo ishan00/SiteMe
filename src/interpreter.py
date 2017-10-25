@@ -832,6 +832,38 @@ def galleryMaker(style,content):
 		count=count+length
 	return rs
 
+def iconbarMaker(style,content):
+	iconbarDict={'div':{'id':'iconbar'+str(CSSCount['iconbar'])},'content':{1:{'a':{'href':''},'content':{1:{'i':{'class':'fa fa-'},'content':''}}}}}
+	sendDict={'iconbar':{'class':'#iconbar'+str(CSSCount['iconbar'])}}
+	tempDict={y[:y.find(':')].strip():y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1)]}
+	for x in [OneNonCSS[x.strip()] for x in style.split(',') if x.find(':')==-1 and x.strip() in OneNonCSS.keys()]:
+		for (key,value) in x.items():
+			if key in tempDict.keys():
+				tempDict[key]=tempDict[key]+' '+value
+			else:
+				tempDict[key]=value
+	sendDict['iconbar'].update(tempDict)
+	makeCSS(sendDict)
+	CSSCount['iconbar']=CSSCount['iconbar']+1
+	change=copy.deepcopy(iconbarDict['content'][1])
+	count=1
+	for x in content.split(','):
+		name=x.split(':')[0]
+		link=x.split(':',1)[1]
+		part=copy.deepcopy(change)
+		part['a']['href']=link
+		if(name in social_icons.keys() ):
+			part['content'][1]['i']['class']=part['content'][1]['i']['class']+social_icons[name]
+		else:
+			part['content'][1]['i']['class']=part['content'][1]['i']['class']+name
+		iconbarDict['content'][count]=part
+		count=count+1
+
+	#eprint(iconbarDict)
+	return iconbarDict
+
+
+
 styleFunctions = {
 	'image':imageMaker,
 	'link':linkMaker,
@@ -856,7 +888,8 @@ styleFunctions = {
 	'select':selectMaker,
 	'submit':submitMaker, 
 	'block':blockMaker,
-	'gallery':galleryMaker
+	'gallery':galleryMaker,
+	'iconbar':iconbarMaker
 }
 
 allowedStyles={

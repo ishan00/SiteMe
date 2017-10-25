@@ -3,7 +3,7 @@ import ply.lex as lex
 tokens=['KEYWORD','PRE', 'CODE','STYLE','REST','NEWLINE','HRULE','GRID']
 keywords=['title','font-size','background-color','font-family', 'margin-left', 'margin-top', 'margin-right', 'margin-bottom']
 styles=['image','link','list','piechart','table','slideshow','parallax','fade','card','button', 'accordion', 'timeline',
-'chatbox','checkbox','alert','wallpaper', 'skillbar','tooltip','textfield','passwordfield','select','submit','form','block','gallery']
+'chatbox','checkbox','alert','wallpaper', 'skillbar','tooltip','textfield','passwordfield','select','submit','form','block','gallery','iconbar']
 
 def t_error(t):
 	return

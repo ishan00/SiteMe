@@ -32,5 +32,6 @@ CSSCount = {
 	'select':1,
 	'submit':1,
 	'block':1,
-	'aparallax':1
+	'aparallax':1,
+	'iconbar':1
 }
