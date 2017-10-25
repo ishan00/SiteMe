@@ -9,8 +9,8 @@
 image(){1.jpg}
 
 image(align:right){1.jpg}
-
-
+grid(6,6){block(margin-right:0px){image(width:100%){1.jpg}||d}} {block(margin-right:-10px){image(width:100%){1.jpg}|| ||  }}
+gallery(4){caption:1.jpg,1.jpg,as:1.jpg,caption:1.jpg,:1.jpg,caption:1.jpg}
 fade(top,color:#fff,font-color:#000){Text:1.jpg}
 
 fade(left,color:#000,font-color:#000){Text:1.jpg}
