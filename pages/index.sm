@@ -14,7 +14,7 @@ gallery(4){caption:1.jpg,1.jpg,as:1.jpg,caption:1.jpg,:1.jpg,caption:1.jpg}
 fade(top,color:#fff,font-color:#000){Text:1.jpg}
 link(text:fb){https://facebook.com}
 fade(left,color:#000,font-color:#000){Text:1.jpg}
-
+iconbar(width:50%,icon-width:50%){facebook:https://facebook.com,home:about.html}
 list(u){
 * Elem 1
 * Elem 2
