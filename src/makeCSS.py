@@ -82,7 +82,7 @@ passwordfieldDict={'$CLASS$':'.passwordfield','$FONT-SIZE$':'16px','$WIDTH$':'10
 selectDict={'$CLASS$':'.select','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
 submitDict={'$CLASS$':'.submit','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'12px','$PADDING-LEFT$':'20px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'4px','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'#45a049','$HOVER-FONT-COLOR$':'none'}
 COLORS = ['#4CAF50' , '#2196F3','#e10d0d' , '#fed044' , '#00c992' , '#7e1dfb']
-blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px', '$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
+blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px','$PADDING-LEFT$':'12px' , '$PADDING-BOTTOM':'10px','$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
 gen_color = cycle(COLORS)
 
 def makeGenCSS(d,f,x):

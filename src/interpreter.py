@@ -407,7 +407,6 @@ output:- dictionary of slideshow
 '''
 def slideshowMaker(s,i):
 	content = i.split(',')
-	type = s.split(':')[1].strip()
 	slideshow_dict = copy.deepcopy(slideshow_carousel)
 	elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
 	extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
@@ -1023,7 +1022,7 @@ def makeNavbar(navbar_style,  navbar_content):
 		li_dropdown_element = copy.deepcopy(navbar_none['content'][2]['content'][2]['content'][2]['content'][1])
 		for i in range(1,len(navbar_content)):
 			row = copy.deepcopy(drowdown_element)
-			if (isinstance(navbar_content[i][1]) , list):
+			if (isinstance(navbar_content[i][1] , list)):
 				if (isinstance(navbar_content[i][0],list)):
 					row['content'][1]['content'][1] = navbar_content[i][0][1]
 					### I don't know how to right align in case of bootstrap.
@@ -1043,8 +1042,8 @@ def makeNavbar(navbar_style,  navbar_content):
 						row['li']['float'] = 'left'
 			else:
 					row['content'][1]['content'] =navbar_content[i][0]
-			navbar_dict['content'][1][i+1] = li_element
-		#print (navbar_dict)
+			navbar_dict['content'][2]['content'][i] = li_element
+		#eprint (navbar_dict)
 		return navbar_dict
 	elif navbar_type == 'open':
 		css_for_navbar['navbar']['id'] = 'navbar'

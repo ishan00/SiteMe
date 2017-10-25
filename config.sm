@@ -1,4 +1,4 @@
-navbar ( type:orange ){
+navbar ( type: none ){
 	Home : #
 	(r){About} : about.html
 	Contact : https://google.co.in
