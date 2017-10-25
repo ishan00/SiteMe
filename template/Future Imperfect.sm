@@ -1,0 +1,96 @@
+#nofooter
+title:Future Imperfect
+margin-left:10px
+background-color:#efefef
+grid(4,8){
+	image(rounded,height:50px, width:50px){firefox.jpg}
+	(h1){FUTURE}
+	(h1){IMPERFECT}
+	(h5){ANOTHER FINE RESPONSIVE SITE}
+	(h5){TEMPLATE BY HTML5 UP}
+	-----
+	block(){image(enlarge,width:360px,height:200px,scale:1.1,align:center){T11.jpg}
+	link(text:VITAE SED CONDIMENTUM){#}
+	OCTOBER 20,2015
+	}
+	-----
+	block(){image(enlarge,width:360px,height:200px,scale:1.1,center){T13.jpg}
+	link(text:ROTRUM NEQUE ACCUMSAN){#}
+	OCTOBER 19,2015}
+	-----
+	block(){image(enlarge,width:360px,height:200px,scale:1.1,center){T14.jpg}
+	link(text:ODIO CONGUE MATTIS){#}
+	OCTOBER 18,2015}
+	-----
+	block(){image(enlarge,width:360px,height:200px,scale:1.1,center){T15.jpg}
+	link(text:ENIM NISL VEROEROS){#}
+	OCTOBER 17,2015}
+	-----
+	grid(4,6,2){
+	image(height:80px,width:80px){T16.jpg}
+	}{link(text:LOREM IPSUM FERMENTUM UT NISL VITAE){#}|| OCTOBER 20,2015}{}
+	-------
+	grid(4,6,2){
+	image(height:80px,width:80px){T17.jpg}
+	}{link(text:LOREM IPSUM FERMENTUM UT NISL VITAE){#}|| OCTOBER 15,2015}{}
+	-------
+	grid(4,6,2){
+	image(height:80px,width:80px){T11.jpg}
+	}{link(text:LOREM IPSUM FERMENTUM UT NISL VITAE){#}|| OCTOBER 10,2015}{}
+	-------
+	grid(4,6,2){
+	image(height:80px,width:80px){T13.jpg}
+	}{link(text:LOREM IPSUM FERMENTUM UT NISL VITAE){#}|| OCTOBER 8,2015}{}
+	-------
+	grid(4,6,2){
+	image(height:80px,width:80px){T14.jpg}
+	}{link(text:LOREM IPSUM FERMENTUM UT NISL VITAE){#}|| OCTOBER 7,2015}{}
+	-------
+	(h3,bold){ABOUT}
+	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod amet placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at phasellus sed ultricies.||
+	button(color:white, font-color:black, border:1px solid black, hover-border:1px solid #0ec98b, hover-font-color:#0ec98b){LEARN MORE}
+	--------
+	iconbar(twitter:#,facebook:,instagram:,rss:,main:){}
+}{
+	block(){
+	grid(8,4){(h2){MAGNA SED ADIPISCING}||
+	LOREM IPSUM DOLOR AMET NULLAM CONSEQUAT ETIAM FEUGIAT}
+	{(align:right){November 1, 2015||
+	link(){JANE DOE:x.jpg}image(circle){T18.jpg}}}||
+	||
+	---------
+	||
+	image(enlarge,width:735px,height:258px,scale:1.1){T12.jpg}
+	||
+	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+	button(color:white, font-color:black, border:1px solid black, hover-border:1px solid #0ec98b, hover-font-color:#0ec98b){CONTINUE READING}
+	}
+	block(){
+	grid(8,4){(h2){ULTRICIES SED MAGNA EUISMOD ENIM VITAE GRAVIDA}||
+	LOREM IPSUM DOLOR AMET NULLAM CONSEQUAT ETIAM FEUGIAT}
+	{(align:right){October 25th, 2015||
+	link(){JANE DOE:x.jpg}image(circle){T18.jpg}}}||
+	||
+	---------
+	||
+	image(enlarge,width:735px,height:258px,scale:1.1){T16.jpg}
+	||
+	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+	button(color:white, font-color:black, border:1px solid black, hover-border:1px solid #0ec98b, hover-font-color:#0ec98b){CONTINUE READING}
+	}
+	block(){
+	grid(8,4){(h2){EUISMOD ET ACCUMSAN}||
+	LOREM IPSUM DOLOR AMET NULLAM CONSEQUAT ETIAM FEUGIAT}
+	{(align:right){October 22, 2015||
+	link(){JANE DOE:x.jpg}image(circle){T18.jpg}}}||
+	||
+	---------
+	||
+	image(enlarge,width:735px,height:258px,scale:1.1){T17.jpg}
+	||
+	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
+	button(color:white, font-color:black, border:1px solid black, hover-border:1px solid #0ec98b, hover-font-color:#0ec98b){CONTINUE READING}
+	}
+	button(disabled,color:white, font-color:black, border:1px solid black, hover-border:1px solid #0ec98b hover-font-color:#0ec98b){PREVIOUS PAGE}
+	button(color:white, font-color:black, border:1px solid black, hover-border:1px solid #0ec98b, hover-font-color:#0ec98b){NEXT PAGE}
+}

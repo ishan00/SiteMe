@@ -47,9 +47,20 @@ def makeSkillbarCSS(d):
 	CSSString = CSSFile.read()
 	CLASSNAME = d['class']
 	CSSString = CSSString.replace('$CLASS$', CLASSNAME)
+	if ('width' in list(d.keys())):
+		CSSString = CSSString.replace('$WIDTH$', d['width'])
+		del d['width']
+	else:
+		CSSString = CSSString.replace('$WIDTH$','40px')
 	del d['class']
-	for u,v in d.items():
-		CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + next(gen_color) + ';}\n'
+	if  ('color' in list(d.keys())):
+		color = d['color']
+		del d['color']
+		for u,v in d.items():
+			CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + color + ';}\n'
+	else:
+		for u,v in d.items():
+			CSSString = CSSString + '\n' + CLASSNAME + ' ' + u + ' {width:' + v + '; background-color:' + next(gen_color) + ';}\n'
 	styleFile=open('./site/css/style.css','a')
 	styleFile.write(CSSString)
 	styleFile.close()
@@ -57,10 +68,12 @@ def makeSkillbarCSS(d):
 cardDict={'$CLASS$':'.card','$COLOR$':'white','$FONT-COLOR$':'black','$FONT-SIZE$':'none','$PADDING-TOP$':'10px','$PADDING-LEFT$':'20px'}
 parallaxDict={'$CLASS$':'.parallax'}
 accordionDict={}
-buttonDict={'$CLASS$':'#button','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'15px','$PADDING-LEFT$':'32px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'none','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'none','$HOVER-FONT-COLOR$':'none','$HOVER-SHADOW$':'none','$DROPDOWN-COLOR$':'#f9f9f9','$DROPDOWN-FONT-COLOR$':'black','$DROPDOWN-FONT-SIZE$':'none','$DROPDOWN-WIDTH$':'160px','$DROPDOWN-HOVER-COLOR$':'#f1f1f1','$DROPDOWN-HOVER-FONT-COLOR$':'black'}
-checkboxDict={'$CLASS$':'.chatbox'}
-flipDict={'$CLASS$':'.chatbox'}
-shakeDict={'$CLASS$':'.chatbox'}
+buttonDict={'$CLASS$':'#button','$COLOR$':'#4CAF50','$BORDER$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'15px','$PADDING-LEFT$':'32px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'none','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'none','$HOVER-FONT-COLOR$':'none','$HOVER-SHADOW$':'none','$DROPDOWN-COLOR$':'#f9f9f9','$DROPDOWN-FONT-COLOR$':'black','$DROPDOWN-FONT-SIZE$':'none','$DROPDOWN-WIDTH$':'160px','$DROPDOWN-HOVER-COLOR$':'#f1f1f1','$DROPDOWN-HOVER-FONT-COLOR$':'black','$HOVER-BORDER$':'none'}
+checkboxDict={'$CLASS$':'.checkbox'}
+flipDict={'$CLASS$':'.flip'}
+shakeDict={'$CLASS$':'.shake'}
+iconbarDict={'$CLASS$':'.iconbar','$HOVER-COLOR$':'#000','$COLOR$':'#555','$WIDTH$':'100%','$ICON-WIDTH$':'20%','$FLOAT$':'left','$PADDDING$':'12px','$SIZE$':'36px'}
+enlargeDict={'$CLASS$':'.enlarge','$SCALE$':'1.1','$WIDTH$':'700px'}
 alertDict = {'$CLASS$':'', '$COLOR$':'red' , '$TEXT-COLOR':'white'}
 timelineDict={'$CLASS$':'.chatbox'}
 tooltipDict={'$COLOR':'#555','$FONT-COLOR$':'#fff','$CLASS$':'.tooltip'}
@@ -70,7 +83,7 @@ passwordfieldDict={'$CLASS$':'.passwordfield','$FONT-SIZE$':'16px','$WIDTH$':'10
 selectDict={'$CLASS$':'.select','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
 submitDict={'$CLASS$':'.submit','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'12px','$PADDING-LEFT$':'20px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'4px','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'#45a049','$HOVER-FONT-COLOR$':'none'}
 COLORS = ['#4CAF50' , '#2196F3','#e10d0d' , '#fed044' , '#00c992' , '#7e1dfb']
-blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px', '$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
+blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px','$PADDING-LEFT$':'12px' , '$PADDING-BOTTOM':'10px','$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
 gen_color = cycle(COLORS)
 
 def makeGenCSS(d,f,x):
@@ -95,6 +108,7 @@ genCSSDict={
 	'checkbox':['./layout/checkbox.css',checkboxDict],
 	'flip':['./layout/flip.css',flipDict],
 	'shake':['./layout/shake.css',shakeDict],
+	'enlarge':['./layout/enlarge.css',enlargeDict],
 	'alert':['./layout/alert.css',alertDict],
 	'timeline':['./layout/timeline.css',timelineDict],
 	'tooltip':['./layout/tooltip.css',tooltipDict],
@@ -103,7 +117,8 @@ genCSSDict={
 	'passwordfield':['./layout/formfield.css',passwordfieldDict],
 	'select':['./layout/formfield.css',selectDict],
 	'submit':['./layout/submit.css',submitDict],
-	'block':['./layout/block.css',blockDict]
+	'block':['./layout/block.css',blockDict],
+	'iconbar':['./layout/iconbar.css',iconbarDict]
 }
 
 typeGenCSSDict={
@@ -118,7 +133,7 @@ CSSDict={
 }
 
 def makeCSS(d):
-	if(list(d.keys())[0] in genCSSDict.keys()):
+	if(list(d.keys())[0] in list(genCSSDict.keys())):
 		makeGenCSS(d[list(d.keys())[0]],genCSSDict[list(d.keys())[0]][0],genCSSDict[list(d.keys())[0]][1])
 	elif(list(d.keys())[0] in typeGenCSSDict.keys()):
 		makeTypeGenCSS(d[list(d.keys())[0]],typeGenCSSDict[list(d.keys())[0]][0],typeGenCSSDict[list(d.keys())[0]][1])

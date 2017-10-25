@@ -1,12 +1,9 @@
 import ply.lex as lex
-from sys import argv
-
-#script , filename = argv
 
 tokens=['KEYWORD','PRE', 'CODE','STYLE','REST','NEWLINE','HRULE','GRID']
-keywords=['title','font-size','background-color']
+keywords=['title','font-size','background-color','font-family', 'margin-left', 'margin-top', 'margin-right', 'margin-bottom']
 styles=['image','link','list','piechart','table','slideshow','parallax','fade','card','button', 'accordion', 'timeline',
-'chatbox','checkbox','alert','wallpaper', 'skillbar','tooltip','textfield','passwordfield','select','submit','form','block']
+'chatbox','checkbox','alert','wallpaper', 'skillbar','tooltip','textfield','passwordfield','select','submit','form','block','gallery','iconbar']
 
 def t_error(t):
 	return
@@ -14,18 +11,10 @@ t_KEYWORD=r'([#]*('+'|'.join(keywords)+'):[0-9a-zA-Z #][a-zA-Z0-9() ,#]*)|(\#[a-
 t_STYLE=r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}'
 t_PRE=r'\((latex|pre)\)\{\{[\s\S]*?\}\}'
 t_CODE=r'\(code\)\{\{[\s\S]*?\}\}'
-#t_GRID=r'grid\([\s\S]*?\)(\{[^\{\}]*[\n ]*([^\{\}]*[\n ]*\{[^\{\}]*[\n ]*\}[^\{\}]*[\n ]*)*[^\{\}]*[\n ]*\})+'
-t_GRID=r'grid\([\s\S]*?\)(\{[^\{\}]*?\}[\n ]*)*'
+t_GRID=r'grid\([\s\S]*?\)(\{[^\{\}]*?\}[\n\t ]*)*'
 t_HRULE=r'-{5,}'
-t_REST=r'(?:(?!(([#]*('+'|'.join(keywords)+'):[0-9a-zA-Z #][a-zA-Z0-9() ,#]*)|(\#[a-zA-Z]+)|('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}|grid\([\s\S]*?\)(\{[^\{\}]*?\}[\n ]*)*|\((latex|pre)\)\{\{[\s\S]*?\}\}|\(code\)\{\{[\s\S]*?\}\}|-{5,})).)+'
+t_REST=r'(?:(?!(([#]*('+'|'.join(keywords)+'):[0-9a-zA-Z #][a-zA-Z0-9() ,#]*)|(\#[a-zA-Z]+)|('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}|grid\([\s\S]*?\)(\{[^\{\}]*?\}[\n\t ]*)*|\((latex|pre)\)\{\{[\s\S]*?\}\}|\(code\)\{\{[\s\S]*?\}\}|-{5,})).)+'
 t_NEWLINE=r'\n\r|\r\n|\r|\n'
-
-# precedence=(
-# 	('left', 'REST'),
-# 	('left', 'KEYWORD', 'NEWLINE'),
-# 	('left', 'STYLE'),
-# 	('left', 'PRE'),
-# 	)
 
 lexer=lex.lex()
 

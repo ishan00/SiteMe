@@ -1,0 +1,50 @@
+#nofooter
+#nonavbar
+title:Flexible Jekyll
+margin-right:10px
+margin-top:10px
+grid(2,10){
+	(c){image(circle,height:100px, width:100px){david-freeman.jpg}}
+	(c){
+		(h4){DAVID FREEMAN}
+		(){I am a web developer focusing on front-end development.||Always hungry to keep learning.}
+	}
+	(c){Contact Me}
+	iconbar(twitter:#,facebook:,instagram:,rss:,mail:){}
+}{
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){i-rest.jpg}}
+	{(h1){How I Rest From Work}
+	Fam locavore snackwave bushwick +1 sartorial. Selfies portland knausgaard synth. Pop-up art party marfa deep...||||
+	2017, Sep 12   —  4 minute read
+	}
+	}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){software.jpg}}
+	{(h1){The Best Organizer Software}
+	Church-key blog messenger bag, selfies umami man braid mlkshk. Pork belly cornhole meditation tumblr meh...||||
+	2017, Sep 12   —  3 minute read
+	}
+	}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){how-to-start.jpg}}
+	{(h1){How To Start Programming}
+	Post-ironic jean shorts bushwick umami, synth beard austin hell of meh kitsch distillery sustainable plaid...||||
+	2017, Sep 12   —  4 minute read
+	}
+	}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){workflow.jpg}}
+	{(h1){10 Tips To Improve Your Workflow}
+	Asymmetrical portland enamel pin af heirloom ramps authentic thundercats. Synth truffaut schlitz aesthetic, palo santo...||||
+	2017, Sep 12   —  5 minute read
+	}
+	}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){js-1.png}}
+	{(h1){Conference on Javascript}
+	Jean shorts organic cornhole, gochujang post-ironic chicharrones authentic flexitarian viral PBR&B forage wolf. Man braid...||||
+	2017, Sep 10   —  2 minute read
+	}
+	}
+}
