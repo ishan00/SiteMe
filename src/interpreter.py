@@ -12,11 +12,16 @@ from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
 from makeCSS import makeCSS
+from globalThings import aCSSCount
 from lexer import tokens,styles,keywords
 script , pagefile , configfile = argv
 from pyparsing import *
 def eprint(*args, **kwargs):
 	print (*args, file=sys.stderr, **kwargs)
+
+LineNumber=1
+CSSCount=aCSSCount
+eprint(str(CSSCount['hover-button']))
 
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
@@ -131,40 +136,6 @@ OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-rounded'},'d
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
 'hover-shadow':{'hover-shadow':'0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)'},'disabled':{'opacity':'0.6','cursor':'not-allowed'}}
 
-CSSCount = {
-	'navbar':1,
-	'footer':1,
-	'button':1,
-	'hover-button':1,
-	'click-button':1,
-	'piechart':1,
-	'card':1,
-	'fade':1,
-	'image':1,
-	'link':1,
-	'hoverdropdown':1,
-	'list':1,
-	'flip':1,
-	'shake':1,
-	'table':1,
-	'slideshow':1,
-	'parallax':1,
-	'accordian':1,
-	'timeline':1,
-	'checkbox':1,
-	'alert':1,
-	'grid':1,
-	'wallpaper':1,
-	'skillbar':1,
-	'tooltip':1,
-	'chatbox':1,
-	'textfield':1,
-	'passwordfield':1,
-	'select':1,
-	'submit':1,
-	'block':1
-}
-
 def piechartMaker(style,content):
 	style=style.split(',')
 	r1 = re.compile("\s*label.*")
@@ -223,6 +194,8 @@ def buttonMaker(style,content):
 				tmpDict.update({i:{'a':{'href':x[x.find(':')+1:].strip()},'content':x[:x.find(':')].strip()}})
 				i=i+1
 		buttonDict['content'][2]['content']=tmpDict
+		eprint("EH")
+		CSSCount['hover-button']=CSSCount['hover-button']+1
 	elif('click-dropdown' in style):
 		buttonDict={'div':{'class':'clickdropdown'},'content':{1:{'button':{'class':'clickdropbtn','onclick':'myFunction()'},'content':{}},2:{'div':{'class':'clickdropdown-content','id':'myDropdown'},'content':{}}}}
 		sendDict={'click-button':sendDict}
@@ -239,8 +212,8 @@ def buttonMaker(style,content):
 	else:
 		sendDict={'button':sendDict}
 		buttonDict={'button':{'id':'button'+str(CSSCount['button'])},'content':content.strip()}
+		CSSCount['button']=CSSCount['button']+1
 	makeCSS(sendDict)
-	CSSCount['button']=CSSCount['button']+1
 	return buttonDict
 
 # def hoverdropdownMaker(style,content):
@@ -441,11 +414,29 @@ def slideshowMaker(s,i):
 	return slideshow_dict
 
 def parallaxMaker(s,i):
-	parallax_dict = {'div':{'class':'parallax' , 'background-image':''} , 'content':''}
-	content = i.strip()
-	parallax_dict['div']['background-image'] = "url('img/" + content + "')"
-	makeCSS({'parallax':{'class':'.parallax'}})
-	return parallax_dict
+	if('advanced' in s):
+		parallax_dict={'div':{'class':'aparallax'+str(CSSCount['aparallax']),'height':{},'data-stellar-background-ratio':{}},'content':''}
+		content=i.strip()
+		parallax_dict['div']['background-image']="url('img/"+content+"')"
+		for x in s.split(','):
+			if(':' in x):
+				if(x[:x.find(':')].strip()=='speed'):
+					parallax_dict['div']['data-stellar-background-ratio']=x[x.find(':')+1:].strip()
+				else:
+					parallax_dict['div'][x[:x.find(':')].strip()]=x[x.find(':')+1:].strip()
+		if not parallax_dict['div']['height']:
+			parallax_dict['div']['height']='678px'
+		if not parallax_dict['div']['data-stellar-background-ratio']:
+			parallax_dict['div']['data-stellar-background-ratio']='0.5'
+		CSSCount['aparallax']=CSSCount['aparallax']+1
+		makeJS({'advanced-parallax':{}})
+		return parallax_dict
+	else:
+		parallax_dict = {'div':{'class':'parallax' , 'background-image':''} , 'content':''}
+		content = i.strip()
+		parallax_dict['div']['background-image'] = "url('img/" + content + "')"
+		makeCSS({'parallax':{'class':'.parallax'}})
+		return parallax_dict
 
 # accordions are drop-down sections of text which are useful when you want to enter a large amount of text
 # Currently no styles are implemented for accordion
@@ -832,6 +823,11 @@ styleFunctions = {
 	'block':blockMaker
 }
 
+allowedStyles={
+	'height':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm)$)',
+	'width':r'([\d]+[\s]*%$)|([\d]+[\s]*(px|cm)$)'
+}
+
 def styleMaker(s):
 	# styleName=re.search(r'(.*?)\(',s).group(1)
 	# styleStyle=re.search(r'\((.*?)\)',s).group(1)
@@ -840,6 +836,12 @@ def styleMaker(s):
 	styleName=s.split('(')[0]
 	styleStyle=s.split('(')[1].split(')')[0].replace('\n','')
 	styleContent=s.split('(')[1].split(')')[1].strip('{}')
+	for x in styleStyle.split(','):
+		if (':' in x):
+			if (x[:x.find(':')].strip() in TwoNonCSS.keys()):
+				if (x[:x.find(':')].strip() in allowedStyles.keys()):
+					if not (re.match(allowedStyles[x[:x.find(':')].strip()],x[x.find(':')+1:].strip())):
+						eprint("In "+pagefile+", syntax error at line number "+str(LineNumber)+": Incorrect attribute for "+x[:x.find(':')].strip()+" in "+styleName)
 	# styleStyle=styleStyle.replace(',',';')
 	if(not styleName):
 		return taggedMaker(styleStyle,styleContent)
@@ -883,7 +885,7 @@ def gridMaker(p):
 This function converts dictionaries to html codes.
 Note: It is assumed that styles provided are valid
 '''
-standAlone=['href', 'src', 'class', 'id', 'for', 'value', 'type', 'checked', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
+standAlone=['href', 'src', 'class', 'id','data-stellar-background-ratio', 'for', 'value', 'type', 'checked', 'onclick' , 'rel','data-ride','data-slide',  'data-slide-to', 'data-target','align']
 Tags={'img':False,'input':False,'label':True,'select':True,'option':True,'br':False,'hr':False,'header':True,'footer':True,'a':True,'table':True,'ul':True,'ol':True,'h1':True,
 'h2':True,'td':True,'tr':True,'h3':True,'h4':True,'h5':True,'h6':True,'b':True,'li':True,'ol':True,'i':True,'script':True,'p':True,
 'div':True,'span':True,'nav':True,'button':True, 'head':True, 'body':True, 'dl':True, 'dt':True, 'dd':True, 'title':True, 'style':True , 'link':False, 'html':True, 'footer':True}
@@ -1250,8 +1252,10 @@ def p_style(p):
     p[0]=styleMaker(p[1])
 
 def p_newline(p):
-    'newline : NEWLINE'
-    p[0]="\n"
+	'newline : NEWLINE'
+	global LineNumber
+	LineNumber=LineNumber+1
+	p[0]="\n"
 
 def p_hrule(p):
 	'hrule : HRULE'
@@ -1286,9 +1290,10 @@ main_dict = {'html':{} , 'content':{
 			2:{'link':{'rel':"stylesheet" ,'href':"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"}, 'content':''},
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
-			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'} , 'content' : ''},
-			8:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''},
-			9:{'script':{'src':'http://latex.codecogs.com/latexit.js' , 'type':'text/javascript'} , 'content':''},
+			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'} , 'content' : ''},
+			8:{'script':{'src':'../layout/stellar.js-master/src/jquery.stellar.js'} , 'content' : ''},
+			9:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''},
+			10:{'script':{'src':'http://latex.codecogs.com/latexit.js' , 'type':'text/javascript'} , 'content':''},
 		}} , 
 		2:{'body':{} , 'content':{
 			1:'',
@@ -1332,7 +1337,7 @@ def main():
 	page=open(pagefile)
 	b=page.read()
 	while(re.search(r'('+'|'.join(styles)+')?\([^\(\)\{\}]*?\)\{[^\(\)\{\}]*?\}',b)):
-	    b=parser.parse(b.strip())
+		b=parser.parse(b.strip())
 	b=b.split("<br>")
 	b="<br>\n".join(b)
 	b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}').replace('@@@@','<br>')

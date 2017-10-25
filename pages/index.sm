@@ -8,3 +8,5 @@ title:SiteMe
 (pre){{
 image(){as.jpg}
 }}
+
+button(hover-dropdown){A,B:b,C:c,D:d}

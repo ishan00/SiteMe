@@ -73,16 +73,10 @@ state 0
     GRID            reduce using rule 4 (head -> .)
     $end            reduce using rule 4 (head -> .)
 
-    main                           shift and go to state 1
-    head                           shift and go to state 2
+    head                           shift and go to state 1
+    main                           shift and go to state 2
 
 state 1
-
-    (0) S' -> main .
-
-
-
-state 2
 
     (1) main -> head . body
     (2) head -> head . keyword
@@ -100,7 +94,7 @@ state 2
 
   ! shift/reduce conflict for NEWLINE resolved as shift
   ! shift/reduce conflict for KEYWORD resolved as shift
-    NEWLINE         shift and go to state 5
+    NEWLINE         shift and go to state 6
     REST            reduce using rule 13 (body -> .)
     STYLE           reduce using rule 13 (body -> .)
     PRE             reduce using rule 13 (body -> .)
@@ -108,15 +102,51 @@ state 2
     HRULE           reduce using rule 13 (body -> .)
     GRID            reduce using rule 13 (body -> .)
     $end            reduce using rule 13 (body -> .)
-    KEYWORD         shift and go to state 4
+    KEYWORD         shift and go to state 3
 
   ! NEWLINE         [ reduce using rule 13 (body -> .) ]
   ! KEYWORD         [ reduce using rule 13 (body -> .) ]
 
-    body                           shift and go to state 3
-    keyword                        shift and go to state 6
+    keyword                        shift and go to state 4
+    body                           shift and go to state 5
+
+state 2
+
+    (0) S' -> main .
+
+
 
 state 3
+
+    (22) keyword -> KEYWORD .
+
+    NEWLINE         reduce using rule 22 (keyword -> KEYWORD .)
+    KEYWORD         reduce using rule 22 (keyword -> KEYWORD .)
+    REST            reduce using rule 22 (keyword -> KEYWORD .)
+    STYLE           reduce using rule 22 (keyword -> KEYWORD .)
+    PRE             reduce using rule 22 (keyword -> KEYWORD .)
+    CODE            reduce using rule 22 (keyword -> KEYWORD .)
+    HRULE           reduce using rule 22 (keyword -> KEYWORD .)
+    GRID            reduce using rule 22 (keyword -> KEYWORD .)
+    $end            reduce using rule 22 (keyword -> KEYWORD .)
+
+
+state 4
+
+    (2) head -> head keyword .
+
+    NEWLINE         reduce using rule 2 (head -> head keyword .)
+    KEYWORD         reduce using rule 2 (head -> head keyword .)
+    REST            reduce using rule 2 (head -> head keyword .)
+    STYLE           reduce using rule 2 (head -> head keyword .)
+    PRE             reduce using rule 2 (head -> head keyword .)
+    CODE            reduce using rule 2 (head -> head keyword .)
+    HRULE           reduce using rule 2 (head -> head keyword .)
+    GRID            reduce using rule 2 (head -> head keyword .)
+    $end            reduce using rule 2 (head -> head keyword .)
+
+
+state 5
 
     (1) main -> head body .
     (5) body -> body . style
@@ -156,14 +186,14 @@ state 3
   ! shift/reduce conflict for HRULE resolved as shift
   ! shift/reduce conflict for GRID resolved as shift
     $end            reduce using rule 1 (main -> head body .)
-    REST            shift and go to state 19
-    STYLE           shift and go to state 14
-    NEWLINE         shift and go to state 12
-    PRE             shift and go to state 17
-    CODE            shift and go to state 8
-    KEYWORD         shift and go to state 10
-    HRULE           shift and go to state 15
-    GRID            shift and go to state 7
+    REST            shift and go to state 20
+    STYLE           shift and go to state 10
+    NEWLINE         shift and go to state 13
+    PRE             shift and go to state 12
+    CODE            shift and go to state 19
+    KEYWORD         shift and go to state 7
+    HRULE           shift and go to state 16
+    GRID            shift and go to state 15
 
   ! REST            [ reduce using rule 15 (pre -> .) ]
   ! STYLE           [ reduce using rule 15 (pre -> .) ]
@@ -184,30 +214,15 @@ state 3
   ! GRID            [ reduce using rule 17 (code -> .) ]
   ! $end            [ reduce using rule 17 (code -> .) ]
 
-    style                          shift and go to state 16
-    grid                           shift and go to state 20
-    newline                        shift and go to state 18
-    hrule                          shift and go to state 9
+    code                           shift and go to state 8
+    grid                           shift and go to state 9
+    newline                        shift and go to state 14
+    style                          shift and go to state 21
+    hrule                          shift and go to state 17
     pre                            shift and go to state 11
-    fakekeyword                    shift and go to state 21
-    code                           shift and go to state 13
+    fakekeyword                    shift and go to state 18
 
-state 4
-
-    (22) keyword -> KEYWORD .
-
-    NEWLINE         reduce using rule 22 (keyword -> KEYWORD .)
-    KEYWORD         reduce using rule 22 (keyword -> KEYWORD .)
-    REST            reduce using rule 22 (keyword -> KEYWORD .)
-    STYLE           reduce using rule 22 (keyword -> KEYWORD .)
-    PRE             reduce using rule 22 (keyword -> KEYWORD .)
-    CODE            reduce using rule 22 (keyword -> KEYWORD .)
-    HRULE           reduce using rule 22 (keyword -> KEYWORD .)
-    GRID            reduce using rule 22 (keyword -> KEYWORD .)
-    $end            reduce using rule 22 (keyword -> KEYWORD .)
-
-
-state 5
+state 6
 
     (3) head -> head NEWLINE .
 
@@ -222,67 +237,7 @@ state 5
     $end            reduce using rule 3 (head -> head NEWLINE .)
 
 
-state 6
-
-    (2) head -> head keyword .
-
-    NEWLINE         reduce using rule 2 (head -> head keyword .)
-    KEYWORD         reduce using rule 2 (head -> head keyword .)
-    REST            reduce using rule 2 (head -> head keyword .)
-    STYLE           reduce using rule 2 (head -> head keyword .)
-    PRE             reduce using rule 2 (head -> head keyword .)
-    CODE            reduce using rule 2 (head -> head keyword .)
-    HRULE           reduce using rule 2 (head -> head keyword .)
-    GRID            reduce using rule 2 (head -> head keyword .)
-    $end            reduce using rule 2 (head -> head keyword .)
-
-
 state 7
-
-    (21) grid -> GRID .
-
-    REST            reduce using rule 21 (grid -> GRID .)
-    STYLE           reduce using rule 21 (grid -> GRID .)
-    NEWLINE         reduce using rule 21 (grid -> GRID .)
-    PRE             reduce using rule 21 (grid -> GRID .)
-    CODE            reduce using rule 21 (grid -> GRID .)
-    KEYWORD         reduce using rule 21 (grid -> GRID .)
-    HRULE           reduce using rule 21 (grid -> GRID .)
-    GRID            reduce using rule 21 (grid -> GRID .)
-    $end            reduce using rule 21 (grid -> GRID .)
-
-
-state 8
-
-    (16) code -> CODE .
-
-    REST            reduce using rule 16 (code -> CODE .)
-    STYLE           reduce using rule 16 (code -> CODE .)
-    NEWLINE         reduce using rule 16 (code -> CODE .)
-    PRE             reduce using rule 16 (code -> CODE .)
-    CODE            reduce using rule 16 (code -> CODE .)
-    KEYWORD         reduce using rule 16 (code -> CODE .)
-    HRULE           reduce using rule 16 (code -> CODE .)
-    GRID            reduce using rule 16 (code -> CODE .)
-    $end            reduce using rule 16 (code -> CODE .)
-
-
-state 9
-
-    (11) body -> body hrule .
-
-    REST            reduce using rule 11 (body -> body hrule .)
-    STYLE           reduce using rule 11 (body -> body hrule .)
-    NEWLINE         reduce using rule 11 (body -> body hrule .)
-    PRE             reduce using rule 11 (body -> body hrule .)
-    CODE            reduce using rule 11 (body -> body hrule .)
-    KEYWORD         reduce using rule 11 (body -> body hrule .)
-    HRULE           reduce using rule 11 (body -> body hrule .)
-    GRID            reduce using rule 11 (body -> body hrule .)
-    $end            reduce using rule 11 (body -> body hrule .)
-
-
-state 10
 
     (23) fakekeyword -> KEYWORD .
 
@@ -295,6 +250,51 @@ state 10
     HRULE           reduce using rule 23 (fakekeyword -> KEYWORD .)
     GRID            reduce using rule 23 (fakekeyword -> KEYWORD .)
     $end            reduce using rule 23 (fakekeyword -> KEYWORD .)
+
+
+state 8
+
+    (9) body -> body code .
+
+    REST            reduce using rule 9 (body -> body code .)
+    STYLE           reduce using rule 9 (body -> body code .)
+    NEWLINE         reduce using rule 9 (body -> body code .)
+    PRE             reduce using rule 9 (body -> body code .)
+    CODE            reduce using rule 9 (body -> body code .)
+    KEYWORD         reduce using rule 9 (body -> body code .)
+    HRULE           reduce using rule 9 (body -> body code .)
+    GRID            reduce using rule 9 (body -> body code .)
+    $end            reduce using rule 9 (body -> body code .)
+
+
+state 9
+
+    (12) body -> body grid .
+
+    REST            reduce using rule 12 (body -> body grid .)
+    STYLE           reduce using rule 12 (body -> body grid .)
+    NEWLINE         reduce using rule 12 (body -> body grid .)
+    PRE             reduce using rule 12 (body -> body grid .)
+    CODE            reduce using rule 12 (body -> body grid .)
+    KEYWORD         reduce using rule 12 (body -> body grid .)
+    HRULE           reduce using rule 12 (body -> body grid .)
+    GRID            reduce using rule 12 (body -> body grid .)
+    $end            reduce using rule 12 (body -> body grid .)
+
+
+state 10
+
+    (18) style -> STYLE .
+
+    REST            reduce using rule 18 (style -> STYLE .)
+    STYLE           reduce using rule 18 (style -> STYLE .)
+    NEWLINE         reduce using rule 18 (style -> STYLE .)
+    PRE             reduce using rule 18 (style -> STYLE .)
+    CODE            reduce using rule 18 (style -> STYLE .)
+    KEYWORD         reduce using rule 18 (style -> STYLE .)
+    HRULE           reduce using rule 18 (style -> STYLE .)
+    GRID            reduce using rule 18 (style -> STYLE .)
+    $end            reduce using rule 18 (style -> STYLE .)
 
 
 state 11
@@ -314,81 +314,6 @@ state 11
 
 state 12
 
-    (19) newline -> NEWLINE .
-
-    REST            reduce using rule 19 (newline -> NEWLINE .)
-    STYLE           reduce using rule 19 (newline -> NEWLINE .)
-    NEWLINE         reduce using rule 19 (newline -> NEWLINE .)
-    PRE             reduce using rule 19 (newline -> NEWLINE .)
-    CODE            reduce using rule 19 (newline -> NEWLINE .)
-    KEYWORD         reduce using rule 19 (newline -> NEWLINE .)
-    HRULE           reduce using rule 19 (newline -> NEWLINE .)
-    GRID            reduce using rule 19 (newline -> NEWLINE .)
-    $end            reduce using rule 19 (newline -> NEWLINE .)
-
-
-state 13
-
-    (9) body -> body code .
-
-    REST            reduce using rule 9 (body -> body code .)
-    STYLE           reduce using rule 9 (body -> body code .)
-    NEWLINE         reduce using rule 9 (body -> body code .)
-    PRE             reduce using rule 9 (body -> body code .)
-    CODE            reduce using rule 9 (body -> body code .)
-    KEYWORD         reduce using rule 9 (body -> body code .)
-    HRULE           reduce using rule 9 (body -> body code .)
-    GRID            reduce using rule 9 (body -> body code .)
-    $end            reduce using rule 9 (body -> body code .)
-
-
-state 14
-
-    (18) style -> STYLE .
-
-    REST            reduce using rule 18 (style -> STYLE .)
-    STYLE           reduce using rule 18 (style -> STYLE .)
-    NEWLINE         reduce using rule 18 (style -> STYLE .)
-    PRE             reduce using rule 18 (style -> STYLE .)
-    CODE            reduce using rule 18 (style -> STYLE .)
-    KEYWORD         reduce using rule 18 (style -> STYLE .)
-    HRULE           reduce using rule 18 (style -> STYLE .)
-    GRID            reduce using rule 18 (style -> STYLE .)
-    $end            reduce using rule 18 (style -> STYLE .)
-
-
-state 15
-
-    (20) hrule -> HRULE .
-
-    REST            reduce using rule 20 (hrule -> HRULE .)
-    STYLE           reduce using rule 20 (hrule -> HRULE .)
-    NEWLINE         reduce using rule 20 (hrule -> HRULE .)
-    PRE             reduce using rule 20 (hrule -> HRULE .)
-    CODE            reduce using rule 20 (hrule -> HRULE .)
-    KEYWORD         reduce using rule 20 (hrule -> HRULE .)
-    HRULE           reduce using rule 20 (hrule -> HRULE .)
-    GRID            reduce using rule 20 (hrule -> HRULE .)
-    $end            reduce using rule 20 (hrule -> HRULE .)
-
-
-state 16
-
-    (5) body -> body style .
-
-    REST            reduce using rule 5 (body -> body style .)
-    STYLE           reduce using rule 5 (body -> body style .)
-    NEWLINE         reduce using rule 5 (body -> body style .)
-    PRE             reduce using rule 5 (body -> body style .)
-    CODE            reduce using rule 5 (body -> body style .)
-    KEYWORD         reduce using rule 5 (body -> body style .)
-    HRULE           reduce using rule 5 (body -> body style .)
-    GRID            reduce using rule 5 (body -> body style .)
-    $end            reduce using rule 5 (body -> body style .)
-
-
-state 17
-
     (14) pre -> PRE .
 
     REST            reduce using rule 14 (pre -> PRE .)
@@ -402,7 +327,22 @@ state 17
     $end            reduce using rule 14 (pre -> PRE .)
 
 
-state 18
+state 13
+
+    (19) newline -> NEWLINE .
+
+    REST            reduce using rule 19 (newline -> NEWLINE .)
+    STYLE           reduce using rule 19 (newline -> NEWLINE .)
+    NEWLINE         reduce using rule 19 (newline -> NEWLINE .)
+    PRE             reduce using rule 19 (newline -> NEWLINE .)
+    CODE            reduce using rule 19 (newline -> NEWLINE .)
+    KEYWORD         reduce using rule 19 (newline -> NEWLINE .)
+    HRULE           reduce using rule 19 (newline -> NEWLINE .)
+    GRID            reduce using rule 19 (newline -> NEWLINE .)
+    $end            reduce using rule 19 (newline -> NEWLINE .)
+
+
+state 14
 
     (7) body -> body newline .
 
@@ -417,7 +357,82 @@ state 18
     $end            reduce using rule 7 (body -> body newline .)
 
 
+state 15
+
+    (21) grid -> GRID .
+
+    REST            reduce using rule 21 (grid -> GRID .)
+    STYLE           reduce using rule 21 (grid -> GRID .)
+    NEWLINE         reduce using rule 21 (grid -> GRID .)
+    PRE             reduce using rule 21 (grid -> GRID .)
+    CODE            reduce using rule 21 (grid -> GRID .)
+    KEYWORD         reduce using rule 21 (grid -> GRID .)
+    HRULE           reduce using rule 21 (grid -> GRID .)
+    GRID            reduce using rule 21 (grid -> GRID .)
+    $end            reduce using rule 21 (grid -> GRID .)
+
+
+state 16
+
+    (20) hrule -> HRULE .
+
+    REST            reduce using rule 20 (hrule -> HRULE .)
+    STYLE           reduce using rule 20 (hrule -> HRULE .)
+    NEWLINE         reduce using rule 20 (hrule -> HRULE .)
+    PRE             reduce using rule 20 (hrule -> HRULE .)
+    CODE            reduce using rule 20 (hrule -> HRULE .)
+    KEYWORD         reduce using rule 20 (hrule -> HRULE .)
+    HRULE           reduce using rule 20 (hrule -> HRULE .)
+    GRID            reduce using rule 20 (hrule -> HRULE .)
+    $end            reduce using rule 20 (hrule -> HRULE .)
+
+
+state 17
+
+    (11) body -> body hrule .
+
+    REST            reduce using rule 11 (body -> body hrule .)
+    STYLE           reduce using rule 11 (body -> body hrule .)
+    NEWLINE         reduce using rule 11 (body -> body hrule .)
+    PRE             reduce using rule 11 (body -> body hrule .)
+    CODE            reduce using rule 11 (body -> body hrule .)
+    KEYWORD         reduce using rule 11 (body -> body hrule .)
+    HRULE           reduce using rule 11 (body -> body hrule .)
+    GRID            reduce using rule 11 (body -> body hrule .)
+    $end            reduce using rule 11 (body -> body hrule .)
+
+
+state 18
+
+    (10) body -> body fakekeyword .
+
+    REST            reduce using rule 10 (body -> body fakekeyword .)
+    STYLE           reduce using rule 10 (body -> body fakekeyword .)
+    NEWLINE         reduce using rule 10 (body -> body fakekeyword .)
+    PRE             reduce using rule 10 (body -> body fakekeyword .)
+    CODE            reduce using rule 10 (body -> body fakekeyword .)
+    KEYWORD         reduce using rule 10 (body -> body fakekeyword .)
+    HRULE           reduce using rule 10 (body -> body fakekeyword .)
+    GRID            reduce using rule 10 (body -> body fakekeyword .)
+    $end            reduce using rule 10 (body -> body fakekeyword .)
+
+
 state 19
+
+    (16) code -> CODE .
+
+    REST            reduce using rule 16 (code -> CODE .)
+    STYLE           reduce using rule 16 (code -> CODE .)
+    NEWLINE         reduce using rule 16 (code -> CODE .)
+    PRE             reduce using rule 16 (code -> CODE .)
+    CODE            reduce using rule 16 (code -> CODE .)
+    KEYWORD         reduce using rule 16 (code -> CODE .)
+    HRULE           reduce using rule 16 (code -> CODE .)
+    GRID            reduce using rule 16 (code -> CODE .)
+    $end            reduce using rule 16 (code -> CODE .)
+
+
+state 20
 
     (6) body -> body REST .
 
@@ -432,58 +447,43 @@ state 19
     $end            reduce using rule 6 (body -> body REST .)
 
 
-state 20
-
-    (12) body -> body grid .
-
-    REST            reduce using rule 12 (body -> body grid .)
-    STYLE           reduce using rule 12 (body -> body grid .)
-    NEWLINE         reduce using rule 12 (body -> body grid .)
-    PRE             reduce using rule 12 (body -> body grid .)
-    CODE            reduce using rule 12 (body -> body grid .)
-    KEYWORD         reduce using rule 12 (body -> body grid .)
-    HRULE           reduce using rule 12 (body -> body grid .)
-    GRID            reduce using rule 12 (body -> body grid .)
-    $end            reduce using rule 12 (body -> body grid .)
-
-
 state 21
 
-    (10) body -> body fakekeyword .
+    (5) body -> body style .
 
-    REST            reduce using rule 10 (body -> body fakekeyword .)
-    STYLE           reduce using rule 10 (body -> body fakekeyword .)
-    NEWLINE         reduce using rule 10 (body -> body fakekeyword .)
-    PRE             reduce using rule 10 (body -> body fakekeyword .)
-    CODE            reduce using rule 10 (body -> body fakekeyword .)
-    KEYWORD         reduce using rule 10 (body -> body fakekeyword .)
-    HRULE           reduce using rule 10 (body -> body fakekeyword .)
-    GRID            reduce using rule 10 (body -> body fakekeyword .)
-    $end            reduce using rule 10 (body -> body fakekeyword .)
+    REST            reduce using rule 5 (body -> body style .)
+    STYLE           reduce using rule 5 (body -> body style .)
+    NEWLINE         reduce using rule 5 (body -> body style .)
+    PRE             reduce using rule 5 (body -> body style .)
+    CODE            reduce using rule 5 (body -> body style .)
+    KEYWORD         reduce using rule 5 (body -> body style .)
+    HRULE           reduce using rule 5 (body -> body style .)
+    GRID            reduce using rule 5 (body -> body style .)
+    $end            reduce using rule 5 (body -> body style .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for NEWLINE in state 2 resolved as shift
-WARNING: shift/reduce conflict for KEYWORD in state 2 resolved as shift
-WARNING: shift/reduce conflict for REST in state 3 resolved as shift
-WARNING: shift/reduce conflict for STYLE in state 3 resolved as shift
-WARNING: shift/reduce conflict for NEWLINE in state 3 resolved as shift
-WARNING: shift/reduce conflict for PRE in state 3 resolved as shift
-WARNING: shift/reduce conflict for CODE in state 3 resolved as shift
-WARNING: shift/reduce conflict for REST in state 3 resolved as shift
-WARNING: shift/reduce conflict for STYLE in state 3 resolved as shift
-WARNING: shift/reduce conflict for NEWLINE in state 3 resolved as shift
-WARNING: shift/reduce conflict for PRE in state 3 resolved as shift
-WARNING: shift/reduce conflict for CODE in state 3 resolved as shift
-WARNING: shift/reduce conflict for KEYWORD in state 3 resolved as shift
-WARNING: shift/reduce conflict for HRULE in state 3 resolved as shift
-WARNING: shift/reduce conflict for GRID in state 3 resolved as shift
-WARNING: reduce/reduce conflict in state 3 resolved using rule (main -> head body)
-WARNING: rejected rule (pre -> <empty>) in state 3
-WARNING: reduce/reduce conflict in state 3 resolved using rule (pre -> <empty>)
-WARNING: rejected rule (code -> <empty>) in state 3
-WARNING: reduce/reduce conflict in state 3 resolved using rule (main -> head body)
-WARNING: rejected rule (code -> <empty>) in state 3
+WARNING: shift/reduce conflict for NEWLINE in state 1 resolved as shift
+WARNING: shift/reduce conflict for KEYWORD in state 1 resolved as shift
+WARNING: shift/reduce conflict for REST in state 5 resolved as shift
+WARNING: shift/reduce conflict for STYLE in state 5 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 5 resolved as shift
+WARNING: shift/reduce conflict for PRE in state 5 resolved as shift
+WARNING: shift/reduce conflict for CODE in state 5 resolved as shift
+WARNING: shift/reduce conflict for REST in state 5 resolved as shift
+WARNING: shift/reduce conflict for STYLE in state 5 resolved as shift
+WARNING: shift/reduce conflict for NEWLINE in state 5 resolved as shift
+WARNING: shift/reduce conflict for PRE in state 5 resolved as shift
+WARNING: shift/reduce conflict for CODE in state 5 resolved as shift
+WARNING: shift/reduce conflict for KEYWORD in state 5 resolved as shift
+WARNING: shift/reduce conflict for HRULE in state 5 resolved as shift
+WARNING: shift/reduce conflict for GRID in state 5 resolved as shift
+WARNING: reduce/reduce conflict in state 5 resolved using rule (main -> head body)
+WARNING: rejected rule (pre -> <empty>) in state 5
+WARNING: reduce/reduce conflict in state 5 resolved using rule (pre -> <empty>)
+WARNING: rejected rule (code -> <empty>) in state 5
+WARNING: reduce/reduce conflict in state 5 resolved using rule (main -> head body)
+WARNING: rejected rule (code -> <empty>) in state 5
 WARNING: Rule (pre -> <empty>) is never reduced
 WARNING: Rule (code -> <empty>) is never reduced

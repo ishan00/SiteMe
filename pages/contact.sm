@@ -10,7 +10,7 @@ image(){1.jpg}
 
 image(align:right){1.jpg}
 
-image(height:600px,width:100%){1.jpg}
+image(height:600 pm,width:100%){1.jpg}
 
 fade(top,color:#fff,font-color:#000){Text:1.jpg}
 
@@ -29,9 +29,12 @@ list(o){
 }
 
 list(d){
-* Elem 1 ** Definition of Elem 1
-* Elem 2 ** Definition of Elem 2
-* Elem 3 ** Definition of Elem 3
+* Elem 1
+ ** Definition of Elem 1
+* Elem 2 
+** Definition of Elem 2
+* Elem 3 
+** Definition of Elem 3
 }
 
 
@@ -41,7 +44,7 @@ link(){Alternate Text:http://www.facebook.com}
 (c){link(){button(color:blue,disabled){Click Me}:http://www.facebook.com}}
 
 
-parallax(){background.jpg}
+parallax(advanced,speed:2){background.jpg}
 
 slideshow(type:button){slideshow1.jpg,slideshow2.jpg,slideshow3.jpg}
 
