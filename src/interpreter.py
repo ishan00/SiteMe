@@ -12,14 +12,49 @@ from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
 from makeCSS import makeCSS
-from globalThings import CSSCount
 from lexer import tokens,styles,keywords
 from pyparsing import *
 def eprint(*args, **kwargs):
 	print (*args, file=sys.stderr, **kwargs)
 
 LineNumber=1
-
+#eprint(str(CSSCount['hover-button']))
+CSSCount = {
+	'navbar':1,
+	'footer':1,
+	'button':1,
+	'hover-button':1,
+	'click-button':1,
+	'piechart':1,
+	'card':1,
+	'fade':1,
+	'image':1,
+	'link':1,
+	'hoverdropdown':1,
+	'list':1,
+	'flip':1,
+	'shake':1,
+	'table':1,
+	'slideshow':1,
+	'parallax':1,
+	'accordian':1,
+	'timeline':1,
+	'checkbox':1,
+	'alert':1,
+	'grid':1,
+	'wallpaper':1,
+	'skillbar':1,
+	'tooltip':1,
+	'chatbox':1,
+	'textfield':1,
+	'passwordfield':1,
+	'select':1,
+	'submit':1,
+	'block':1,
+	'aparallax':1,
+	'terminal':1,
+	'iconbar':1,
+}
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
 # string = 'home:url , about:url , contact:url'
@@ -351,6 +386,11 @@ def listMaker(style,content):
 				listDict={}
 				for i in range(0,len(listData)):
 					listDict.update({i+1:{'li':{},'content':listData[i]}})
+			if('terminal' in style):
+				if(CSSCount['terminal'] == 1):
+					makeCSS({'terminal':{}})
+					CSSCount['terminal']=0
+				listDict={'div':{'class':'terminal'},'content':{1:listDict}}
 			return {listType+'l':styleDict,'content':listDict}
 
 #tableTypes={"avacado":"table table-bordered","durian":"table table-condensed table-hover","pitaya":"table table-striped","cherimoya":"table table-striped table-hover","kiwano":"table table-bordered table-striped table-hover table-condensed"}
@@ -1466,5 +1506,6 @@ def main():
 		output_file.write(makeHTML(page_dict))
 		output_file.close()
 		page_dict = {}
+		LineNumber = 1
 
 main()
