@@ -1,4 +1,3 @@
-global aCSSCount
 aCSSCount = {
 	'navbar':1,
 	'footer':1,
