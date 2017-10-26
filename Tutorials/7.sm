@@ -1,0 +1,41 @@
+title: Blogs
+date: 25th October
+author: Team in the North
+tags: blog
+----------------------------
+SiteMe now has separate blog section for building minimalist blogs.
+
+(h4){How does this work?}
+Unlike (code){{*.sm}} files in (code){{pages}} which are all rendered separately. Blog has a simple template for listing all your blog posts in a single page separately just like (bold){Blogger} or (bold){Wordpress}.
+
+(h4){How can I make a blog page?}
+This is quite simple. Just choose the template of blog you like from the (code){{Template}} folder and copy it into (code){pages}.
+alert(warning){Don't rename the file name from (code){{blog.sm}} to anything else}
+
+(h2){Sample Templates for Blog}
+We have tried to keep the blog template quite minimalistic, exactly how most bloggers like it. You can modify these templates if you want treating them as pages.
+Below are the snapshots of templates we currently support
+
+After this is done. You're just required to populate the posts folder with simple liquid templating. A sample of which is shown below
+
+(pre){{
+title: Sample Blog Post
+author: Anonymous
+date: 1st January, 2018
+tags: web
+--------------------------
+The rest of the content follows here
+}}
+
+See, it's this simple. All syntax/construct work under the content section of the post. You're free to add images, link somewhere, make tables and every other thing you could possibly think of.
+
+(h2){What are Tags?}
+Good question, (code){{Tags}} are basically labels for the post. You can have multiple labels for any post. Think of these are filters for posts which you can later search to find relevant content. There's a separate (code){{Archive}} (optional) page you can build which serves as a list of all posts in your blog sorted according to date as well as tags. This makes the blog posts easy accessible if the number of posts are quite large
+
+(h3){How to input more than 1 tag?}
+(pre){{
+tags: web, coding, ssl
+}}
+Comma separated words would do the work
+
+(h2){Archive Pages}

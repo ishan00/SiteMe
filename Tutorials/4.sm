@@ -1,0 +1,56 @@
+title: Footers
+date: 25th October
+author: Team in the North
+tags: footers
+----------------------------
+
+Footers come next in the (code){{config.sm}} file. Multiple types of footer are supported by SiteMe
+
+(h1,align:center){Templates}
+-------
+(h3){Basic}
+(code){{type:footer_basic}}||
+image(height:600px, width:800px){footer_type1.png}||
+
+--------
+(h3){Distributed}
+(code){{type:footer_distributed}}||
+image(height:600px, width:800px){footer_type2.png}||
+
+--------
+(h3){Button_Logo}
+(code){{type:footer_button_logo}}||
+image(height:600px, width:800px){footer_type3.png}||
+
+--------
+
+(h3){Button_Logo}
+(code){{type:footer_button_logo}}||
+
+The most important one here is (code){{social}} footer as it has support for most social networks. You just need to input as shown below
+(pre){{
+	footer(type:social, background-color:black , icon-color : white){
+		facebook : link
+		google-plus : link
+		email : link
+	}	
+}}
+
+list(o,symbol:i){
+	* Facebook
+	* Google Plus
+	* Reddit
+	* Email
+	* Github
+	* Pinterest
+	* Quora
+	* Skype
+	* Youtube
+	* Instagram
+	* Slack
+	* Stackoverflow
+	* Linkedin
+	* Twitter
+	* Home
+	* Phone
+}

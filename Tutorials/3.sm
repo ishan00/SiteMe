@@ -1,0 +1,81 @@
+
+title: Navbars
+date: 25th October
+author: Team in the North
+tags: navbar
+----------------------------
+I start with the first construct we have implemented. Navbar is a crucial part of any website and is common to all pages across the site. Hence this must be written inside config.sm file.
+
+
+(pre){{
+	navbar(type:breadcrumbs, other*){ name:url } * optional argument
+}}
+
+This is how a typical config.sm file looks like
+
+(pre){{
+navbar(type:breadcrumbs , color:#eeeeee){
+	Home:#
+	About:url
+	Blog:url
+}
+footer(type:social , text-color:#12ef3c){
+	facebook:url
+	phone:000-111-222
+	home: address
+	twitter:url
+	gplus:
+}
+}}
+
+Here is a comprehensive list of navbars supported by siteme. We have include varied types hoping to serve as an exhaustive list.
+
+---------------
+
+(h3){orange}
+(code){{type:orange}}||
+image(){navbar_type1.png}||
+link(text:Demo){http://cssmenumaker.com/menu/simple-responsive-menu}
+
+----------------
+
+(h3){flat}
+(code){{type:flat}}||
+image(){navbar_type2.png}||
+link(text:Demo){http://cssmenumaker.com/menu/flat-tabbed-menu}
+
+----------------
+
+(h3){indented}
+(code){{type:indented}}||
+image(){navbar_type3.png}||
+link(text:Demo){http://cssmenumaker.com/menu/indented-horizontal-menu}
+----------------
+
+(h3){wrap}
+(code){{type:wrap}}||
+image(){navbar_type4.png}||
+link(text:Demo){https://codepen.io/jurbank/pen/veGnb}
+
+----------------
+
+(h3){toggle}
+(code){{type:toogle}}||
+image(){navbar_type5.png}||
+link(text:Demo){https://codepen.io/antoinevinial/pen/lnwyC}
+
+--------------------
+
+(h3){open}
+(code){{type:open}}||
+image(){navbar_type6.png}||
+link(text:Demo){https://codepen.io/sergioandrade/pen/onkub}
+
+--------------------
+
+(h3){breadcrumbs}
+(code){{type:breadcrumbs}}||
+image(){navbar_type7.png}||
+link(text:Demo){https://codepen.io/oknoblich/pen/EAzBc}
+
+--------------------

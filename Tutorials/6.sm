@@ -1,0 +1,62 @@
+title: Abstract Elements
+date: 25th October
+author: Team in the North
+tags: parallax , accordian , slides , grid
+----------------------------
+
+There are also several 'abstract' elements.
+
+(h2){Parallax}
+
+Syntax (pre){{
+parallax(){example1.jpg}
+OR
+parallax(advanced, speed:0.6, opacity:0.5){example2.jpg}
+}}
+
+STYLES Supported
+(code){{advanced}}
+(code){{speed}}
+(code){{opacity}}
+
+(h2){Accordion}
+
+Syntax (pre){{
+accordion(){
+*Captain**America is composed of 50 states.
+*Iron**Man is the most intelligent species.
+*Black**Widow's Wail!!!
+}
+}}
+
+(h2){Slideshow}
+
+Syntax (pre){{
+slideshow(){caption1:image1.jpg,caption2:image2.jpg,caption3:image3.jpg}
+}}
+
+(h2){Grid}
+
+Syntax (pre){{
+grid(2,8,2){
+something1...
+}{something2...}{}
+}}
+
+(h2){Block}
+
+(h2){Fade}
+
+Syntax (pre){{
+fade(color:black,font-color:white){Text:example.jpg}
+}}
+
+STYLES Supported
+(code){{top|bottom|left|right}}
+(code){{color}}
+(code){{font-color}}
+(code){{font-size}}
+
+If none of top,bottom,left or right is mentioned, then fading occurs from center
+
+(h2){}

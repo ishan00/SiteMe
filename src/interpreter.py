@@ -54,6 +54,7 @@ CSSCount = {
 	'aparallax':1,
 	'terminal':1,
 	'iconbar':1,
+	'enlarge':1,
 }
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
@@ -125,7 +126,7 @@ def recursiveBuild(dictionary):
 
 DirectChangeStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","underline":"u" ,"center":"center","code":'code', "sup":'sup' , "sub":'sub' , "kbd":'kbd' , 'quote':'blockquote'}
 IndirectChangeStyles={'latex':'lang:"latex"' ,'r':'text-align:right','l':'text-align:left','c':'text-align:center', 'danger':'background-color: #ffdddd;border-left: 6px solid #f44336; margin-bottom:15px;padding:10px 12px',
-'info':'background-color: #e7f3fe;border-left: 6px solid #2196F3;margin-bottom:15px;padding:10px 12px','success':'background-color: #ddffdd;border-left: 6px solid #4CAF50;margin-bottom:15px;padding:10px 12px' , 'warning':'background-color: #ffffcc;border-left: 6px solid #ffeb3b;margin-bottom:15px;padding:10px 12px'}
+'info':'background-color: #e7f3fe;border-left: 6px solid #2196F3;margin-bottom:15px;padding:10px 12px','success':'background-color: #d1ffa0;border-left: 6px solid #4CAF50;margin-bottom:15px;padding:10px 12px' , 'warning':'background-color: #ffffcc;border-left: 6px solid #ffeb3b;margin-bottom:15px;padding:10px 12px'}
 
 #This function is called from styleMaker and takes strings(style and content) as arguments
 #style contains formatting styles to be implemented on content
@@ -692,16 +693,16 @@ def alertMaker(s,i):
 	s = [x.strip() for x in s.split(',')]
 	css_for_alert = {'alert':{'class':'#alert' + str(CSSCount['alert'])}}
 	if ('danger' in s):
-		css_for_alert['alert']['color'] = 'red'
+		css_for_alert['alert']['color'] = '#ed314d'
 		s.remove('danger')
 	elif ('success' in s):
-		css_for_alert['alert']['color'] = 'green'
+		css_for_alert['alert']['color'] = '#d1ffa0'
 		s.remove('success')
 	elif ('warning' in s):
-		css_for_alert['alert']['color'] = 'yellow'
+		css_for_alert['alert']['color'] = '#f2ba21'
 		s.remove('warning')
 	elif ('info' in s):
-		css_for_alert['alert']['color'] = 'blue'
+		css_for_alert['alert']['color'] = '#a16fe8'
 		s.remove('info')
 	for x in s:
 		if(x.find(':') != -1):
@@ -1366,9 +1367,9 @@ def p_pre(p):
 	'''
 	if(len(p)==2):
 		if (p[1][1:6] == 'latex'):
-			p[0]="<div lang='latex'>\n"+p[1][:-2][9:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"\n</div>"
+			p[0]="<div lang='latex'>\n"+p[1][:-2][9:].replace('\n','@$$@').replace('(','^**^').replace(')','#!!#').replace('{','&--&').replace('}','+==+')+"\n</div>"
 		else:
-			p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
+			p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','#!!#').replace('{','&--&').replace('}','+==+').replace('-----','!@#$%^&') +"</pre>"
 	else:
 		p[0]=''
 
@@ -1377,7 +1378,7 @@ def p_code(p):
 		   |
 	'''
 	if(len(p)==2):
-		p[0]="<code>"+p[1][:-2][8:].replace('\n','@@@@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</code>"
+		p[0]="<code>"+p[1][:-2][8:].replace('\n','@@@@').replace('(','^**^').replace(')','#!!#').replace('{','&--&').replace('}','+==+')+"</code>"
 	else:
 		p[0]=''
 
@@ -1481,7 +1482,7 @@ def main():
 			b=parser.parse(b.strip())
 			b=b.split("<br>")
 			b="<br>\n".join(b)
-			b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}').replace('@@@@','<br>')
+		b=b.replace('@$$@','\n').replace('^**^','(').replace('#!!#',')').replace('&--&','{').replace('+==+','}').replace('@@@@','<br>').replace('!@#$%^&','-----')
 		page_dict['content'][2]['content'][1] = global_navbar
 		page_dict['content'][2]['content'][3] = global_footer
 		body_content = ""

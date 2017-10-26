@@ -1,0 +1,28 @@
+title: Introduction
+date: 25th October
+author: Team in the North
+tags: introduction , SSL
+----------------------------
+Hey there !,||
+Let's start with a quick introduction of the project. "SiteMe" is our course project for the course CS251.
+As you must have already guessed, it must be related something to websites. You're right. SiteMe is a static
+site builder that converts simple text files into responsive webpages. 
+
+You're currently reading the official tutorial of SiteMe.||
+alert(success){This tutorial is itself built using SiteMe. Awesome isn't it?}||
+To know more about the project click on below links
+
+link(text:Project Proposal){https://docs.google.com/document/d/1MlbYfoaCAXKGN_MdGCutiuSkSxZumnNxtfnx9ASNoBo/edit}||
+
+link(text:Project Presentation){https://docs.google.com/presentation/d/1MwCod2mZ9Dv3yW7wuXaLsLEo9-6Upp71brmKyB5CF2U/edit}||
+
+link(text:Github Repository){https://github.com/ishan00/SiteMe}||
+
+(h3){Team in the North}||
+list(o){
+* Shivam Patel, 160050003
+* Priyanshu Meel, 160050052
+* Ishan Tarunesh, 160050054
+}
+
+alert(info){Announcement: SiteMe now has syntax highlighting. Just open the (code){{*.sm}} files in vim editor}

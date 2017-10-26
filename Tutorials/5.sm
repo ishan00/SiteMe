@@ -1,0 +1,117 @@
+title: Basic Elements
+date: 25th October
+author: Team in the North
+tags: image, link, table, list
+----------------------------
+
+We have provided all basic constructs present in HTML with much simpler syntax.
+
+(h2){Images}
+
+Syntax (pre){{
+image(width:200px, height:300px, align:right ,text:AltText){background.jpg}
+}}
+
+STYLES Supported 
+(code){{width}}
+(code){{height}}
+(code){{text}}
+(code){{align:left|center|right}}
+(code){{opacity}}
+(code){{flip}}
+(code){{shake}}
+(code){{enlarge}}
+
+When user hovers on the image, these three styles come into action:
+list(u){
+*flip : Flips the image
+*shake : Shakes the image
+*enlarge : Zooms the image while keeping its boundaries the same||This has a style (code){{scale}} which allows to set amount of zooming
+}
+
+(h2){Links}
+
+Syntax (pre){{
+link(text: A Link, cursor:pointer){https://www.w3schools.com}
+}}
+
+STYLES Supported
+(code){{text}}
+(code){{cursor}}
+(code){{download}}
+
+If one wants to download the package at the link, use download style||It can also have a value which is the name of the downloaded file
+
+(h2){Lists}
+
+Syntax (pre){{
+list(u, symbol: disc){
+* Pyhton
+* Java
+* Scala
+}
+OR
+list(d){
+*Item1
+** Description1
+*Item2
+** Description2
+}
+}}
+
+STYLES Supported
+(code){{u|o|d}}
+(code){{symbol:i|I|a|A|1|circle|disc|square}}
+(code){{indented}}
+
+Here u stands for unordered, o for ordered and d for description
+
+(h2){Tables}
+
+Syntax (pre){{
+table(){
+**Hello *3,1*World
+*2,1*Bye
+}
+}}
+
+STYLES Supported
+(code){{width}}
+(code){{align}}
+(code){{caption}}
+(code){{border}}
+(code){{background-color}}
+(code){{striped}}
+(code){{bordered}}
+(code){{condensed}}
+(code){{hover}}
+
+(h2){Buttons}
+
+Syntax (pre){{
+button(color: red, hover-color: blue, disabled){Click Me}
+OR
+button(hover-dropdown){A,X:x.com,Y:y.com,Z:z.com}
+}}
+
+STYLES Supported
+(code){{color}}
+(code){{font-color}}
+(code){{hover-color}}
+(code){{hover-font-color}}
+(code){{border}}
+(code){{hover-border}}
+(code){{font-size}}
+(code){{hover-dropdown}}
+(code){{click-dropdown}}
+(code){{rounded}}
+(code){{opacity}}
+(code){{padding-top}}
+(code){{padding-left}}
+(code){{round}}
+(code){{oval}}
+(code){{shadow}}
+(code){{hover-shadow}}
+(code){{disabled}}
+
+
