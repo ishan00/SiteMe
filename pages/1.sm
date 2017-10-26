@@ -51,7 +51,6 @@ grid(4,8){
 	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod amet placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at phasellus sed ultricies.||
 	button(color:white, font-color:black, border-color:1px solid black, hover-font-color:#0ec98b){LEARN MORE}
 	--------
-	iconbar(twitter:#,facebook:,instagram:,rss:,main:){}
 }{
 	block(){
 	grid(8,4){(h2){MAGNA SED ADIPISCING}||
