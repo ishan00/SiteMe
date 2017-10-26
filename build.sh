@@ -34,11 +34,17 @@ do
 	NAME=$(echo $FULL_PATH | cut -d'/' -f2)
 	if [ $NAME == 'blog' ]
 		then
-		python3 ./src/renderblog.py './pages/blog.sm'
+		python3 ./src/renderblog.py './pages/blog.sm' './posts/'
 	fi
 	OUTPUT_FILE="./site/$NAME.html"
 	touch $OUTPUT_FILE
 done
+
+if [ ! -f "./pages/blog.sm" ]   
+	then                    
+	touch "./pages/blog.sm" 
+fi                              
+python3 ./src/renderblog.py './pages/blog.sm' './Tutorials/'
 
 python3 ./src/interpreter.py
 
@@ -47,3 +53,4 @@ if [  -f  ./tmp/*.plot ]
 	gnuplot -p ./tmp/*.plot
 fi
 
+rm -r ./tmp/

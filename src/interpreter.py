@@ -7,6 +7,10 @@ import shutil
 sys.path.append('../layout/')
 sys.path.append('./layout/')
 sys.path.append('../src/')
+sys.path.append('../layout/navbar/')
+sys.path.append('../layout/footer/')
+sys.path.append('./layout/navbar/')
+sys.path.append('./layout/footer/')
 import ply.yacc as yacc
 from HTML_slideshow import *
 from HTML_navbar import *
@@ -55,7 +59,7 @@ CSSCount = {
 	'terminal':1,
 	'iconbar':1,
 	'wallpaper2':1,
-	'enlarge':1,
+	'enlarge':1
 }
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
@@ -983,7 +987,10 @@ def styleMaker(s):
 			if (x[:x.find(':')].strip() in TwoNonCSS.keys()):
 				if (x[:x.find(':')].strip() in allowedStyles.keys()):
 					if not (re.match(allowedStyles[x[:x.find(':')].strip()],x[x.find(':')+1:].strip())):
-						eprint("syntax error at line number "+str(LineNumber)+": Incorrect attribute for "+x[:x.find(':')].strip()+" in "+styleName)
+						if(styleName):
+							eprint("In File "+pageName+" Syntax Error: Incorrect Attribute For "+x[:x.find(':')].strip()+" in "+styleName)
+						else:
+							eprint("In File "+pageName+" Syntax Error: Incorrect Attribute For "+x[:x.find(':')].strip())
 	if(not styleName):
 		return taggedMaker(styleStyle,styleContent)
 	else:
@@ -1438,7 +1445,7 @@ main_dict = {'html':{} , 'content':{
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
 			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'} , 'content' : ''},
-			8:{'script':{'src':'../layout/stellar.js-master/src/jquery.stellar.js'} , 'content' : ''},
+			8:{'script':{'src':'../layout/parallax/jquery.stellar.js'} , 'content' : ''},
 			9:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''},
 			10:{'script':{'src':'http://latex.codecogs.com/latexit.js' , 'type':'text/javascript'} , 'content':''},
 		}} , 
@@ -1451,13 +1458,14 @@ main_dict = {'html':{} , 'content':{
 global_navbar = {}
 global_footer = {}
 page_dict = {}
+pageName=''
 def makeJS(d):
 	global page_dict
 	element = list(d.keys())[0]
 	if ('type' in list(d[element].keys())):
-		filename = 'layout/' + element + '_' + d[element]['type'] + '.js'
+		filename = 'layout/JS/' + element + '_' + d[element]['type'] + '.js'
 	else:
-		filename = 'layout/' + element + '.js'
+		filename = 'layout/JS/' + element + '.js'
 	f = open(filename)
 	f = f.read()
 	count = len(list(page_dict['content'][2]['content'].keys()))
@@ -1466,9 +1474,9 @@ def makeJS(d):
 def main():
 	global main_dict
 	global page_dict
+	global pageName
 	page_list = [os.fsdecode(pages) for pages in os.listdir('pages/') if os.fsdecode(pages).endswith('.sm')]
 	page_list.sort()
-	eprint(page_list)
 	con = open(os.fsdecode('config.sm'))
 	c = con.read()
 	c = parseAbstractElement(c)
@@ -1487,6 +1495,7 @@ def main():
 	global_navbar = makeNavbar(c[index_navbar+1],c[index_navbar+2])
 	global_footer = makeFooter(c[index_footer+1],c[index_footer+2])
 	for page in page_list:
+		pageName=page
 		page_dict = copy.deepcopy(main_dict)
 		page_file = open(os.fsdecode('pages/') + page)
 		b=page_file.read()

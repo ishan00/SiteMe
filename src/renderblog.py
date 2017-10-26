@@ -1,11 +1,11 @@
 from __future__ import print_function
 from sys import argv
-script, blogfile = argv
+script, blogfile, directoryFile = argv
 import sys
 import os
 import copy
 
-directory = os.fsencode('./posts/')
+directory = os.fsencode(directoryFile)
 def eprint(*args, **kwargs):
 	print (*args, file=sys.stderr, **kwargs)
 tags = {}
