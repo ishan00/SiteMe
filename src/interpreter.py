@@ -12,14 +12,49 @@ from HTML_slideshow import *
 from HTML_navbar import *
 from HTML_footer import *
 from makeCSS import makeCSS
-from globalThings import CSSCount
 from lexer import tokens,styles,keywords
 from pyparsing import *
 def eprint(*args, **kwargs):
 	print (*args, file=sys.stderr, **kwargs)
 
 LineNumber=1
-
+#eprint(str(CSSCount['hover-button']))
+CSSCount = {
+	'navbar':1,
+	'footer':1,
+	'button':1,
+	'hover-button':1,
+	'click-button':1,
+	'piechart':1,
+	'card':1,
+	'fade':1,
+	'image':1,
+	'link':1,
+	'hoverdropdown':1,
+	'list':1,
+	'flip':1,
+	'shake':1,
+	'table':1,
+	'slideshow':1,
+	'parallax':1,
+	'accordian':1,
+	'timeline':1,
+	'checkbox':1,
+	'alert':1,
+	'grid':1,
+	'wallpaper':1,
+	'skillbar':1,
+	'tooltip':1,
+	'chatbox':1,
+	'textfield':1,
+	'passwordfield':1,
+	'select':1,
+	'submit':1,
+	'block':1,
+	'aparallax':1,
+	'terminal':1,
+	'iconbar':1,
+}
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
 # string = 'home:url , about:url , contact:url'
@@ -351,6 +386,11 @@ def listMaker(style,content):
 				listDict={}
 				for i in range(0,len(listData)):
 					listDict.update({i+1:{'li':{},'content':listData[i]}})
+			if('terminal' in style):
+				if(CSSCount['terminal'] == 1):
+					makeCSS({'terminal':{}})
+					CSSCount['terminal']=0
+				listDict={'div':{'class':'terminal'},'content':{1:listDict}}
 			return {listType+'l':styleDict,'content':listDict}
 
 #tableTypes={"avacado":"table table-bordered","durian":"table table-condensed table-hover","pitaya":"table table-striped","cherimoya":"table table-striped table-hover","kiwano":"table table-bordered table-striped table-hover table-condensed"}
@@ -407,7 +447,6 @@ output:- dictionary of slideshow
 '''
 def slideshowMaker(s,i):
 	content = i.split(',')
-	type = s.split(':')[1].strip()
 	slideshow_dict = copy.deepcopy(slideshow_carousel)
 	elem = copy.deepcopy(slideshow_carousel['content'][2]['content'][1])
 	extra = copy.deepcopy(slideshow_carousel['content'][1]['content'][1])
@@ -963,8 +1002,16 @@ def gridMaker(p):
 		if (len(sizeList)==len(gridList)):
 			for i in range(0,len(sizeList)):
 				span=sizeList[i]
-				sum=sum+int(span)
-				rs=rs+'<div class="col-sm-'+span+'" >'
+				if(':' in span):
+					span=span.split(':')
+					sum=sum+int(span[0])
+					if(span[1]=='f'):
+						rs=rs+'<div class="col-sm-'+span[0]+'" style="overflow:hidden;" >'
+					elif(span[1]=='s'):
+						rs=rs+'<div class="col-sm-'+span[0]+'" style="overflow:auto;height:100%;" >'
+				else:
+					rs=rs+'<div class="col-sm-'+span+'" >'
+					sum=sum+int(span)
 				content=gridList[i]
 				rs=rs+content+'</div>'
 			rs=rs+'</div>'
@@ -1066,7 +1113,7 @@ def makeNavbar(navbar_style,  navbar_content):
 		li_dropdown_element = copy.deepcopy(navbar_none['content'][2]['content'][2]['content'][2]['content'][1])
 		for i in range(1,len(navbar_content)):
 			row = copy.deepcopy(drowdown_element)
-			if (isinstance(navbar_content[i][1]) , list):
+			if (isinstance(navbar_content[i][1] , list)):
 				if (isinstance(navbar_content[i][0],list)):
 					row['content'][1]['content'][1] = navbar_content[i][0][1]
 					### I don't know how to right align in case of bootstrap.
@@ -1086,8 +1133,8 @@ def makeNavbar(navbar_style,  navbar_content):
 						row['li']['float'] = 'left'
 			else:
 					row['content'][1]['content'] =navbar_content[i][0]
-			navbar_dict['content'][1][i+1] = li_element
-		#print (navbar_dict)
+			navbar_dict['content'][2]['content'][i] = li_element
+		#eprint (navbar_dict)
 		return navbar_dict
 	elif navbar_type == 'open':
 		css_for_navbar['navbar']['id'] = 'navbar'
@@ -1469,5 +1516,6 @@ def main():
 		output_file.write(makeHTML(page_dict))
 		output_file.close()
 		page_dict = {}
+		LineNumber = 1
 
 main()

@@ -1,18 +1,13 @@
-#nonavbar
 #nofooter
-title:Future Imperfect
-margin-left:10px
-background-color:#efefef
-grid(4,8){
-	image(rounded,height:50px, width:50px){firefox.jpg}
-	(h1){FUTURE}
-	(h1){IMPERFECT}
-	(h5){ANOTHER FINE RESPONSIVE SITE}
-	(h5){TEMPLATE BY HTML5 UP}
-	-----
-	block(){image(enlarge,width:360px,height:200px,scale:1.1,align:center){T11.jpg}
-	link(text:VITAE SED CONDIMENTUM){#}
-	OCTOBER 20,2015
+#nonavbar
+title:Flexible Jekyll
+margin-right:10px
+margin-top:10px
+grid(2:f,10:s){
+	(c){image(circle,height:100px, width:100px){david-freeman.jpg}}
+	(c){
+		(h4){DAVID FREEMAN}
+		(){I am a web developer focusing on front-end development.||Always hungry to keep learning.}
 	}
 	-----
 	block(){image(enlarge,width:360px,height:200px,scale:1.1,center){T13.jpg}
@@ -51,46 +46,42 @@ grid(4,8){
 	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod amet placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at phasellus sed ultricies.||
 	button(color:white, font-color:black, border-color:1px solid black, hover-font-color:#0ec98b){LEARN MORE}
 	--------
+	(c){Contact Me}
+	iconbar(color:white,icon-color:yellow,hover-color:white,padding: 7px){twitter:#,facebook:,instagram:,rss:,mail:}
 }{
-	block(){
-	grid(8,4){(h2){MAGNA SED ADIPISCING}||
-	LOREM IPSUM DOLOR AMET NULLAM CONSEQUAT ETIAM FEUGIAT}
-	{(align:right){November 1, 2015||
-	link(){JANE DOE:x.jpg}image(circle){T18.jpg}}}||
-	||
-	---------
-	||
-	image(enlarge,width:735px,height:258px,scale:1.1){T12.jpg}
-	||
-	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
-	button(color:white, font-color:black, border-color:1px solid black, hover-font-color:#0ec98b){CONTINUE READING}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){i-rest.jpg}}
+	{(h1){How I Rest From Work}
+	Fam locavore snackwave bushwick +1 sartorial. Selfies portland knausgaard synth. Pop-up art party marfa deep...||||
+	2017, Sep 12   —  4 minute read
 	}
-	block(){
-	grid(8,4){(h2){ULTRICIES SED MAGNA EUISMOD ENIM VITAE GRAVIDA}||
-	LOREM IPSUM DOLOR AMET NULLAM CONSEQUAT ETIAM FEUGIAT}
-	{(align:right){October 25th, 2015||
-	link(){JANE DOE:x.jpg}image(circle){T18.jpg}}}||
-	||
-	---------
-	||
-	image(enlarge,width:735px,height:258px,scale:1.1){T16.jpg}
-	||
-	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
-	button(color:white, font-color:black, border-color:1px solid black, hover-font-color:#0ec98b){CONTINUE READING}
 	}
-	block(){
-	grid(8,4){(h2){EUISMOD ET ACCUMSAN}||
-	LOREM IPSUM DOLOR AMET NULLAM CONSEQUAT ETIAM FEUGIAT}
-	{(align:right){October 22, 2015||
-	link(){JANE DOE:x.jpg}image(circle){T18.jpg}}}||
-	||
-	---------
-	||
-	image(enlarge,width:735px,height:258px,scale:1.1){T17.jpg}
-	||
-	Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat. Vivamus porttitor magna enim, ac accumsan tortor cursus at. Phasellus sed ultricies mi non congue ullam corper. Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.
-	button(color:white, font-color:black, border-color:1px solid black, hover-font-color:#0ec98b){CONTINUE READING}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){software.jpg}}
+	{(h1){The Best Organizer Software}
+	Church-key blog messenger bag, selfies umami man braid mlkshk. Pork belly cornhole meditation tumblr meh...||||
+	2017, Sep 12   —  3 minute read
 	}
-	button(disabled,color:white, font-color:black, border-color:1px solid black, hover-font-color:#0ec98b){PREVIOUS PAGE}
-	button(color:white, font-color:black, border-color:1px solid black, hover-font-color:#0ec98b){NEXT PAGE}
+	}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){how-to-start.jpg}}
+	{(h1){How To Start Programming}
+	Post-ironic jean shorts bushwick umami, synth beard austin hell of meh kitsch distillery sustainable plaid...||||
+	2017, Sep 12   —  4 minute read
+	}
+	}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){workflow.jpg}}
+	{(h1){10 Tips To Improve Your Workflow}
+	Asymmetrical portland enamel pin af heirloom ramps authentic thundercats. Synth truffaut schlitz aesthetic, palo santo...||||
+	2017, Sep 12   —  5 minute read
+	}
+	}
+	block(padding-top: 0px,padding-left: 0px){
+		grid(4,8){image(height:200px, width:320px){js-1.png}}
+	{(h1){Conference on Javascript}
+	Jean shorts organic cornhole, gochujang post-ironic chicharrones authentic flexitarian viral PBR&B forage wolf. Man braid...||||
+	2017, Sep 10   —  2 minute read
+	}
+	}
 }

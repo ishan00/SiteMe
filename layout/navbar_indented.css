@@ -1,9 +1,9 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
 @charset "UTF-8";
 /* Base Styles */
-#cssmenu ul,
-#cssmenu li,
-#cssmenu a {
+$CLASS$ ul,
+$CLASS$ li,
+$CLASS$ a {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -11,7 +11,7 @@
   line-height: 1;
   font-family: 'Lato', sans-serif;
 }
-#cssmenu {
+$CLASS$ {
   border: 1px solid #133e40;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -20,7 +20,7 @@
   border-radius: 5px;
   width: auto;
 }
-#cssmenu ul {
+$CLASS$ ul {
   zoom: 1;
   background: #36b0b6;
   background: -moz-linear-gradient(top, #36b0b6 0%, #2a8a8f 100%);
@@ -37,21 +37,21 @@
   -o-border-radius: 5px;
   border-radius: 5px;
 }
-#cssmenu ul:before {
+$CLASS$ ul:before {
   content: '';
   display: block;
 }
-#cssmenu ul:after {
+$CLASS$ ul:after {
   content: '';
   display: table;
   clear: both;
 }
-#cssmenu li {
+$CLASS$ li {
   float: left;
   margin: 0 5px 0 0;
   border: 1px solid transparent;
 }
-#cssmenu li a {
+$CLASS$ li a {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -64,7 +64,7 @@
   border: 1px solid transparent;
   font-size: 16px;
 }
-#cssmenu li.active {
+$CLASS$ li.active {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -72,7 +72,7 @@
   border-radius: 5px;
   border: 1px solid #36b0b6;
 }
-#cssmenu li.active a {
+$CLASS$ li.active a {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -85,7 +85,7 @@
   -webkit-box-shadow: inset 0 5px 10px #133e40;
   box-shadow: inset 0 5px 10px #133e40;
 }
-#cssmenu li:hover {
+$CLASS$ li:hover {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -93,7 +93,7 @@
   border-radius: 5px;
   border: 1px solid #36b0b6;
 }
-#cssmenu li:hover a {
+$CLASS$ li:hover a {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;

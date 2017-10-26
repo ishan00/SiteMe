@@ -72,7 +72,7 @@ buttonDict={'$CLASS$':'#button','$COLOR$':'#4CAF50','$BORDER$':'none','$FONT-COL
 checkboxDict={'$CLASS$':'.checkbox'}
 flipDict={'$CLASS$':'.flip'}
 shakeDict={'$CLASS$':'.shake'}
-iconbarDict={'$CLASS$':'.iconbar','$HOVER-COLOR$':'#000','$COLOR$':'#555','$WIDTH$':'100%','$ICON-WIDTH$':'20%','$FLOAT$':'left','$PADDDING$':'12px','$SIZE$':'36px'}
+iconbarDict={'$CLASS$':'.iconbar','$HOVER-COLOR$':'#000','$COLOR$':'#555','$WIDTH$':'100%','$ICON-WIDTH$':'20%','$ICON-COLOR$':'white','$FLOAT$':'left','$PADDDING$':'12px','$SIZE$':'36px','$HOVER-ICON-COLOR$':'none'}
 enlargeDict={'$CLASS$':'.enlarge','$SCALE$':'1.1','$WIDTH$':'700px'}
 alertDict = {'$CLASS$':'', '$COLOR$':'red' , '$TEXT-COLOR':'white'}
 timelineDict={'$CLASS$':'.chatbox'}
@@ -83,7 +83,7 @@ passwordfieldDict={'$CLASS$':'.passwordfield','$FONT-SIZE$':'16px','$WIDTH$':'10
 selectDict={'$CLASS$':'.select','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
 submitDict={'$CLASS$':'.submit','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FONT-COLOR$':'white','$PADDING-TOP$':'12px','$PADDING-LEFT$':'20px','$FONT-SIZE$':'16px','$CURSOR$':'pointer','$ROUNDED$':'4px','$OPACITY$':'none','$SHADOW$':'none','$HOVER-COLOR$':'#45a049','$HOVER-FONT-COLOR$':'none'}
 COLORS = ['#4CAF50' , '#2196F3','#e10d0d' , '#fed044' , '#00c992' , '#7e1dfb']
-blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px', '$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
+blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px','$PADDING-LEFT$':'12px' , '$PADDING-BOTTOM':'10px','$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
 gen_color = cycle(COLORS)
 
 def makeGenCSS(d,f,x):
