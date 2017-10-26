@@ -1,0 +1,13 @@
+#nonavbar
+#nofooter
+
+grid(2,8,2){}{
+
+(h1,text-align:center){Terminal}
+
+list(o,terminal){
+* ./build.sh
+* cd ..
+* rm rf
+}
+}{}

@@ -1,0 +1,12 @@
+#nonavbar
+#nofooter
+
+grid(2,8,2){}{
+
+(h1,text-align:center){Enlarge}
+This is enlarge. When hovered over the image, you'll see it's size increasing
+||
+||
+image(enlarge,width:760px,height:600px,scale:1.1,align:center){1.jpg}
+
+}{}

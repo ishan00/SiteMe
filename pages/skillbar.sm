@@ -1,0 +1,10 @@
+#nonavbar
+#nofooter
+
+grid(2,8,2){}{
+
+(h1,text-align:center){Skill Bars}
+
+skillbar(color:#1224ef){HTML:50%, CSS:60%, JavaScript:80%, php:10%}
+skillbar(width:10px){HTML:50%, CSS:60%, JavaScript:80%, php:10%}
+skillbar(width:20px){A:10%, B:20%, C:30%} }{}

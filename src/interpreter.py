@@ -37,7 +37,7 @@ CSSCount = {
 	'table':1,
 	'slideshow':1,
 	'parallax':1,
-	'accordian':1,
+	'accordion':1,
 	'timeline':1,
 	'checkbox':1,
 	'alert':1,
@@ -502,7 +502,7 @@ def parallaxMaker(s,i):
 # Currently no styles are implemented for accordion
 def accordionMaker(s,i):
 	# accordion_dict is the template dictionary for the accordion
-	accordion_dict  = {'div':{'id':'accordion'+CSSCount['accordion']},'content':{}}
+	accordion_dict  = {'div':{'id':'accordion'+str(CSSCount['accordion'])},'content':{}}
 	CSSCount['accordion'] = CSSCount['accordion']+1
 	title_dict = {'button':{'class':'accordion'} , 'content':''}
 	text_dict = {'div':{'class':'panel'},'content' : {1 : {'p':{} , 'content' : ''}}}

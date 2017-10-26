@@ -1,0 +1,14 @@
+#nonavbar
+#nofooter
+
+(h1,text-align:center){Parallax}
+
+parallax(){background.jpg}
+||
+||
+parallax(advanced,speed:0.5){background.jpg}
+||
+||
+||
+||
+||

@@ -1,0 +1,13 @@
+#nonavbar
+#nofooter
+
+grid(2,8,2){}{
+
+(h1,text-align:center){Timeline}
+
+timeline(){
+* 2016 ** This is the first entry in the timeline. Scroll down to see other entries
+* 2015 ** Second Entry in timeline. Note that this is aligned the other way as before
+
+}
+}{}

@@ -1,0 +1,46 @@
+#nonavbar
+#nofooter
+
+grid(2,8,2){}{
+
+(h1,text-align:center){List}
+
+(h3){Unordered List}
+list(u){
+* List Element 1
+* List Element 2
+* List Element 3
+}
+
+list(u, symbol:square){
+* List Element 1
+* List Element 2
+* List Element 3
+}
+
+(h3){Ordered List}
+
+list(o){
+* List Element 1
+* List Element 2
+* List Element 3
+}
+
+
+list(o,symbol:i){
+* List Element 1
+* List Element 2
+* List Element 3
+}
+
+(h3){Description List}
+list(d){
+* Word 1
+** Definition 1
+* Word 2
+** Definition 2
+* Word 3
+** Definition 3
+}
+
+}{}

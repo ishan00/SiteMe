@@ -1,0 +1,10 @@
+#nonavbar
+#nofooter
+
+grid(2,8,2){}{
+
+(h1,text-align:center){Piechart}
+
+piechart(label:MyChart ,type:basic){AA:20, AB:30, BB:10, BC:40}
+
+}{}

@@ -1,0 +1,13 @@
+#nonavbar
+#nofooter
+
+grid(2,8,2){}{
+
+(h1,text-align:center){Alert}
+
+alert(info){Information Alert}
+alert(danger){Danger Alert}
+alert(warning){Warning}
+alert(success){Success}
+alert(color:#eeeeee){Custom Alert}
+}{}
