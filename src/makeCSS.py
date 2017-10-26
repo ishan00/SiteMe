@@ -85,6 +85,7 @@ submitDict={'$CLASS$':'.submit','$COLOR$':'#4CAF50','$BORDER-COLOR$':'none','$FO
 COLORS = ['#4CAF50' , '#2196F3','#e10d0d' , '#fed044' , '#00c992' , '#7e1dfb']
 blockDict = {'$SHADOW$':'4px' , '$PADDING-TOP$':'20px', '$PADDING-RIGHT$':'16px','$PADDING-LEFT$':'12px' , '$PADDING-BOTTOM':'10px','$WIDTH$':'100%' , '$COLOR$':'white' , '$MARGIN-TOP$':'12px' , '$MARGIN-RIGHT$':'4px' , '$MARGIN-BOTTOM$':'12px', '$MARGIN-LEFT$':'4px'}
 gen_color = cycle(COLORS)
+terminalDict={}
 
 def makeGenCSS(d,f,x):
 	CSSFile = open(f)
@@ -100,7 +101,7 @@ def makeGenCSS(d,f,x):
 
 genCSSDict={
 	'card':['./layout/card.css',cardDict],
-	'parallax':['./layout/parallax.css',parallaxDict],
+	'parallax':['./layout/parallax/parallax.css',parallaxDict],
 	'accordion':['./layout/accordion.css',accordionDict],
 	'button':['./layout/button.css',buttonDict],
 	'hover-button':['./layout/hover-dropdown.css',buttonDict],
@@ -118,12 +119,13 @@ genCSSDict={
 	'select':['./layout/formfield.css',selectDict],
 	'submit':['./layout/submit.css',submitDict],
 	'block':['./layout/block.css',blockDict],
-	'iconbar':['./layout/iconbar.css',iconbarDict]
+	'iconbar':['./layout/iconbar.css',iconbarDict],
+	'terminal':['./layout/terminal.css',terminalDict]
 }
 
 typeGenCSSDict={
-	'navbar':['./layout/navbar_',navbarDict],
-	'footer':['./layout/footer_',footerDict],
+	'navbar':['./layout/navbar/navbar_',navbarDict],
+	'footer':['./layout/footer/footer_',footerDict],
 	'wallpaper':['./layout/wallpaper_',wallpaper_type1Dict]
 }
 

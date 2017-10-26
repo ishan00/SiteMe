@@ -7,6 +7,10 @@ import shutil
 sys.path.append('../layout/')
 sys.path.append('./layout/')
 sys.path.append('../src/')
+sys.path.append('../layout/navbar/')
+sys.path.append('../layout/footer/')
+sys.path.append('./layout/navbar/')
+sys.path.append('./layout/footer/')
 import ply.yacc as yacc
 from HTML_slideshow import *
 from HTML_navbar import *
@@ -54,6 +58,7 @@ CSSCount = {
 	'aparallax':1,
 	'terminal':1,
 	'iconbar':1,
+	'enlarge':1
 }
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
@@ -1425,7 +1430,7 @@ main_dict = {'html':{} , 'content':{
 			4:{'link':{'rel':'stylesheet' ,'href':'//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'} , 'content':''},
 			3:{'link':{'rel':'stylesheet', 'href':'css/style.css'} , 'content':''},
 			7:{'script':{'src':'https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'} , 'content' : ''},
-			8:{'script':{'src':'../layout/stellar.js-master/src/jquery.stellar.js'} , 'content' : ''},
+			8:{'script':{'src':'../layout/parallax/jquery.stellar.js'} , 'content' : ''},
 			9:{'script':{'src':'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'} , 'content' : ''},
 			10:{'script':{'src':'http://latex.codecogs.com/latexit.js' , 'type':'text/javascript'} , 'content':''},
 		}} , 
@@ -1442,9 +1447,9 @@ def makeJS(d):
 	global page_dict
 	element = list(d.keys())[0]
 	if ('type' in list(d[element].keys())):
-		filename = 'layout/' + element + '_' + d[element]['type'] + '.js'
+		filename = 'layout/JS/' + element + '_' + d[element]['type'] + '.js'
 	else:
-		filename = 'layout/' + element + '.js'
+		filename = 'layout/JS/' + element + '.js'
 	f = open(filename)
 	f = f.read()
 	count = len(list(page_dict['content'][2]['content'].keys()))
@@ -1455,7 +1460,6 @@ def main():
 	global page_dict
 	page_list = [os.fsdecode(pages) for pages in os.listdir('pages/') if os.fsdecode(pages).endswith('.sm')]
 	page_list.sort()
-	eprint(page_list)
 	con = open(os.fsdecode('config.sm'))
 	c = con.read()
 	c = parseAbstractElement(c)

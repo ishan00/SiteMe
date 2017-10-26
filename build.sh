@@ -34,7 +34,7 @@ do
 	NAME=$(echo $FULL_PATH | cut -d'/' -f2)
 	if [ $NAME == 'blog' ]
 		then
-		python3 ./src/renderblog.py './pages/blog.sm'
+		python3 ./src/renderblog.py './pages/blog.sm' './posts/'
 	fi
 	OUTPUT_FILE="./site/$NAME.html"
 	touch $OUTPUT_FILE
