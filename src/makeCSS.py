@@ -28,7 +28,7 @@ def makeFadeCSS(d):
 
 navbarDict={'$CLASS$':'#navbar','$COLOR$':'#f96e5b','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'14px','$HOVER-COLOR$':'#ffffff','$HOVER-FONT-COLOR$':'#333333','$DROPDOWN-COLOR$':'none','$DROPDOWN-FONT-COLOR$':'#8B8B8B','$TOGGLE-COLOR$':'#38a6a6','$ARROW-COLOR$':'#ffffff'}
 footerDict={'$CLASS$':'.footer','$COLOR$':'#292c2f','$FONT-COLOR$':'#ffffff','$FONT-SIZE$':'18px','$MOTTO-FONT-COLOR$':'#8d9093','$MOTTO-FONT-SIZE$':'24px','$NAME-FONT-COLOR$':'#8f9296','$NAME-FONT-SIZE$':'14px','$SIZE':'60px'}
-wallpaper_type1Dict = {'$CLASS$':'' , '$COLOR$':'#1abc9c' , '$TEXT-COLOR$':'#ffffff'}
+wallpaper_type1Dict = {'$CLASS$':'' , '$COLOR$':'#1abc9c' , '$FONT-COLOR$':'#ffffff'}
 
 def makeTypeGenCSS(d,f,x):
 	CSSFile = open(f + d['type'] + '.css')
@@ -74,10 +74,11 @@ flipDict={'$CLASS$':'.flip'}
 shakeDict={'$CLASS$':'.shake'}
 iconbarDict={'$CLASS$':'.iconbar','$HOVER-COLOR$':'#000','$COLOR$':'#555','$WIDTH$':'100%','$ICON-WIDTH$':'20%','$ICON-COLOR$':'white','$FLOAT$':'left','$PADDDING$':'12px','$SIZE$':'36px','$HOVER-ICON-COLOR$':'none'}
 enlargeDict={'$CLASS$':'.enlarge','$SCALE$':'1.1','$WIDTH$':'700px'}
-alertDict = {'$CLASS$':'', '$COLOR$':'red' , '$TEXT-COLOR':'white'}
+alertDict = {'$CLASS$':'', '$COLOR$':'red' , '$TEXT-COLOR$':'white'}
 timelineDict={'$CLASS$':'.chatbox'}
 tooltipDict={'$COLOR':'#555','$FONT-COLOR$':'#fff','$CLASS$':'.tooltip'}
 chatboxDict={'$CLASS$':'.chatbox'}
+wallpaper2Dict={'$CLASS$':'#wallpaper2','$FONT-COLOR$':'white','$FONT-SIZE$':'20px'}
 textfieldDict={'$CLASS$':'.textfield','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
 passwordfieldDict={'$CLASS$':'.passwordfield','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
 selectDict={'$CLASS$':'.select','$FONT-SIZE$':'16px','$WIDTH$':'100%','$HEIGHT$':'none'}
@@ -118,7 +119,8 @@ genCSSDict={
 	'select':['./layout/formfield.css',selectDict],
 	'submit':['./layout/submit.css',submitDict],
 	'block':['./layout/block.css',blockDict],
-	'iconbar':['./layout/iconbar.css',iconbarDict]
+	'iconbar':['./layout/iconbar.css',iconbarDict],
+	'wallpaper2':['./layout/wallpaper_type2.css',wallpaper2Dict]
 }
 
 typeGenCSSDict={

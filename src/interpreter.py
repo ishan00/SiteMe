@@ -54,6 +54,8 @@ CSSCount = {
 	'aparallax':1,
 	'terminal':1,
 	'iconbar':1,
+	'wallpaper2':1,
+	'enlarge':1
 }
 #---------------------------------------------------------------------------------------
 # This function makes a dictionary out of a string as shown below
@@ -163,7 +165,7 @@ def taggedMaker(style,content):
 				return "<span style=\""+htagged+"\">"+content+"</span>\n"
 
 TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor','margin':'margin','padding':'padding','float':'float','type':'type',
-'width':'width','height':'height','scale':'scale','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
+'width':'width','height':'height','scale':'scale','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color','text-color':'text-color','font-size':'font-size'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-circle'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
@@ -789,10 +791,11 @@ def wallpaperMaker(s,i):
 	elif(styleDict['type']=='type2'):
 		sendDict={'wallpaper2':{'class':'#wallpaper2'+str(CSSCount['wallpaper2'])}}
 		sendDict['wallpaper2'].update(styleDict)
-		makeCSS('wallpaper2')
-		wallpaper_type2={'div':{'id':'wallpaper2'+str(CSSCount['wallpaper2'])},'content':{1:"image(width:100%){"+content.split(':')[1]+"}",2:{'div':{'class':'centered'},'content':content.split(':')[0]}}}
+		makeCSS(sendDict)
+		content=i.split(':')
+		wallpaper_type2={'div':{'id':'wallpaper2'+str(CSSCount['wallpaper2'])},'content':{1:content[1],2:{'div':{'class':'centered'},'content':content[0]}}}
 		CSSCount['wallpaper2']=CSSCount['wallpaper2']+1
-		makeHTML(wallpaper_type2)
+		return wallpaper_type2
 
 
 def textfieldMaker(style,content):

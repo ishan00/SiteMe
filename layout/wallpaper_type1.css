@@ -1,7 +1,7 @@
 $CLASS$ .margin {margin-bottom: 20px;margin-top: 20px;}
 .bg { 
       background-color: $COLOR$;
-      color: $TEXT-COLOR$;
+      color: $FONT-COLOR$;
 }
 $CLASS$ .container-fluid {
     padding-top: 70px;
