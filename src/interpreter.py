@@ -58,6 +58,7 @@ CSSCount = {
 	'aparallax':1,
 	'terminal':1,
 	'iconbar':1,
+	'wallpaper2':1,
 	'enlarge':1
 }
 #---------------------------------------------------------------------------------------
@@ -130,7 +131,7 @@ def recursiveBuild(dictionary):
 
 DirectChangeStyles={"bold":"b","h2":"h2","h1":"h1","h3":"h3","h4":"h4","h5":"h5","h6":"h6","italic":"i","underline":"u" ,"center":"center","code":'code', "sup":'sup' , "sub":'sub' , "kbd":'kbd' , 'quote':'blockquote'}
 IndirectChangeStyles={'latex':'lang:"latex"' ,'r':'text-align:right','l':'text-align:left','c':'text-align:center', 'danger':'background-color: #ffdddd;border-left: 6px solid #f44336; margin-bottom:15px;padding:10px 12px',
-'info':'background-color: #e7f3fe;border-left: 6px solid #2196F3;margin-bottom:15px;padding:10px 12px','success':'background-color: #ddffdd;border-left: 6px solid #4CAF50;margin-bottom:15px;padding:10px 12px' , 'warning':'background-color: #ffffcc;border-left: 6px solid #ffeb3b;margin-bottom:15px;padding:10px 12px'}
+'info':'background-color: #e7f3fe;border-left: 6px solid #2196F3;margin-bottom:15px;padding:10px 12px','success':'background-color: #d1ffa0;border-left: 6px solid #4CAF50;margin-bottom:15px;padding:10px 12px' , 'warning':'background-color: #ffffcc;border-left: 6px solid #ffeb3b;margin-bottom:15px;padding:10px 12px'}
 
 #This function is called from styleMaker and takes strings(style and content) as arguments
 #style contains formatting styles to be implemented on content
@@ -167,8 +168,8 @@ def taggedMaker(style,content):
 			else:
 				return "<span style=\""+htagged+"\">"+content+"</span>\n"
 
-TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor','margin':'margin','padding':'padding',
-'width':'width','height':'height','scale':'scale','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color'}
+TwoNonCSS={'class':'class', 'data-ride':'data-ride', 'data-slide':'data-slide','id':'id','text':'alt','download':'download','border':'border','caption':'caption','cursor':'cursor','margin':'margin','padding':'padding','float':'float','type':'type',
+'width':'width','height':'height','scale':'scale','align':'align','data-target':'data-target','data-slide-to':'data-slide-to','opacity':'opacity','cursor':'cursor','symbol':'type','background-color':'background-color','font-color':'font-color','color':'color','text-color':'text-color','font-size':'font-size'}
 OneNonCSS={'rounded':{'class':'img-rounded'},'circle':{'class':'img-circle'},'download':{'download':'Untitled_File'},
 'indented':{'list-style-position':'inside'},'striped':{'class':'striped'},'bordered':{'class':'bordered'},'condensed':{'class':'condensed'},
 'hover':{'class':'hover'},'round':{'rounded':'8px'},'oval':{'rounded':'50%'},'shadow':{'shadow':'0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'},
@@ -336,10 +337,10 @@ def imageMaker(style,content):
 		styleDict.update({'src':"img/" + content.strip()})
 		currDict={'img':styleDict,'content':{}}
 		if('flip' in style):
-			currDict={'div':{'class':'flip'+str(CSSCount['flip'])},'content':{1:copy.deepcopy(currDict)}}
+			currDict={'div':{'id':'flip'+str(CSSCount['flip'])},'content':{1:copy.deepcopy(currDict)}}
 			CSSCount['flip']=CSSCount['flip']+1
 		if('shake' in style):
-			currDict={'div':{'class':'shake'+str(CSSCount['shake'])},'content':{1:copy.deepcopy(currDict)}}
+			currDict={'div':{'id':'shake'+str(CSSCount['shake'])},'content':{1:copy.deepcopy(currDict)}}
 			CSSCount['shake']=CSSCount['shake']+1
 		if('enlarge' in style):
 			currDict={'div':{'id':'enlarge'+str(CSSCount['enlarge'])},'content':{1:copy.deepcopy(currDict)}}
@@ -619,7 +620,7 @@ def checkboxMaker(style,content):
 def tooltipMaker(style,content):
 	tooltipDict={'div':{'id':'tooltip'+str(CSSCount['tooltip'])},'content':{1:'',2:{'span':{'class':'tooltiptext'},'content':''}}}
 	sendDict={'tooltip':{'class':'#tooltip'+str(CSSCount['tooltip'])}}
-	styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
 	sendDict['tooltip'].update(styleDict)
 	makeCSS(sendDict)
 	content=content.split(':')
@@ -697,16 +698,16 @@ def alertMaker(s,i):
 	s = [x.strip() for x in s.split(',')]
 	css_for_alert = {'alert':{'class':'#alert' + str(CSSCount['alert'])}}
 	if ('danger' in s):
-		css_for_alert['alert']['color'] = 'red'
+		css_for_alert['alert']['color'] = '#ed314d'
 		s.remove('danger')
 	elif ('success' in s):
-		css_for_alert['alert']['color'] = 'green'
+		css_for_alert['alert']['color'] = '#d1ffa0'
 		s.remove('success')
 	elif ('warning' in s):
-		css_for_alert['alert']['color'] = 'yellow'
+		css_for_alert['alert']['color'] = '#f2ba21'
 		s.remove('warning')
 	elif ('info' in s):
-		css_for_alert['alert']['color'] = 'blue'
+		css_for_alert['alert']['color'] = '#a16fe8'
 		s.remove('info')
 	for x in s:
 		if(x.find(':') != -1):
@@ -744,54 +745,65 @@ def wallpaperMaker(s,i):
 	# Img, Name
 	# Name, Img
 	# Img
-	wallpaper_type1 = {'div':{'class':'container-fluid bg text-center'} , 'content':{}}
-	NAME = {'h3':{'class':'margin'} , 'content' : ''}
-	IMG = {'img':{'src':'' , 'class':'img-responsive img-circle margin' , 'display':'inline' , 'width':'350' , 'height':'350'} , 'content':''}
-	DESCRIPTION = {'h3':{} , 'content' : ''}
-	style_dict = dictOfStyles(s)
-	css_for_wallpaper = {'wallpaper':{'class':'', 'type':'type1'}}
-	wallpaper_type1['div']['id'] = 'wallpaper' + str(CSSCount['wallpaper'])
-	css_for_wallpaper['wallpaper']['class'] = '#' + wallpaper_type1['div']['id']
-	CSSCount['wallpaper'] = CSSCount['wallpaper']+1
-	for key,value in style_dict['binary'].items():
-		css_for_wallpaper['wallpaper'][key] = value
-	makeCSS(css_for_wallpaper)
-	if i.find(',') == -1:
-		eprint("Content of wallpaper must have atleast one argument")
-	else:
-		content = i.split(',',2)
-		content = [c.strip() for c in content]
-	if checkImageExtension(content[0]):
-		arg = len(content)
-		IMG['img']['src'] = 'img/' + content[0]
-		if arg == 2:
-			NAME['content'] = content[1]
-			wallpaper_type1['content'][2] = NAME
-		if arg == 3:
-			NAME['content'] = content[1]
-			wallpaper_type1['content'][2] = NAME
-			DESCRIPTION['content'] = content[2]
-			wallpaper_type1['content'][3] = DESCRIPTION
-		wallpaper_type1['content'][1] = IMG
-	else:
-		NAME['content'] = content[0]
-		wallpaper_type1['content'][1] = NAME
-		if checkImageExtension(content[1]):
+	styleDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in s.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
+	if(styleDict['type']=='type1'):
+		wallpaper_type1 = {'div':{'class':'container-fluid bg text-center'} , 'content':{}}
+		NAME = {'h3':{'class':'margin'} , 'content' : ''}
+		IMG = {'img':{'src':'' , 'class':'img-responsive img-circle margin' , 'display':'inline' , 'width':'350' , 'height':'350'} , 'content':''}
+		DESCRIPTION = {'h3':{} , 'content' : ''}
+		style_dict = dictOfStyles(s)
+		css_for_wallpaper = {'wallpaper':{'class':'', 'type':'type1'}}
+		wallpaper_type1['div']['id'] = 'wallpaper' + str(CSSCount['wallpaper'])
+		css_for_wallpaper['wallpaper']['class'] = '#' + wallpaper_type1['div']['id']
+		CSSCount['wallpaper'] = CSSCount['wallpaper']+1
+		for key,value in style_dict['binary'].items():
+			css_for_wallpaper['wallpaper'][key] = value
+		makeCSS(css_for_wallpaper)
+		if i.find(',') == -1:
+			eprint("Content of wallpaper must have atleast one argument")
+		else:
+			content = i.split(',',2)
+			content = [c.strip() for c in content]
+		if checkImageExtension(content[0]):
 			arg = len(content)
-			IMG['img']['src'] = 'img/' +content[1]
-			wallpaper_type1['content'][2] = IMG
+			IMG['img']['src'] = 'img/' + content[0]
+			if arg == 2:
+				NAME['content'] = content[1]
+				wallpaper_type1['content'][2] = NAME
 			if arg == 3:
+				NAME['content'] = content[1]
+				wallpaper_type1['content'][2] = NAME
 				DESCRIPTION['content'] = content[2]
 				wallpaper_type1['content'][3] = DESCRIPTION
+			wallpaper_type1['content'][1] = IMG
 		else:
-			DESCRIPTION['content'] = content[1]
-			wallpaper_type1['content'][2] = DESCRIPTION
-			IMG['img']['src'] = 'img/' + content[2]
-			wallpaper_type1['content'][3] = IMG
-	return wallpaper_type1
+			NAME['content'] = content[0]
+			wallpaper_type1['content'][1] = NAME
+			if checkImageExtension(content[1]):
+				arg = len(content)
+				IMG['img']['src'] = 'img/' +content[1]
+				wallpaper_type1['content'][2] = IMG
+				if arg == 3:
+					DESCRIPTION['content'] = content[2]
+					wallpaper_type1['content'][3] = DESCRIPTION
+			else:
+				DESCRIPTION['content'] = content[1]
+				wallpaper_type1['content'][2] = DESCRIPTION
+				IMG['img']['src'] = 'img/' + content[2]
+				wallpaper_type1['content'][3] = IMG
+		return wallpaper_type1
+	elif(styleDict['type']=='type2'):
+		sendDict={'wallpaper2':{'class':'#wallpaper2'+str(CSSCount['wallpaper2'])}}
+		sendDict['wallpaper2'].update(styleDict)
+		makeCSS(sendDict)
+		content=i.split(':')
+		wallpaper_type2={'div':{'id':'wallpaper2'+str(CSSCount['wallpaper2'])},'content':{1:content[1],2:{'div':{'class':'centered'},'content':content[0]}}}
+		CSSCount['wallpaper2']=CSSCount['wallpaper2']+1
+		return wallpaper_type2
+
 
 def textfieldMaker(style,content):
-	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
 	textfieldDict={1:{'label':{'for':'textfield'+str(CSSCount['textfield'])},'content':{}},2:{'input':{'id':'textfield'+str(CSSCount['textfield']),'type':'text'},'content':''}}
 	if(':' in content):
 		textfieldDict[1]['content']=content[:content.find(':')].strip()
@@ -805,7 +817,7 @@ def textfieldMaker(style,content):
 	return textfieldDict
 
 def passwordfieldMaker(style,content):
-	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
 	passwordfieldDict={1:{'label':{'for':'passwordfield'+str(CSSCount['passwordfield'])},'content':{}},2:{'input':{'id':'passwordfield'+str(CSSCount['passwordfield']),'type':'password'},'content':''}}
 	if(':' in content):
 		passwordfieldDict[1]['content']=content[:content.find(':')].strip()
@@ -819,7 +831,7 @@ def passwordfieldMaker(style,content):
 	return passwordfieldDict
 
 def selectMaker(style,content):
-	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')] in TwoNonCSS.keys()]}
+	sendDict={TwoNonCSS[y[:y.find(':')].strip()]:y[y.find(':')+1:].strip() for y in [x for x in style.split(',') if not(x.find(':')==-1) and x[:x.find(':')].strip() in TwoNonCSS.keys()]}
 	selectDict={1:{'label':{'for':'select'+str(CSSCount['select'])},'content':{}},2:{'select':{'id':'select'+str(CSSCount['select'])},'content':{}}}
 	selectDict[1]['content']=content[:content.find(':')].strip()
 	i=1
@@ -975,7 +987,10 @@ def styleMaker(s):
 			if (x[:x.find(':')].strip() in TwoNonCSS.keys()):
 				if (x[:x.find(':')].strip() in allowedStyles.keys()):
 					if not (re.match(allowedStyles[x[:x.find(':')].strip()],x[x.find(':')+1:].strip())):
-						eprint("syntax error at line number "+str(LineNumber)+": Incorrect attribute for "+x[:x.find(':')].strip()+" in "+styleName)
+						if(styleName):
+							eprint("In File "+pageName+" Syntax Error: Incorrect Attribute For "+x[:x.find(':')].strip()+" in "+styleName)
+						else:
+							eprint("In File "+pageName+" Syntax Error: Incorrect Attribute For "+x[:x.find(':')].strip())
 	if(not styleName):
 		return taggedMaker(styleStyle,styleContent)
 	else:
@@ -1371,9 +1386,9 @@ def p_pre(p):
 	'''
 	if(len(p)==2):
 		if (p[1][1:6] == 'latex'):
-			p[0]="<div lang='latex'>\n"+p[1][:-2][9:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"\n</div>"
+			p[0]="<div lang='latex'>\n"+p[1][:-2][9:].replace('\n','@$$@').replace('(','^**^').replace(')','#!!#').replace('{','&--&').replace('}','+==+')+"\n</div>"
 		else:
-			p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</pre>"
+			p[0]="<pre>"+p[1][:-2][7:].replace('\n','@$$@').replace('(','^**^').replace(')','#!!#').replace('{','&--&').replace('}','+==+').replace('-----','!@#$%^&') +"</pre>"
 	else:
 		p[0]=''
 
@@ -1382,7 +1397,7 @@ def p_code(p):
 		   |
 	'''
 	if(len(p)==2):
-		p[0]="<code>"+p[1][:-2][8:].replace('\n','@@@@').replace('(','^**^').replace(')','~!!~').replace('{','&--&').replace('}','+==+')+"</code>"
+		p[0]="<code>"+p[1][:-2][8:].replace('\n','@@@@').replace('(','^**^').replace(')','#!!#').replace('{','&--&').replace('}','+==+')+"</code>"
 	else:
 		p[0]=''
 
@@ -1443,6 +1458,7 @@ main_dict = {'html':{} , 'content':{
 global_navbar = {}
 global_footer = {}
 page_dict = {}
+pageName=''
 def makeJS(d):
 	global page_dict
 	element = list(d.keys())[0]
@@ -1458,6 +1474,7 @@ def makeJS(d):
 def main():
 	global main_dict
 	global page_dict
+	global pageName
 	page_list = [os.fsdecode(pages) for pages in os.listdir('pages/') if os.fsdecode(pages).endswith('.sm')]
 	page_list.sort()
 	con = open(os.fsdecode('config.sm'))
@@ -1478,6 +1495,7 @@ def main():
 	global_navbar = makeNavbar(c[index_navbar+1],c[index_navbar+2])
 	global_footer = makeFooter(c[index_footer+1],c[index_footer+2])
 	for page in page_list:
+		pageName=page
 		page_dict = copy.deepcopy(main_dict)
 		page_file = open(os.fsdecode('pages/') + page)
 		b=page_file.read()
@@ -1485,7 +1503,7 @@ def main():
 			b=parser.parse(b.strip())
 			b=b.split("<br>")
 			b="<br>\n".join(b)
-			b=b.replace('@$$@','\n').replace('^**^','(').replace('~!!~',')').replace('&--&','{').replace('+==+','}').replace('@@@@','<br>')
+		b=b.replace('@$$@','\n').replace('^**^','(').replace('#!!#',')').replace('&--&','{').replace('+==+','}').replace('@@@@','<br>').replace('!@#$%^&','-----')
 		page_dict['content'][2]['content'][1] = global_navbar
 		page_dict['content'][2]['content'][3] = global_footer
 		body_content = ""

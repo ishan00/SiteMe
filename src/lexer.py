@@ -18,7 +18,7 @@ t_NEWLINE=r'\n\r|\r\n|\r|\n'
 
 lexer=lex.lex()
 
-#a=open("./pages/index.sm")
+#a=open("./pages/blog.sm")
 #b=a.read()
 #lexer.input(b.strip())
 #print(b.strip())

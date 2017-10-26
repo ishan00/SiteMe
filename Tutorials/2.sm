@@ -1,0 +1,31 @@
+title: Directory Structure
+date: 25th October
+author: Team in the North
+tags: introduction , SSL
+----------------------------
+Since you're reading this, you must have extracted the archive you downloaded. Good Work||
+The directory structure looks something like this ||
+image(height:400px, width:800px){directory.png}
+
+list(d){
+* image
+** This folder holds all images that you want to use in your websites. You just have to put them in this folder. They are later copied to (code){{site}} later
+* pages
+** This folder is the main folder you need to modify. It will contain the corresponding (code){{*.sm}} files of pages you want to built. Note that (code){{.sm}} extension is required for syntax highlighting
+* posts
+** Interested in making blogs? This is the folder which will contain all your posts. Just start writing your posts using the simple liquid templating and see them rendered into a nice blog. For more information, there's a dedicated post on Blogs. You can ignore this folder if you're not interested in blogs.
+* src
+** This folder contains all source code of the project. Don't try to mess with these
+* template
+** This folder contains useful templates like (code){{cv.sm}}, (code){{blog.sm}}, (code){{team.sm}} etc and some other famous elegant templates we mirrored using our syntax. You can look how must simpler the code appears compared to original HTML of those pages.
+* Tutorials
+** These just contains the raw documents of the tutorial. They were rendered into blogs posts that you're currently reading
+* site
+** This directory does not exist at the start and is rendered when you run (code){{build.sh}} script
+* tmp
+** This directory has transient appearance. Built during the process to store temp files etc and later deleted.
+* config.sm
+** Global settings are mentioned here. Currently contains navbar and footer settings. You can choose from multiple footer and navbar templates that are supported. For more information visit the (code){{Navbar}} and (code){{Footer}} posts.
+* build.sh
+** Later to be replaced by makefiles
+}

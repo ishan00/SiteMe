@@ -13,15 +13,18 @@ archive = {}
 
 blog_page = '''#nonavbar
 #nofooter
+margin-top:60px
+font-size:18px
+font-family: "Verdana"
 grid(2,8,2){}{
 	$FULLCONTENT$	
 }
 {}
 '''
 post_content = '''
-(center,h1){$TITLE$}
-(h3,color:#eeeeee,center){$AUTHOR$}
-(color:#eeeeee){$DATE$}
+(center,font-size:40px,underline){$TITLE$}
+(h3,color:#211d23,text-align:center){$AUTHOR$}
+(color:#700606,h4){$DATE$}||
 $CONTENT$
 -------'''
 

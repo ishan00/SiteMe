@@ -40,6 +40,12 @@ do
 	touch $OUTPUT_FILE
 done
 
+if [ ! -f "./pages/blog.sm" ]   
+	then                    
+	touch "./pages/blog.sm" 
+fi                              
+python3 ./src/renderblog.py './pages/blog.sm' './Tutorials/'
+
 python3 ./src/interpreter.py
 
 if [  -f  ./tmp/*.plot ]
@@ -47,3 +53,4 @@ if [  -f  ./tmp/*.plot ]
 	gnuplot -p ./tmp/*.plot
 fi
 
+rm -r ./tmp/
